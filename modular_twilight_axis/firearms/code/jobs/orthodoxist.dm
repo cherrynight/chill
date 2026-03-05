@@ -49,7 +49,7 @@
 	backl = /obj/item/storage/backpack/rogue/satchel/otavan
 	shoes = /obj/item/clothing/shoes/roguetown/boots/psydonboots
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/inq
-	neck = /obj/item/clothing/neck/roguetown/leather/blackpowder
+	neck = /obj/item/clothing/neck/roguetown/gorget
 	gloves = /obj/item/clothing/gloves/roguetown/chain/psydon
 	mask = /obj/item/clothing/mask/rogue/facemask/steel/confessor
 	id = /obj/item/clothing/ring/signet/silver
@@ -79,7 +79,7 @@
 							if("Cannonballs")
 								beltr = /obj/item/quiver/twilight_bullet/cannonball/lead
 					if("Runelock Pistol")
-						belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt
+						belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/blackpowder/runelock
 						beltr = /obj/item/quiver/twilight_bullet/runicbag/runed
 						l_hand = /obj/item/gun/ballistic/revolver/grenadelauncher/twilight_runelock
 						backpack_contents = list(/obj/item/roguekey/inquisitionmanor = 1,
@@ -96,43 +96,33 @@
 						armor = /obj/item/clothing/suit/roguetown/armor/plate/cuirass/fencer/psydon
 						pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan
 						ADD_TRAIT(H, TRAIT_DODGEEXPERT, TRAIT_GENERIC)
-
-				cloak = /obj/item/clothing/cloak/tabard/psydontabard
 				head = /obj/item/clothing/head/roguetown/helmet/kettle
 				wrists = /obj/item/clothing/neck/roguetown/psicross/silver
 				beltl = /obj/item/rogueweapon/scabbard/sword
 				r_hand = /obj/item/rogueweapon/sword/short/psy
 				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_EXPERT, TRUE)
-
-			if ("Otavan Volf")
-				var/weapons = list("Dagger", "Knuckledbusters")
-				var/weapon_choice = input(H,"Choose your WEAPON.", "TAKE UP PSYDON'S ARMS.") as anything in weapons
-				switch(weapon_choice)
-					if("Dagger")
-						r_hand = /obj/item/rogueweapon/huntingknife/idagger/silver/psydagger
-						beltl = /obj/item/rogueweapon/scabbard/sheath
-						H.adjust_skillrank_up_to(/datum/skill/combat/knives, SKILL_LEVEL_EXPERT, TRUE)
-					if("Knuckledbusters")
-						r_hand = /obj/item/rogueweapon/knuckles/psydon
-						H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, SKILL_LEVEL_EXPERT, TRUE)
+			if("Otavan Volf")
+				r_hand = /obj/item/rogueweapon/huntingknife/idagger/silver/psydagger
+				beltl = /obj/item/rogueweapon/scabbard/sheath
+				H.adjust_skillrank_up_to(/datum/skill/combat/knives, SKILL_LEVEL_EXPERT, TRUE)
 				armor = /obj/item/clothing/suit/roguetown/armor/leather/heavy/coat/confessor
 				l_hand = /obj/item/gun/ballistic/twilight_firearm/arquebus_pistol/umbra
 				head = /obj/item/clothing/head/roguetown/roguehood/psydon/confessor
 				wrists = /obj/item/clothing/neck/roguetown/psicross/silver
 				pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan
-				belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt
+				belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/blackpowder
 				beltr = /obj/item/quiver/twilight_bullet/lead_ten
 				backpack_contents = list(/obj/item/roguekey/inquisitionmanor = 1,
-						/obj/item/paper/inqslip/arrival/ortho = 1,
-						/obj/item/twilight_powderflask/holyfyre = 1,
-						/obj/item/storage/belt/rogue/pouch/coins/mid = 1,
-						/obj/item/inqarticles/garrote = 1)
+					/obj/item/paper/inqslip/arrival/ortho = 1,
+					/obj/item/twilight_powderflask/holyfyre = 1,
+					/obj/item/storage/belt/rogue/pouch/coins/mid = 1,
+					/obj/item/inqarticles/garrote = 1)
 				H.adjust_skillrank_up_to(/datum/skill/magic/arcane, SKILL_LEVEL_APPRENTICE, TRUE)
 				H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/shadowstep)
 				H.mind?.adjust_spellpoints(-3)
 				H.mind?.RemoveSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 				var/arcane = list("Fetch", "Invisibility", "Repulse", "Leap")
-				var/arcane_choice = input("TAKE YOUR RUNE", "PSYDON'S RUNE") as anything in arcane
+				var/arcane_choice = input("TAKE YOUR RUNE.", "PSYDON'S RUNE.") as anything in arcane
 				switch(arcane_choice)
 					if("Fetch")
 						H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/fetch)

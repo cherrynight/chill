@@ -393,3 +393,12 @@
 /obj/structure/closet/crate/chest/inqcrate/supplies/twilight_gunpowder_thunder/Initialize()
 	. = ..()
 	new /obj/item/twilight_powderflask/thunder(src)
+
+/datum/inqports/equipment/twilight_inq_mask
+	name = "1 Inquisitorial Mask"
+	item_type = /obj/structure/closet/crate/chest/inqcrate/supplies/twilight_inq_mask
+	marquescost = 3
+
+/obj/structure/closet/crate/chest/inqcrate/supplies/twilight_inq_mask/Initialize()
+	. = ..()
+	new /obj/item/clothing/mask/rogue/facemask/inq(src)
