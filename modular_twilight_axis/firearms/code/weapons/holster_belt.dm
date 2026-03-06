@@ -77,7 +77,13 @@
 	icon_state = "holsterbelt_full"
 	update_icon()
 
-/obj/item/storage/belt/rogue/leather/twilight_holsterbelt/runelock/New()
+/obj/item/storage/belt/rogue/leather/twilight_holsterbelt/black
+	name = "black holster belt"
+	desc = "Чёрный ремень с кобурой. Пришлось пожертвовать местом на поясе ради возможности удобно носить пистоль."
+	icon = 'modular_twilight_axis/firearms/icons/obj_belts_black.dmi'
+	mob_overlay_icon = 'modular_twilight_axis/firearms/icons/onmob_belts_black.dmi'
+
+/obj/item/storage/belt/rogue/leather/twilight_holsterbelt/black/runelock/New()
 	. = ..()
 	for(var/i in 1 to max_storage)
 		var/obj/item/gun/ballistic/revolver/grenadelauncher/twilight_runelock/A = new()

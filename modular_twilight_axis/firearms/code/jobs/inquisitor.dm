@@ -1,6 +1,20 @@
 /datum/outfit/job/roguetown/inquisitor/inspector/pre_equip(mob/living/carbon/human/H)
 	. = ..()
-	H.adjust_skillrank(/datum/skill/combat/crossbows, 2, TRUE)
+	backl = null
+	beltr = null
+	belt = null
+	var/weapons = list("Crossbow", "Runelock Pistol")
+	var/weapon_choice = input(H,"CHOOSE YOUR JUDGEMENT.", "DELIVER HIS WILL.") as anything in weapons
+	switch(weapon_choice)
+		if("Crossbow")
+			H.adjust_skillrank(/datum/skill/combat/crossbows, 1, TRUE)
+			belt = /obj/item/storage/belt/rogue/leather/knifebelt/black/psydon
+			backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
+			beltr = /obj/item/quiver/bolt/standard
+		if("Runelock Pistol")
+			H.adjust_skillrank(/datum/skill/combat/twilight_firearms, 3, TRUE)
+			belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/black/runelock
+			beltr = /obj/item/quiver/twilight_bullet/runicbag/runed
 
 /datum/advclass/inquisitor/blackpowder
 	name = "Blackpowder Emissary"
@@ -17,6 +31,7 @@
 		TRAIT_SILVER_BLESSED,
 		TRAIT_INQUISITION,
 		TRAIT_FIREARMS_MARKSMAN,
+		TRAIT_PERFECT_TRACKER,
 		TRAIT_PURITAN,
 		TRAIT_OUTLANDER,
 		TRAIT_ARTILLERY_EXPERT
@@ -50,17 +65,19 @@
 		"Branding Letters" = /obj/item/branding_letters, //TA Branding
 		"Branding Iron" = /obj/item/branding_iron
 	)
-	extra_context = "This subclass can choose between three roles: Vanguard with the Doomsdae runic rifle and 'Medium Armor' trait, Investigator with the Inquest pistol and the 'Perfect Tracker' trait, and Runed Volf with the Umbra, silent arquebus pistol, rune magyck and the 'Dodge Expert' trait."
+	extra_context = "This subclass can choose between three roles: Vanguard with the Doomsdae runic rifle and 'Medium Armor' trait, Investigator with the Inquest pistol and the 'Black Bagger' trait, and Runed Volf with the Umbra, silent arquebus pistol, rune magyck and the 'Dodge Expert' trait."
 
 /datum/outfit/job/roguetown/inquisitor/blackpowder/pre_equip(mob/living/carbon/human/H)
 	..()
 	has_loadout = TRUE
 	H.verbs |= /mob/living/carbon/human/proc/faith_test
 	H.verbs |= /mob/living/carbon/human/proc/torture_victim
+	armor = /obj/item/clothing/suit/roguetown/armor/plate/scale/inqcoat
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/inq
 	neck = /obj/item/clothing/neck/roguetown/gorget/steel
 	shoes = /obj/item/clothing/shoes/roguetown/boots/otavan/inqboots
 	wrists = /obj/item/clothing/neck/roguetown/psicross/silver
+	pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan
 	backr = /obj/item/storage/backpack/rogue/satchel/otavan
 	id = /obj/item/clothing/ring/signet/silver
 	backpack_contents = list(
@@ -79,12 +96,11 @@
 	var/classchoice = input(H,"CHOOSE YOUR SPECIFICATION.", "YOUR CURSED LYFE.") as anything in classes
 	switch(classchoice)
 		if("Vanguard")
-			H.equip_to_slot_or_del(new /obj/item/clothing/suit/roguetown/armor/plate/cuirass/fluted/ornate, SLOT_ARMOR, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/inqhat, SLOT_HEAD, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/storage/belt/rogue/leather/black, SLOT_BELT, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/quiver/twilight_bullet/runicbag/blessed, SLOT_BELT_R, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/rogueweapon/scabbard/sword, SLOT_BELT_L, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/roguetown/otavan/psygloves, SLOT_GLOVES, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/storage/belt/rogue/leather/steel/tasset, SLOT_BELT, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/roguetown/chainlegs, SLOT_PANTS, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/quiver/twilight_bullet/runed, SLOT_BELT_R, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/rogueweapon/scabbard/sword/noble, SLOT_BELT_L, TRUE)
 			if(isdarkelf(H))
 				H.equip_to_slot_or_del(new /obj/item/clothing/mask/rogue/facemask, SLOT_WEAR_MASK, TRUE)
 			H.put_in_hands(new /obj/item/gun/ballistic/revolver/grenadelauncher/twilight_runelock/rifle(H), TRUE)
@@ -93,27 +109,16 @@
 			var/obj/item/hook = new /obj/item/grapplinghook(H)
 			if(!SEND_SIGNAL(back, COMSIG_TRY_STORAGE_INSERT, hook, null, TRUE, TRUE))
 				addtimer(CALLBACK(PROC_REF(move_storage), hook, H.loc), 3 SECONDS)
-			var/helmets = list("Barbute", "Sallet", "Armet", "Bucket Helm")
-			var/helmet_choice = input(H,"Choose your HELMET.", "TAKE UP PSYDON'S HELMS.") as anything in helmets
-			switch(helmet_choice)
-				if("Barbute")
-					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/psydonbarbute, SLOT_HEAD, TRUE)
-				if("Sallet")
-					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/psysallet, SLOT_HEAD, TRUE)
-				if("Armet")
-					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm, SLOT_HEAD, TRUE)
-				if("Bucket Helm")
-					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/psybucket, SLOT_HEAD, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/swords, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 4, TRUE)
+			var/datum/devotion/C = new /datum/devotion(H, H.patron)
+			C.grant_miracles(H, cleric_tier = CLERIC_T1, passive_gain = CLERIC_REGEN_WEAK, devotion_limit = CLERIC_REQ_1) //Capped to T1 miracles.
 			ADD_TRAIT(H, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)
 		if("Investigator")
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/inqcap, SLOT_HEAD, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/suit/roguetown/armor/plate/scale/inqcoat, SLOT_ARMOR, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/roguetown/otavan/inqgloves, SLOT_GLOVES, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/blackpowder, SLOT_BELT, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan, SLOT_PANTS, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/quiver/twilight_bullet/silver, SLOT_BELT_R, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/rogueweapon/scabbard/sword/noble, SLOT_BELT_L, TRUE)
 			if(isdarkelf(H))
@@ -143,21 +148,18 @@
 			H.adjust_skillrank_up_to(/datum/skill/combat/swords, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 4, TRUE)
-			H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, 5, TRUE)
+			H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/misc/tracking, 5, TRUE)
 			var/datum/devotion/C = new /datum/devotion(H, H.patron)
 			C.grant_miracles(H, cleric_tier = CLERIC_T1, passive_gain = CLERIC_REGEN_WEAK, devotion_limit = CLERIC_REQ_1) //Capped to T1 miracles.
-			ADD_TRAIT(H, TRAIT_PERFECT_TRACKER, TRAIT_GENERIC)
 			ADD_TRAIT(H, TRAIT_BLACKBAGGER, TRAIT_GENERIC)
 		if("Runed Volf")
-			H.equip_to_slot_or_del(new /obj/item/clothing/mask/rogue/facemask/inq, SLOT_WEAR_MASK, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/inqsack, SLOT_HEAD, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/suit/roguetown/armor/plate/scale/inqcoat, SLOT_ARMOR, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/roguetown/otavan/psygloves, SLOT_GLOVES, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/blackpowder, SLOT_BELT, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/storage/belt/rogue/leather/twilight_holsterbelt, SLOT_BELT, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/quiver/twilight_bullet/silver, SLOT_BELT_R, TRUE)
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan, SLOT_PANTS, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/roguehood/psydon/confessor, SLOT_HEAD, TRUE)
 			H.equip_to_slot_or_del(new /obj/item/storage/backpack/rogue/satchel/beltpack, SLOT_CLOAK, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/clothing/mask/rogue/facemask/steel/confessor, SLOT_WEAR_MASK, TRUE)
+			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/roguetown/otavan/psygloves, SLOT_GLOVES, TRUE)
 			H.put_in_hands(new /obj/item/gun/ballistic/twilight_firearm/arquebus_pistol/umbra(H), TRUE)
 			var/obj/item/belt = H.get_item_by_slot(SLOT_BELT)
 			var/quivers = list("Holy Fyrepowder", "Thunderpowder")
@@ -178,7 +180,7 @@
 			if(!SEND_SIGNAL(belt, COMSIG_TRY_STORAGE_INSERT, garrote, null, TRUE, TRUE))
 				addtimer(CALLBACK(PROC_REF(move_storage), garrote, H.loc), 3 SECONDS)
 			H.adjust_skillrank_up_to(/datum/skill/misc/sneaking, 5, TRUE)
-			H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, 4, TRUE)
+			H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, 5, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/magic/arcane, 3, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/combat/knives, 4, TRUE)
 			H.adjust_skillrank_up_to(/datum/skill/misc/climbing, 4, TRUE)
@@ -188,3 +190,4 @@
 			H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/fetch)
 			H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/stasis/runed)
 			ADD_TRAIT(H, TRAIT_DODGEEXPERT, TRAIT_GENERIC)
+			ADD_TRAIT(H, TRAIT_SLEUTH, TRAIT_GENERIC)
