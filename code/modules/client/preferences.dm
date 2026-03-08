@@ -708,6 +708,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 			dat += "<br><a href='?_src_=prefs;preference=ooc_preview;task=input'><b>Preview Examine</b></a>"
 
 			dat += "<br><b>Loadout Items:</b> <a href='?_src_=prefs;preference=loadout_item;task=input'>Change</a>"
+			dat += "<br><b>Family Preferences:</b> <a href='?_src_=prefs;preference=family_options;task=input'>Change</a>" // TA EDIT
 
 			dat += "</td>"
 
@@ -2375,6 +2376,9 @@ Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contr
 					clean_loadout(user)
 
 					loadoutpanel.ui_interact(user)
+
+				if("family_options") // TA EDIT
+					user.client?.familytree_module_open_preferences(user)
 
 				if("vampire_hair")
 					var/new_vampirehair = input(user, "Choose your character's vampire hair color:", "Character Preference","#"+vampire_hair) as color|null

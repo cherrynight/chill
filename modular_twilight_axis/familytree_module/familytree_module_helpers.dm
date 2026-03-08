@@ -120,13 +120,6 @@
 	prefs.family_options.ui_interact(user)
 	return TRUE
 
-/client/verb/family_preferences()
-	set name = "Family Preferences"
-	set category = "Options"
-	set desc = ""
-
-	familytree_module_open_preferences(mob)
-
 /mob/living/carbon/human/proc/MarryTo(mob/living/carbon/human/spouse)
 	if(!ishuman(spouse))
 		return null
