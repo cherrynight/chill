@@ -55,17 +55,17 @@ export const FamilySettingsPanel = () => {
   }, [isAdult, familyType]);
 
   const tooltips = {
-    none: 'Ваш персонаж не будет частью чьей-либо семьи',
-    member: 'Ваш персонаж возможно станет частью чьей-то семьи',
-    parent: 'Ваш персонаж может стать основателем своей семьи, либо частью чьей-то семьи',
-    couple: 'Ваш персонаж не будет частью чьей-то семьи, но у него будет возможность стать чьей-то парой',
+    none: 'Ваш персонаж не будет участвовать в семейной системе.',
+    member: 'Ваш персонаж попытается попасть в существующую семью как ребенок, брат, сестра или другой родственник.',
+    parent: 'Ваш персонаж попытается попасть в семью как взрослый супруг или родитель, а при отсутствии подходящей семьи может основать новую.',
+    couple: 'Ваш персонаж попытается получить супруга или супругу среди других игроков с такой же настройкой.',
   };
 
   const familyTypeOptions: DropdownOption<FamilyType>[] = [
     { value: 'none', displayText: 'Нет' },
-    { value: 'member', displayText: 'Член семьи' },
-    { value: 'parent', displayText: 'Родитель' },
-    { value: 'couple', displayText: 'Пара' },
+    { value: 'member', displayText: 'Родственник' },
+    { value: 'parent', displayText: 'Родитель / супруг' },
+    { value: 'couple', displayText: 'Супружеская пара' },
   ].filter(opt => !(opt.value === 'parent' && isAdult));
 
   const speciesOptions: DropdownOption<SpeciesMode>[] = [
@@ -82,8 +82,8 @@ export const FamilySettingsPanel = () => {
 
   const anatomyOptions: DropdownOption<AnatomyPref>[] = [
     { value: 0, displayText: 'Без разницы' },
-    { value: 1, displayText: 'Пенис' },
-    { value: 2, displayText: 'Вульва' },
+    { value: 1, displayText: 'Мужская анатомия' },
+    { value: 2, displayText: 'Женская анатомия' },
   ];
 
   const getDisplayText = <T extends string | number>(
@@ -104,7 +104,7 @@ export const FamilySettingsPanel = () => {
 
           <Stack.Item>
             <Box style={{ marginBottom: '4px', fontWeight: 'bold' }}>
-              Тип семьи:
+              Семейная роль:
             </Box>
 
             <Dropdown
