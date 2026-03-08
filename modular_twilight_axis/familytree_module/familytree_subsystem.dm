@@ -29,14 +29,8 @@ SUBSYSTEM_DEF(familytree)
 	* Bachalors and Bachalorettes
 	*/
 	var/list/viable_spouses = list()
-	//These jobs are excluded from AddLocal()
+	//These jobs are excluded from AddLocal() outside of the dedicated royal path.
 	var/list/excluded_jobs = list(
-		"Grand Duke",
-		"Grand Duchess",
-		"Consort",
-		"Suitor",
-		"Hand",
-		"Prince",
 		"Wretch",
 		"Bandit",
 		"Absolver",
@@ -52,32 +46,11 @@ SUBSYSTEM_DEF(familytree)
 		"Priest",
 		)
 	//This creates 2 families for each race roundstart so that siblings dont fail to be added to a family.
-	var/list/preset_family_species = list(
-		/datum/species/human/northern,
-		/datum/species/elf,
-		/datum/species/elf/dark,
-		/datum/species/human/halfelf,
-		/datum/species/dwarf/mountain,
-		/datum/species/tieberian,
-		/datum/species/aasimar,
-		/datum/species/halforc,
-		/datum/species/dullahan,
-		/datum/species/aura,
-		/datum/species/demihuman,
-		/datum/species/anthromorph,
-		/datum/species/akula,
-		/datum/species/anthromorphsmall,
-		/datum/species/dracon,
-		/datum/species/kobold,
-		/datum/species/lizardfolk,
-		/datum/species/lupian,
-		/datum/species/moth,
-		/datum/species/tabaxi,
-		/datum/species/vulpkanin
-		)
+	var/list/preset_family_species = list()
 
 /datum/controller/subsystem/familytree/Initialize()
 	ruling_family = new /datum/heritage(null, "Royal", /datum/species/human/northern)
+	preset_family_species = build_preset_family_species()
 	//Blank starter families that we can customize for players.
 	for(var/pioneer_household in preset_family_species)
 		for(var/I = 1 to 2)
@@ -88,6 +61,69 @@ SUBSYSTEM_DEF(familytree)
 	for(var/mob/living/carbon/human/H in GLOB.mob_list)
 		register_human(H)
 	return ..()
+
+/datum/controller/subsystem/familytree/proc/build_preset_family_species() as /list
+	. = familytree_module_get_selectable_species_types()
+
+/datum/controller/subsystem/familytree/proc/resolve_job_datum(role_or_job)
+	if(istype(role_or_job, /datum/job))
+		return role_or_job
+	if(!role_or_job)
+		return null
+
+	var/datum/job/job = SSjob.GetJob(role_or_job)
+	if(job)
+		return job
+
+	var/role_text = "[role_or_job]"
+	for(var/datum/job/candidate in SSjob.occupations)
+		if(candidate.title == role_text || candidate.display_title == role_text || candidate.f_title == role_text)
+			return candidate
+
+	return null
+
+/datum/controller/subsystem/familytree/proc/get_familytree_job(mob/living/carbon/human/H)
+	if(!H)
+		return null
+
+	var/datum/job/job = resolve_job_datum(H.mind?.assigned_role)
+	if(job)
+		return job
+
+	return resolve_job_datum(H.job)
+
+/datum/controller/subsystem/familytree/proc/is_human_job_in_list(mob/living/carbon/human/H, list/title_list)
+	if(!H || !title_list)
+		return FALSE
+
+	var/datum/job/job = get_familytree_job(H)
+	if(job)
+		if(job.title in title_list)
+			return TRUE
+		if(job.display_title && (job.display_title in title_list))
+			return TRUE
+		if(job.f_title && (job.f_title in title_list))
+			return TRUE
+
+	var/mind_role = H.mind?.assigned_role
+	if(istext(mind_role) && (mind_role in title_list))
+		return TRUE
+	if(istext(H.job) && (H.job in title_list))
+		return TRUE
+
+	return FALSE
+
+/datum/controller/subsystem/familytree/proc/is_royal_monarch_job(datum/job/job)
+	return istype(job, /datum/job/roguetown/lord)
+
+/datum/controller/subsystem/familytree/proc/is_royal_consort_job(datum/job/job)
+	return istype(job, /datum/job/roguetown/lady) || istype(job, /datum/job/roguetown/suitor)
+
+/datum/controller/subsystem/familytree/proc/is_royal_progeny_job(datum/job/job)
+	return istype(job, /datum/job/roguetown/prince)
+
+/datum/controller/subsystem/familytree/proc/is_royal_hand_job(datum/job/job)
+	return istype(job, /datum/job/roguetown/hand)
 
 /datum/controller/subsystem/familytree/proc/on_mob_created(datum/controller/subsystem/processing/dcs/source, mob/new_mob)
 	SIGNAL_HANDLER
@@ -151,25 +187,23 @@ SUBSYSTEM_DEF(familytree)
 		stop_tracking_human(H)
 
 /datum/controller/subsystem/familytree/proc/get_royal_status(mob/living/carbon/human/H)
-	var/role = H.mind?.assigned_role || H.job
-	switch(role)
-		if("Grand Duke", "Grand Duchess", "Consort", "Suitor")
-			return H.familytree_get_parental_style() == "feminine" ? FAMILY_MOTHER : FAMILY_FATHER
-		if("Prince", "Princess")
-			return FAMILY_PROGENY
-		if("Hand")
-			return FAMILY_OMMER
+	var/datum/job/job = get_familytree_job(H)
+	if(is_royal_monarch_job(job) || is_royal_consort_job(job))
+		return H.familytree_get_parental_style() == "feminine" ? FAMILY_MOTHER : FAMILY_FATHER
+	if(is_royal_progeny_job(job))
+		return FAMILY_PROGENY
+	if(is_royal_hand_job(job))
+		return FAMILY_OMMER
 	return null
 
 /datum/controller/subsystem/familytree/proc/get_royal_delay(mob/living/carbon/human/H)
-	var/role = H.mind?.assigned_role || H.job
-	switch(role)
-		if("Grand Duke", "Grand Duchess")
-			return 41
-		if("Consort", "Suitor")
-			return 43
-		if("Prince", "Princess", "Hand")
-			return 45
+	var/datum/job/job = get_familytree_job(H)
+	if(is_royal_monarch_job(job))
+		return 41
+	if(is_royal_consort_job(job))
+		return 43
+	if(is_royal_progeny_job(job) || is_royal_hand_job(job))
+		return 45
 	return 45
 
 /datum/controller/subsystem/familytree/proc/run_local_assignment(mob/living/carbon/human/H, status)
@@ -263,10 +297,12 @@ SUBSYSTEM_DEF(familytree)
 /datum/controller/subsystem/familytree/proc/AddLocal(mob/living/carbon/human/H, status)
 	if(!H || !status || istype(H, /mob/living/carbon/human/dummy))
 		return
-	//Exclude princes and princesses from having their parentage calculated.
-	if(H.mind?.assigned_role in excluded_jobs)
+	// Royals are handled by the dedicated royal flow.
+	if(get_royal_status(H))
 		return
-	if(H.mind?.assigned_role in nomarry_jobs)
+	if(is_human_job_in_list(H, excluded_jobs))
+		return
+	if(is_human_job_in_list(H, nomarry_jobs))
 		if(status != FAMILY_NONE)
 			AssignToHouse(H)
 			return
@@ -322,7 +358,7 @@ SUBSYSTEM_DEF(familytree)
 /datum/controller/subsystem/familytree/proc/GetCurrentMonarch()
 	// Find the monarch at generation 12 (current ruling generation)
 	for(var/datum/family_member/member in ruling_family.members)
-		if(member.generation == 12 && (member.person.job == "Grand Duke" || member.person.job == "Grand Duchess"))
+		if(member.generation == 12 && is_royal_monarch_job(get_familytree_job(member.person)))
 			return member
 	return null
 
@@ -497,9 +533,40 @@ SUBSYSTEM_DEF(familytree)
 				if(member.person && CanBeParentOf(member.person, person))
 					potential_parents += member
 
-			// Add as child with up to 2 parents
-			var/datum/family_member/parent1 = potential_parents.len > 0 ? potential_parents[1] : null
-			var/datum/family_member/parent2 = potential_parents.len > 1 ? potential_parents[2] : null
+			var/datum/family_member/parent1
+			var/datum/family_member/parent2
+			var/datum/family_member/single_parent
+			var/found_pair = FALSE
+
+			for(var/i = 1 to potential_parents.len)
+				var/datum/family_member/candidate1 = potential_parents[i]
+				if(!candidate1?.person)
+					continue
+
+				if(!single_parent && house.SingleParentSpeciesCalculation(person, candidate1.person))
+					single_parent = candidate1
+
+				for(var/j = i + 1 to potential_parents.len)
+					var/datum/family_member/candidate2 = potential_parents[j]
+					if(!candidate2?.person)
+						continue
+					if(house.SpeciesCalculation(person, candidate1.person, candidate2.person))
+						parent1 = candidate1
+						parent2 = candidate2
+						found_pair = TRUE
+						break
+
+				if(found_pair)
+					break
+
+			if(!found_pair && single_parent)
+				parent1 = single_parent
+				parent2 = null
+
+			if(!parent1)
+				parent1 = potential_parents.len > 0 ? potential_parents[1] : null
+			if(!parent2 && !single_parent)
+				parent2 = potential_parents.len > 1 ? potential_parents[2] : null
 
 			house.AddToFamily(person, parent1, parent2, adopted)
 
@@ -582,7 +649,7 @@ SUBSYSTEM_DEF(familytree)
 							continue
 						if(member.person.familytree_pref == FAMILY_PARTIAL)
 							continue
-						if(member.person.mind?.assigned_role in nomarry_jobs)
+						if(is_human_job_in_list(member.person, nomarry_jobs))
 							continue
 
 

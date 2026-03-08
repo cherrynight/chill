@@ -689,6 +689,10 @@
 			person?.MixDNA(parent1.person, parent2.person, override = TRUE)
 		else
 			new_member.adoption_status = TRUE
+	else if(!adopt)
+		var/datum/family_member/known_parent = parent1 ? parent1 : parent2
+		if(known_parent && !SingleParentSpeciesCalculation(person, known_parent.person))
+			new_member.adoption_status = TRUE
 
 	to_chat(person, span_notice("You have been added to the [housename] family."))
 	InheritCurses(new_member)
@@ -860,6 +864,34 @@
 
 	if(parent1_is_elf && parent2_is_elf && ispath(child_species_type, /datum/species/elf))
 		return TRUE
+
+	return FALSE
+
+/datum/heritage/proc/SingleParentSpeciesCalculation(mob/living/carbon/human/child, mob/living/carbon/human/parent)
+	var/child_species_type = child.dna?.species?.type
+	var/parent_species_type = parent.dna?.species?.type
+
+	if(!child_species_type || !parent_species_type)
+		return FALSE
+
+	if(child_species_type == parent_species_type)
+		return TRUE
+
+	var/parent_is_human = (parent_species_type == /datum/species/human/northern)
+	var/parent_is_elf = ispath(parent_species_type, /datum/species/elf)
+	var/parent_is_orcish = ispath(parent_species_type, /datum/species/orc) || (parent_species_type == /datum/species/halforc)
+
+	if(child_species_type == /datum/species/tieberian)
+		return parent_species_type == /datum/species/tieberian
+
+	if(child_species_type == /datum/species/human/halfelf)
+		return parent_is_human || parent_is_elf || parent_species_type == /datum/species/human/halfelf
+
+	if(child_species_type == /datum/species/halforc)
+		return parent_is_human || parent_is_orcish
+
+	if(ispath(child_species_type, /datum/species/elf))
+		return parent_is_elf
 
 	return FALSE
 

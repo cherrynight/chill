@@ -33,7 +33,9 @@
 		"age" = P.age
 	)
 
-	var/list/species_names = get_selectable_species().Copy()
+	var/list/species_names = list()
+	for(var/species_name in familytree_module_get_selectable_species())
+		species_names += species_name
 	.["availableSpecies"] = species_names
 
 

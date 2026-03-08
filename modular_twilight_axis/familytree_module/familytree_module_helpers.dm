@@ -22,6 +22,39 @@
 	var/tmp/familytree_module_signal_bound = FALSE
 	var/tmp/familytree_assignment_scheduled = FALSE
 
+/proc/familytree_module_get_selectable_species() as /list
+	if(!GLOB.roundstart_races.len)
+		generate_selectable_species()
+
+	var/list/species_names = list()
+	for(var/species_name in GLOB.roundstart_races)
+		if(!istext(species_name))
+			continue
+		var/species_type = GLOB.species_list[species_name]
+		if(!ispath(species_type, /datum/species))
+			continue
+		species_names += species_name
+
+	if(!species_names.len)
+		species_names += "Humen"
+
+	return species_names
+
+/proc/familytree_module_get_selectable_species_types() as /list
+	var/list/species_types = list()
+	for(var/species_name in familytree_module_get_selectable_species())
+		var/species_type = GLOB.species_list[species_name]
+		if(!ispath(species_type, /datum/species))
+			continue
+		if(species_type in species_types)
+			continue
+		species_types += species_type
+
+	if(!species_types.len)
+		species_types += /datum/species/human/northern
+
+	return species_types
+
 /datum/preferences/proc/familytree_module_get_slot(slot)
 	if(!slot)
 		slot = loaded_slot || default_slot
@@ -47,7 +80,7 @@
 		species_preference_mode = "ANY"
 	if(species_preference_mode != "SPECIFIC_TYPE")
 		preferred_species_type = null
-	else if(!istext(preferred_species_type) || !(preferred_species_type in get_selectable_species()))
+	else if(!istext(preferred_species_type) || !(preferred_species_type in familytree_module_get_selectable_species()))
 		species_preference_mode = "ANY"
 		preferred_species_type = null
 	preferred_species_anatomy = text2num("[preferred_species_anatomy]")
