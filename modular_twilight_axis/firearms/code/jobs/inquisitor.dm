@@ -93,7 +93,7 @@
 /datum/outfit/job/roguetown/inquisitor/blackpowder/choose_loadout(mob/living/carbon/human/H)
 	. = ..()
 	H.adjust_blindness(-3)
-	var/classes = list("Vanguard", "Investigator", "Runed Volf")
+	var/classes = list("Vanguard", "Runed Volf")
 	var/classchoice = input(H,"CHOOSE YOUR SPECIFICATION.", "YOUR CURSED LYFE.") as anything in classes
 	switch(classchoice)
 		if("Vanguard")
