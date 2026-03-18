@@ -240,9 +240,11 @@
 	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Armet or Hounskull Bascinet"
 	target_items = list(
 		/obj/item/clothing/head/roguetown/helmet/heavy/knight/armet				= /obj/item/clothing/head/roguetown/helmet/heavy/knight/armet/dakken,
-		/obj/item/clothing/head/roguetown/helmet/bascinet/pigface/hounskull		= /obj/item/clothing/head/roguetown/helmet/bascinet/pigface/hounskull/dakken
+		/obj/item/clothing/head/roguetown/helmet/bascinet/pigface/hounskull		= /obj/item/clothing/head/roguetown/helmet/bascinet/pigface/hounskull/dakken,
+		/obj/item/clothing/head/roguetown/helmet/heavy/barbute/visor            = /obj/item/clothing/head/roguetown/helmet/heavy/barbute/visor/dakken
 	)
 	result_item = null
+	icon_loadout = /obj/item/clothing/head/roguetown/helmet/heavy/knight/armet/dakken
 
 //StinkethStonketh - Shashka & pike
 /obj/item/enchantingkit/stinketh_shashka
@@ -277,6 +279,12 @@
 	target_items = list(/obj/item/rogueweapon/sword/long)
 	result_item = /obj/item/rogueweapon/sword/long/drd
 
+//Lmwevil - Beak Mask
+/obj/item/enchantingkit/lmwevil_brassbeak
+	name = "brass beak mask morphing elixir"
+	target_items = list(/obj/item/clothing/mask/rogue/courtphysician, /obj/item/clothing/mask/rogue/physician)
+	result_item = /obj/item/clothing/mask/rogue/courtphysician/brassbeak
+
 /////////////////////////////
 // ! Triumph-Exc. Kits !   //
 /////////////////////////////
@@ -293,6 +301,15 @@
 	result_item = null
 	icon_loadout = /obj/item/clothing/suit/roguetown/armor/plate/full/fluted/legacy
 
+/obj/item/enchantingkit/triumph_armorkit_drow
+	name = "'Drowcraft' armor morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of.. </br>..a set of Hardened Leather Armor.. </br>.. or a set of Studded Leather Armor."
+	target_items = list(
+		/obj/item/clothing/suit/roguetown/armor/leather/heavy 		= /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest,
+		/obj/item/clothing/suit/roguetown/armor/leather/studded		= /obj/item/clothing/suit/roguetown/armor/leather/heavy/shadowvest
+		)
+	result_item = null
+
 /obj/item/enchantingkit/triumph_weaponkit_axe
 	name = "'Valorian' axe morphing elixir"
 	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of.. </br>..an Iron Axe.. </br>..or an Iron Hatchet."
@@ -301,6 +318,7 @@
 		/obj/item/rogueweapon/stoneaxe/woodcut	  						= /obj/item/rogueweapon/stoneaxe/woodcut/triumph
 		)
 	result_item = null
+	icon_loadout = /obj/item/rogueweapon/stoneaxe/woodcut/triumph
 
 /obj/item/enchantingkit/triumph_weaponkit_axedouble
 	name = "'Doublehead' axe morphing elixir"
@@ -314,6 +332,7 @@
 		/obj/item/rogueweapon/stoneaxe/battle	  						= /obj/item/rogueweapon/stoneaxe/battle/triumph
 		)
 	result_item = null
+	icon_loadout = /obj/item/rogueweapon/stoneaxe/battle/triumph
 
 /obj/item/enchantingkit/triumph_weaponkit_sword
 	name = "'Valorian' sword morphing elixir"
@@ -344,7 +363,7 @@
 
 /obj/item/enchantingkit/triumph_weaponkit_rock
 	name = "'Rockhillian' longsword morphing elixir"
-	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of.. </br>..a Steel Longsword.. </br>..a Steel Broadsword.. </br>..or an Executioner Sword."
+	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of.. </br>..a Steel Broadsword.. </br>..or an Executioner Sword."
 	target_items = list(
 		/obj/item/rogueweapon/sword/long/broadsword/bronze		= /obj/item/rogueweapon/sword/long/broadsword/bronze/rockhill,
 		/obj/item/rogueweapon/sword/long/broadsword/steel		= /obj/item/rogueweapon/sword/long/broadsword/steel/rockhill,
