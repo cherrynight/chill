@@ -60,8 +60,8 @@
 		H.verbs -= /mob/living/carbon/human/proc/familytree_officiate_divorce
 
 /mob/living/carbon/human/proc/familytree_establish_bond()
-	set name = "Establish Bond"
-	set category = "IC"
+	set name = "Установить семейную связь"
+	set category = "Cleric"
 
 	if(!mind || !client)
 		return
@@ -219,8 +219,8 @@
 	return (person1.family_datum != null)
 
 /mob/living/carbon/human/proc/familytree_officiate_divorce()
-	set name = "Dissolve Marriage"
-	set category = "IC"
+	set name = "Расторгнуть брак"
+	set category = "Cleric"
 
 	if(!mind || !client)
 		return
