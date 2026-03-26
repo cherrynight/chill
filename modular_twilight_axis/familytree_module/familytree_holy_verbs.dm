@@ -60,7 +60,9 @@
 	if(!istype(priest) || !priest.mind || !priest.client)
 		return
 
+	SSfamilytree.ftlog("ESTABLISH_BOND cast by [priest.real_name] ([priest.ckey])")
 	var/holy_level = priest.get_skill_level(/datum/skill/magic/holy)
+	SSfamilytree.ftlog("ESTABLISH_BOND: holy_level=[holy_level] need=[SKILL_LEVEL_JOURNEYMAN]")
 	if(holy_level < SKILL_LEVEL_JOURNEYMAN)
 		to_chat(priest, span_warning("Ваших сил недостаточно для проведения обряда."))
 		return
@@ -187,7 +189,9 @@
 	if(!istype(priest) || !priest.mind || !priest.client)
 		return
 
+	SSfamilytree.ftlog("DISSOLVE_MARRIAGE cast by [priest.real_name] ([priest.ckey])")
 	var/holy_level = priest.get_skill_level(/datum/skill/magic/holy)
+	SSfamilytree.ftlog("DISSOLVE_MARRIAGE: holy_level=[holy_level] need=[SKILL_LEVEL_MASTER]")
 	if(holy_level < SKILL_LEVEL_MASTER)
 		to_chat(priest, span_warning("Ваших сил недостаточно для расторжения брака."))
 		return

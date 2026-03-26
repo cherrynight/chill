@@ -115,14 +115,20 @@
 	if(QDELETED(H))
 		return "qdeleted"
 	if(!H.ckey)
+		if(!H.client)
+			ftlog("unsub_reason: [H.real_name] no ckey and no client, not ready yet - skip")
+			return "not ready"
 		return "npc"
 	if(istype(H, /mob/living/carbon/human/dummy))
 		return "dummy mob"
 	if(is_familytree_wildshape(H))
+		ftlog("unsub_reason: [H.real_name] is wildshape")
 		return "wildshape form"
 	if(!is_valid_familytree_species(H))
+		ftlog("unsub_reason: [H.real_name] invalid species [H.dna?.species?.type]")
 		return "invalid species"
 	if(is_banned_antag(H))
+		ftlog("unsub_reason: [H.real_name] banned antag")
 		return "banned antag"
 	return null
 
@@ -139,12 +145,14 @@
 /datum/controller/subsystem/familytree/proc/pause_familytree_human(mob/living/carbon/human/H, reason)
 	if(!H)
 		return
+	ftlog("pause_human: [H.real_name] ([H.ckey]) reason=[reason]")
 	viable_spouses -= H
 	H.familytree_assignment_scheduled = FALSE
 
 /datum/controller/subsystem/familytree/proc/unsubscribe_familytree_human(mob/living/carbon/human/H, reason)
 	if(!H)
 		return
+	ftlog("unsubscribe_human: [H.real_name] ([H.ckey]) reason=[reason]")
 	viable_spouses -= H
 	H.familytree_assignment_scheduled = FALSE
 	stop_tracking_human(H, reason)

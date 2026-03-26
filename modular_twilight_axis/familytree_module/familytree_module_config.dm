@@ -31,6 +31,8 @@
 //       tgui/packages/tgui/interfaces/FamilyDisplayPanel.tsx
 // Assets: relations.dmi
 
+#define FAMILYTREE_DEBUG_LOGGING
+
 #ifndef FAMILY_NONE
 #define FAMILY_NONE 1
 #define FAMILYTREE_MODULE_DEFINED_FAMILY_NONE
