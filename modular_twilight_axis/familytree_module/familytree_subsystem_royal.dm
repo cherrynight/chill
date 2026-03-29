@@ -326,6 +326,7 @@
 		GenerateRoyalLineage(member, status)
 		H.ShowFamilyUI(TRUE)
 		stop_tracking_human(H, "royal lineage generated")
+		ask_monarch_noble_permission(H)
 		return
 
 	switch(status)

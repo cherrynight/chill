@@ -23,3 +23,6 @@
 	var/allow_low_status_marriage = FALSE
 	var/tmp/familytree_module_signal_bound = FALSE
 	var/tmp/familytree_assignment_scheduled = FALSE
+	var/tmp/familytree_opted_out = FALSE
+	var/tmp/familytree_setspouse_timeout_offered = FALSE
+	var/tmp/familytree_setspouse_retries = 0

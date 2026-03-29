@@ -1,18 +1,7 @@
 /datum/family_member/proc/GetRelationshipStyle()
-	if(person?.titles_pref == TITLES_M)
-		return "masculine"
-	if(person?.titles_pref == TITLES_F)
-		return "feminine"
-
-	switch(person?.pronouns)
-		if(HE_HIM)
-			return "masculine"
-		if(SHE_HER)
-			return "feminine"
-		if(THEY_THEM)
-			return "neutral"
-		if(IT_ITS)
-			return "neuter"
+	if(person)
+		return person.familytree_get_parental_style()
+	return "neutral"
 
 	switch(person?.gender)
 		if(MALE)
