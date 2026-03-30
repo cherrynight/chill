@@ -258,3 +258,91 @@
 
 	..()
 	return 1
+
+/datum/reagent/advanced/titan_strength
+	name = "Destroyer's Brew"
+	description = "A viscous, dark orange liquid that smells of wet iron and adrenaline. Your muscles ripple and harden just by holding the container."
+	reagent_state = LIQUID
+	color = "#d35400"
+	metabolization_rate = REAGENTS_METABOLISM * 0.5
+
+/datum/reagent/advanced/titan_strength/on_mob_add(mob/living/carbon/human/M)
+	if(!istype(M)) return
+	M.apply_status_effect(/datum/status_effect/titan_frenzy)
+
+/datum/reagent/advanced/titan_strength/on_mob_delete(mob/living/carbon/human/M)
+	if(!istype(M)) return
+	M.remove_status_effect(/datum/status_effect/titan_frenzy)
+
+/datum/status_effect/titan_frenzy
+	id = "titan_frenzy"
+	duration = 6000
+	alert_type = /atom/movable/screen/alert/status_effect/buff/alch/strengthpot
+
+/datum/status_effect/titan_frenzy/on_apply()
+	RegisterSignal(owner, COMSIG_MOB_KICK_ATTACK, PROC_REF(handle_titan_kick))
+	RegisterSignal(owner, COMSIG_MOB_ATTACK_HAND, PROC_REF(handle_titan_punch))
+	RegisterSignal(owner, COMSIG_MOB_TWIST_LIMB, PROC_REF(handle_titan_rip))
+	
+	ADD_TRAIT(owner, TRAIT_STRENGTH_UNCAPPED, "titan_frenzy")
+	ADD_TRAIT(owner, TRAIT_STRONGKICK, "titan_frenzy")
+	owner.STASTR += 10
+	owner.update_body()
+	return ..()
+
+/datum/status_effect/titan_frenzy/on_remove()
+	UnregisterSignal(owner, list(COMSIG_MOB_KICK_ATTACK, COMSIG_MOB_ATTACK_HAND, COMSIG_MOB_TWIST_LIMB))
+	REMOVE_TRAIT(owner, TRAIT_STRENGTH_UNCAPPED, "titan_frenzy")
+	REMOVE_TRAIT(owner, TRAIT_STRONGKICK, "titan_frenzy")
+	owner.STASTR -= 10
+	owner.update_body()
+	return ..()
+
+/datum/status_effect/titan_frenzy/proc/handle_titan_rip(mob/living/carbon/human/source_obj, mob/living/carbon/human/user, obj/item/grabbing/G, mob/living/carbon/target)
+	SIGNAL_HANDLER
+	
+	if(user.STASTR < 15 || !G || !target) return
+
+	spawn(0)
+		var/obj/item/bodypart/limb = G.limb_grabbed
+		if(!limb) return
+
+		user.visible_message(span_userdanger("[user] сжимает свои руки на [target] и начинает отрывать [limb.name]!"))
+		
+		var/rip_time = (limb.body_zone == BODY_ZONE_HEAD) ? 60 : 40
+		
+		if(do_after(user, rip_time, target = target))
+			if(!G || !target || G.limb_grabbed != limb) return
+
+			var/result = limb.dismember(BRUTE, BCLASS_TWIST, user, G.sublimb_grabbed, 0, TRUE, TRUE)
+			
+			if(result)
+				if(limb.body_zone == BODY_ZONE_HEAD)
+					ADD_TRAIT(target, TRAIT_DNR, "ripped_by_titan")
+				user.stamina_add(50)
+				if(G) qdel(G)
+
+	return COMPONENT_CANCEL_TWIST
+
+/datum/status_effect/titan_frenzy/proc/handle_titan_kick(mob/living/carbon/human/source_obj, mob/living/target)
+	SIGNAL_HANDLER
+	if(!source_obj || !target || source_obj == target) return
+	
+	spawn(0)
+		var/dir_to_throw = get_dir(source_obj, target)
+		target.throw_at(get_edge_target_turf(target, dir_to_throw), 7, 2, source_obj)
+		playsound(target, 'sound/combat/hits/blunt/genblunt (2).ogg', 100, TRUE)
+
+/datum/status_effect/titan_frenzy/proc/handle_titan_punch(mob/living/carbon/human/source_obj, mob/living/carbon/human/attacker, mob/living/carbon/human/target, attacker_style)
+	SIGNAL_HANDLER
+	if(!source_obj || !target || source_obj == target) return
+	
+	if(istype(source_obj.used_intent, /datum/intent/unarmed/punch))
+		spawn(0)
+			if(!source_obj || !target) return
+			var/dir_to_throw = get_dir(source_obj, target)
+			target.visible_message(span_userdanger("[source_obj.name] отправляет в полет [target.name] ударом!"))
+			target.throw_at(get_edge_target_turf(target, dir_to_throw), 4, 1, source_obj)
+			target.Knockdown(20)
+			playsound(target.loc, 'sound/combat/hits/blunt/genblunt (2).ogg', 100, TRUE)
+

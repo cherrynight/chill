@@ -53,3 +53,8 @@
 	name = "Sanguine Catalyst: Night-Born"
 	skill_required = SKILL_LEVEL_MASTER
 	output_reagents = list(/datum/reagent/advanced/vampirism = 15)
+
+/datum/alch_cauldron_recipe/advanced/titan_strength
+	name = "Titan's Draught"
+	skill_required = SKILL_LEVEL_EXPERT
+	output_reagents = list(/datum/reagent/advanced/titan_strength = 20)
