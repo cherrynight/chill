@@ -27,6 +27,12 @@ GLOBAL_VAR_INIT(alchemy_index_initialized, FALSE)
 		
 		var/atom/created_path = initial(AR.created_item)
 		if(!created_path || !ispath(created_path, /obj/item)) continue
+		var/is_blacklisted = FALSE
+		for(var/bl_path in GLOB.alchemy_transmute_blacklist)
+			if(ispath(created_path, bl_path))
+				is_blacklisted = TRUE
+				break
+		if(is_blacklisted) continue
 		
 		var/list/materials = list()
 		var/req_bar = initial(AR.req_bar)
@@ -60,6 +66,13 @@ GLOBAL_VAR_INIT(alchemy_index_initialized, FALSE)
 		
 		if(!created_path || !ispath(created_path, /obj/item)) 
 			continue
+		
+		var/is_blacklisted = FALSE
+		for(var/bl_path in GLOB.alchemy_transmute_blacklist)
+			if(ispath(created_path, bl_path))
+				is_blacklisted = TRUE
+				break
+		if(is_blacklisted) continue
 
 		var/list/recipe_data = list(
 			"name" = CR.name,
@@ -154,3 +167,11 @@ GLOBAL_VAR_INIT(alchemy_index_initialized, FALSE)
 				return recipe_data
 				
 	return null
+
+GLOBAL_LIST_INIT(alchemy_transmute_blacklist, list(
+	/obj/item/rogueweapon/sword/long/exe/berserk,
+	/obj/item/rogueweapon/sword/long/exe/berserk/dragonslayer,
+	/obj/item/clothing/ring/dragon_ring,
+	/obj/item/clothing/ring/statdorpel,
+	/obj/item/rogueweapon/sword/long/exe/berserk/gnoll
+))
