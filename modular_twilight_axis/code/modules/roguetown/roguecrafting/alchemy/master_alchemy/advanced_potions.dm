@@ -39,20 +39,20 @@
 	skill_required = SKILL_LEVEL_EXPERT
 	output_reagents = list(/datum/reagent/advanced/elixir_of_life = 30)
 
-/datum/alch_cauldron_recipe/advanced/lycanthropy
-	name = "Catalyst of Dendor's Madness"
-	skill_required = SKILL_LEVEL_MASTER
-	output_reagents = list(/datum/reagent/advanced/lycanthropy = 15)
+//datum/alch_cauldron_recipe/advanced/lycanthropy
+//	name = "Catalyst of Dendor's Madness"
+//	skill_required = SKILL_LEVEL_MASTER
+//	output_reagents = list(/datum/reagent/advanced/lycanthropy = 15)
 
 /datum/alch_cauldron_recipe/advanced/night_vision
 	name = "Draught of the Night-Owl"
 	skill_required = SKILL_LEVEL_JOURNEYMAN
 	output_reagents = list(/datum/reagent/advanced/night_vision = 30)
 
-/datum/alch_cauldron_recipe/advanced/vampirism
-	name = "Sanguine Catalyst: Night-Born"
-	skill_required = SKILL_LEVEL_MASTER
-	output_reagents = list(/datum/reagent/advanced/vampirism = 15)
+///datum/alch_cauldron_recipe/advanced/vampirism
+//	name = "Sanguine Catalyst: Night-Born"
+//	skill_required = SKILL_LEVEL_MASTER
+//	output_reagents = list(/datum/reagent/advanced/vampirism = 15)
 
 /datum/alch_cauldron_recipe/advanced/titan_strength
 	name = "Titan's Draught"
