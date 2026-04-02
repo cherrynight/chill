@@ -51,6 +51,8 @@
 			category = "Fleshcrafting"
 		else if(ispath(path, /datum/ritual/servantry))
 			category = "Servantry"
+		else if(ispath(path, /datum/ritual/weaponary))
+			category = "Weaponary"
 		else
 			category = "Rituals"
 	else if(ispath(path, /obj/effect/proc_holder/spell))

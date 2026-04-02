@@ -80,6 +80,8 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 			ritual_categories = subtypesof(/datum/ritual/fleshcrafting)
 		if("Servantry")
 			ritual_categories = subtypesof(/datum/ritual/servantry)
+		if("Weaponary")
+			ritual_categories = subtypesof(/datum/ritual/weaponary)
 	
 	if(!length(ritual_categories))
 		return
@@ -618,40 +620,6 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 
 	to_chat(user, span_notice("Now you know how to make another ritual..."))
 
-/datum/ritual/transmutation/cross
-	name = "Призыв амулета Зизо"
-	desk = "Призывает особый крест Зизо, который и защитит, и одарит Её милостинью."
-	center_requirement = /obj/item/clothing/neck/roguetown/psicross
-
-	n_req = /obj/item/natural/bone
-	s_req = /obj/item/natural/bone
-	w_req = /obj/item/natural/bone
-	e_req = /obj/item/natural/bone
-
-/datum/ritual/transmutation/cross/invoke(mob/living/user, turf/center)
-	. = ..()
-	new /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult(center)
-	to_chat(user, span_notice("The psycross is transmuted into an amulet of Zizo."))
-
-/datum/ritual/transmutation/repaircross
-	name = "Восполнить амулет"
-	desk = "Восполняет амулет зизо, возвращая его защиту."
-	center_requirement = /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult
-
-	w_req = /obj/item/natural/bone
-	e_req = /obj/item/natural/bone
-
-/datum/ritual/transmutation/repaircross/invoke(mob/living/user, turf/center)
-	. = ..()
-	var/datum/effect_system/spark_spread/S = new(center)
-	S.set_up(1, 1, center)
-	S.start()
-
-	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
-
-	new /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult(center)
-	to_chat(user, span_notice("Крест вновь может защитить вас.."))
-
 /datum/ritual/transmutation/criminalstool
 	name = "Призыв мыла Зизо"
 	desk = "Призывает мыло Зизо."
@@ -695,111 +663,6 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 	for(var/mob/living/carbon/human/HL in GLOB.human_list)
 		if(HL.real_name == input)
 			to_chat(HL, "<i>You hear a voice in your head... <b>[text]</i></b>")
-
-/datum/ritual/transmutation/summonoutfit
-	name = "Призыв снаряжения культа"
-	desk = "Призывает снаряжение культа. Легкая броня и цепь."
-	center_requirement = /obj/item/natural/cloth
-
-	n_req = /obj/item/ingot/iron
-
-/datum/ritual/transmutation/summonoutfit/invoke(mob/living/user, turf/center)
-	var/datum/effect_system/spark_spread/S = new(center)
-	S.set_up(1, 1, center)
-	S.start()
-
-	new /obj/item/clothing/head/roguetown/helmet/skullcap/cult(center)
-
-	new /obj/item/clothing/cloak/half/shadowcloak/cult(center)
-
-	new /obj/item/clothing/suit/roguetown/armor/brigandine/light/cult(center)
-
-	new /obj/item/rope/chain(center)
-
-	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
-
-/datum/ritual/transmutation/summonneant
-	name = "Призыв Косы"
-	desk = "Призывает Особую косу Зизо."
-	center_requirement = /obj/item/reagent_containers/lux
-
-	w_req = /obj/item/ingot/steel
-	e_req = /obj/item/ingot/steel
-
-	is_cultist_ritual = TRUE
-
-/datum/ritual/transmutation/summonneant/invoke(mob/living/user, turf/center)
-
-	var/datum/effect_system/spark_spread/S = new(center)
-	S.set_up(1, 1, center)
-	S.start()
-
-	new /obj/item/rogueweapon/zizo/neant(center)
-
-	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
-
-/datum/ritual/transmutation/summonarmor
-	name = "Призыв доспехов Зизо"
-	desk = "Призывает доспехи Зизо."
-	cultist_number = 3
-	number_cultist_for_add_limit = 1
-	ritual_limit = 1
-	center_book = "Культист"
-	
-	center_requirement = /mob/living/carbon/human
-	n_req = /obj/item/ingot/steel
-	s_req = /obj/item/ingot/steel
-
-	is_cultist_ritual = TRUE
-
-/datum/ritual/transmutation/summonarmor/invoke(mob/living/user, turf/center)
-	var/mob/living/carbon/human/target = locate() in center.contents
-	if(!target)
-		return
-	if(target.stat == DEAD)
-		target.gib(FALSE, FALSE, FALSE)
-	var/datum/effect_system/spark_spread/S = new(center)
-	S.set_up(1, 1, center)
-	S.start()
-
-	new /obj/item/clothing/suit/roguetown/armor/plate/full/zizo(center)
-
-	new /obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/zizo(center)
-
-	new /obj/item/clothing/under/roguetown/platelegs/zizo(center)
-
-	new /obj/item/clothing/shoes/roguetown/boots/armor/zizo(center)
-
-	new /obj/item/clothing/wrists/roguetown/bracers/zizo(center)
-
-	new /obj/item/clothing/gloves/roguetown/plate/zizo(center)
-
-	new /obj/item/clothing/head/roguetown/helmet/heavy/zizo(center)
-
-	new /obj/item/clothing/neck/roguetown/bevor/zizo(center)
-
-	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
-	ADD_TRAIT(target,TRAIT_HEAVYARMOR, TRAIT_GENERIC)
-	target.mind.AddSpell(new /datum/action/cooldown/spell/mending)
-
-/datum/ritual/transmutation/summonweapon
-	name = "Призыв Оружия"
-	desk = "Призывает набор оружия, включая меч Зизо."
-	center_requirement = /obj/item/rogueweapon/sword
-
-	n_req = /obj/item/natural/bundle/bone
-	e_req = /obj/item/natural/bundle/bone
-	s_req = /obj/item/natural/bundle/bone
-	w_req = /obj/item/natural/bundle/bone
-
-/datum/ritual/transmutation/summonweapon/invoke(mob/living/user, turf/center)
-	var/datum/effect_system/spark_spread/S = new(center)
-	S.set_up(1, 1, center)
-	S.start()
-
-	new /obj/item/rogueweapon/sword/long/zizo(center)
-
-	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
 
 // FLESH CRAFTING
 /datum/ritual/fleshcrafting
@@ -1318,3 +1181,160 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 			V.add_stress(/datum/stressevent/hatezizo)
 	SSvote.started_time = world.time - CONFIG_GET(number/vote_delay) - 10
 	SSvote.initiate_vote("endround", "AHAHAHAHAHAHAHAHAHHA")
+
+/datum/ritual/weaponary
+	abstract_type = /datum/ritual/weaponary
+
+/datum/ritual/weaponary/zsteel
+	name = "Создание стали"
+	desk = "Ритуал, который позволяет создать сталь из простых кусочков"
+
+	n_req = /obj/item/scrap
+	s_req = /obj/item/scrap
+	w_req = /obj/item/scrap
+	e_req = /obj/item/scrap
+
+/datum/ritual/weaponary/zsteel/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+	new /obj/item/ingot/steel(center)
+
+/datum/ritual/weaponary/zingot
+	name = "Создание проклятого слитка"
+	desk = "Ритуал, который позволяет призвать древние слитки, которые могут быть полезны.."
+	center_requirement = /obj/item/ingot/steel
+
+	n_req = /obj/item/natural/bone
+	s_req = /obj/item/natural/bone
+	e_req = /obj/item/natural/bone
+	w_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/zingot/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+	new /obj/item/ingot/steel/zizo(center)
+
+/datum/ritual/weaponary/cross
+	name = "Призыв амулета Зизо"
+	desk = "Призывает особый крест Зизо, который и защитит, и одарит Её милостинью."
+	center_requirement = /obj/item/clothing/neck/roguetown/psicross
+
+	n_req = /obj/item/natural/bone
+	s_req = /obj/item/natural/bone
+	w_req = /obj/item/natural/bone
+	e_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/cross/invoke(mob/living/user, turf/center)
+	. = ..()
+	new /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult(center)
+	to_chat(user, span_notice("The psycross is transmuted into an amulet of Zizo."))
+
+/datum/ritual/weaponary/repaircross
+	name = "Восполнить амулет"
+	desk = "Восполняет амулет зизо, возвращая его защиту."
+	center_requirement = /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult
+
+	w_req = /obj/item/natural/bone
+	e_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/repaircross/invoke(mob/living/user, turf/center)
+	. = ..()
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+	new /obj/item/clothing/neck/roguetown/psicross/inhumen/aalloy/cult(center)
+	to_chat(user, span_notice("Крест вновь может защитить вас.."))
+
+/datum/ritual/weaponary/zingot/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+	new /obj/item/ingot/steel/zizo(center)
+
+/datum/ritual/weaponary/zdagger
+	name = "Создание проклятого кинжала Зизо"
+	desk = "Призывает кинжал Зизо, который может содержать в себе яд."
+	center_requirement = /obj/item/ingot/steel/zizo
+
+	e_req = /obj/item/natural/bone
+	w_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/zdagger/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+	new /obj/item/rogueweapon/huntingknife/idagger/steel/zizo(center)
+
+/datum/ritual/weaponary/summonweapon
+	name = "Создание длинного меча"
+	desk = "Призывает длинный меч Зизо."
+
+	n_req = /obj/item/ingot/steel/zizo
+	e_req = /obj/item/natural/bone
+	s_req = /obj/item/ingot/steel/zizo
+	w_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/summonweapon/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+
+	new /obj/item/rogueweapon/sword/long/zizo(center)
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+/datum/ritual/weaponary/summonneant
+	name = "Призыв Косы"
+	desk = "Призывает Особую косу Зизо."
+	center_requirement = /obj/item/rogueweapon/scythe
+
+	w_req = /obj/item/ingot/steel/zizo
+	e_req = /obj/item/ingot/steel/zizo
+	n_req = /obj/item/natural/bone
+	s_req = /obj/item/natural/bone
+
+/datum/ritual/weaponary/summonneant/invoke(mob/living/user, turf/center)
+
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+
+	new /obj/item/rogueweapon/zizo/neant(center)
+
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
+/datum/ritual/weaponary/summonoutfit
+	name = "Призыв робы культа и веревки"
+	desk = "Призывает снаряжение культа. Легкая роба, капюшон и веревка."
+	center_requirement = /obj/item/natural/cloth
+
+	n_req = /obj/item/natural/hide
+
+/datum/ritual/weaponary/summonoutfit/invoke(mob/living/user, turf/center)
+	var/datum/effect_system/spark_spread/S = new(center)
+	S.set_up(1, 1, center)
+	S.start()
+
+	new /obj/item/clothing/head/roguetown/helmet/skullcap/cult(center)
+
+	//new /obj/item/clothing/cloak/shadowcloak/cult(center)
+
+	new /obj/item/clothing/suit/roguetown/armor/leather/studded/cult(center)
+
+	new /obj/item/rope(center)
+
+	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
+
