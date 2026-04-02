@@ -22,7 +22,10 @@ SUBSYSTEM_DEF(familytree)
 		/datum/antagonist/lich,
 		/datum/antagonist/werewolf,
 		/datum/antagonist/unbound_death_knight,
-		/datum/job/roguetown/hag,
+		/datum/antagonist/hag,
+		/datum/antagonist/maniac,
+		/datum/antagonist/dreamwalker
+		/datum/antagonist/assassin,
 		)
 	var/list/preset_family_species = list()
 	var/list/royal_partner_job_baselines = list()
