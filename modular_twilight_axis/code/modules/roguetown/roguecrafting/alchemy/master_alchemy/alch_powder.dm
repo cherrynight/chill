@@ -17,32 +17,29 @@
 		return
 	
 	if(istype(target, /obj/item/reagent_containers/food) || istype(target, /obj/item/reagent_containers/glass))
-		to_chat(user, span_notice("Я аккуратно подмешиваю порошок в [target]..."))
-		
-		var/list/poison_data = list()
-		
-		for(var/datum/reagent/R in reagents.reagent_list)
-			poison_data[R.type] = R.volume
-		
-		target.reagents.add_reagent(/datum/reagent/advanced/hidden_dust, 0.1, poison_data)
-		
-		qdel(src)
-		return
 
-/obj/item/reagent_containers/powder/alchemical/afterattack(atom/target, mob/user, proximity)
-	if(!proximity || !target.reagents)
-		return
-	
-	if(istype(target, /obj/item/reagent_containers/food) || istype(target, /obj/item/reagent_containers/glass))
-		to_chat(user, span_notice("Я аккуратно подмешиваю порошок в [target]..."))
-		
+		if(target.reagents.total_volume + 0.1 > target.reagents.maximum_volume)
+			target.reagents.remove_any(5)
+
 		var/list/poison_data = list()
 		for(var/datum/reagent/R in reagents.reagent_list)
-			poison_data[R.type] = R.volume
-		
+			if(R.volume > 0)
+				poison_data[R.type] = R.volume
+
+		if(!poison_data.len)
+			to_chat(user, span_warning("Этот порошок пуст и бесполезен."))
+			return
+
 		target.reagents.add_reagent(/datum/reagent/advanced/hidden_dust, 0.1, poison_data)
 		
-		qdel(src)
+		var/datum/reagent/check = target.reagents.get_reagent(/datum/reagent/advanced/hidden_dust)
+		
+		if(check)
+			to_chat(user, span_notice("Я аккуратно подмешиваю порошок в [target]..."))
+			qdel(src) 
+		else
+			to_chat(user, span_warning("[target] слишком полон, порошок не растворился!"))
+			
 		return
 
 /datum/reagent/advanced/hidden_dust

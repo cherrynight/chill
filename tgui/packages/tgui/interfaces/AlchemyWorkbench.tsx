@@ -698,7 +698,7 @@ const LaboratoryTab = () => {
                   <Button fluid color="average" onClick={() => setTransferMenu({ slot: num, mode: 'from_cauldron' })}>Из Котла</Button>
                 </Stack.Item>
               </Stack>
-              <Button fluid mt={0.5} color="warning" onClick={() => setTransferMenu({ slot: num, mode: 'to_pills' })}>В Таблетки</Button>
+              <Button fluid mt={0.5} color="warning" onClick={() => setTransferMenu({ slot: num, mode: 'to_pills' })}>В пыль</Button>
             </Box>
           ) : (
             <Box color="gray" style={{ fontStyle: 'italic', fontSize: '0.8em' }}>Слот {num} пуст</Box>
