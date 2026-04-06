@@ -186,8 +186,3 @@
 // Indestructible / Meme
 #define ARMOR_INDESTRUCTIBLE list("blunt" = DR_ULTRA, "slash" = DBLOCK_BSTEEL, "stab" = DBLOCK_BSTEEL, "piercing" = DBLOCK_BSTEEL, "fire" = DR_ULTRA, "acid" = DR_ULTRA) // Magical / indestructible items
 #define ARMOR_BUCKET list("blunt" = DR_LIGHT, "slash" = DBLOCK_LIGHT, "stab" = DBLOCK_LIGHT, "piercing" = DBLOCK_NONE, "fire" = DR_HEAVY, "acid" = DR_SUPER) // It's a bucket. On your head.
-
-//TA
-#define COMSIG_MOB_KICK_ATTACK "mob_kick"
-#define COMSIG_MOB_TWIST_LIMB "mob_twist_limb"
-#define COMPONENT_CANCEL_TWIST (1<<0) 

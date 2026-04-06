@@ -5160,11 +5160,9 @@
 /turf/open/floor/carpet/royalblack,
 /area/rogue/indoors/vampire_manor)
 "Bk" = (
-/obj/structure/table/wood{
-	icon_state = "tablewood1"
-	},
-/turf/open/floor/rogue/dirt/road,
-/area/rogue/indoors/banditcamp)
+/obj/machinery/alch_workbench,
+/turf/open/floor/rogue/twig,
+/area/rogue/under/cave/inhumen)
 "Bl" = (
 /obj/structure/fluff/railing/border/east,
 /obj/structure/fluff/railing/border/west,
@@ -8919,6 +8917,10 @@
 /obj/structure/fluff/railing/wood/east,
 /turf/open/floor/rogue/twig,
 /area/rogue/indoors/cave)
+"WF" = (
+/obj/machinery/alch_workbench,
+/turf/open/floor/rogue/dirt/road,
+/area/rogue/indoors/banditcamp)
 "WG" = (
 /obj/structure/rack/rogue/shelf/big,
 /obj/structure/rack/rogue/shelf,
@@ -29278,7 +29280,7 @@ IL
 Xm
 Xm
 zU
-qW
+Bk
 qW
 qW
 Dc
@@ -33273,7 +33275,7 @@ aZ
 aZ
 aZ
 Tz
-DT
+WF
 CR
 Qg
 Qg
@@ -33403,7 +33405,7 @@ aZ
 mv
 aZ
 Tz
-Bk
+CR
 DT
 Qg
 pC
