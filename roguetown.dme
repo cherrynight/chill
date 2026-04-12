@@ -1289,6 +1289,7 @@
 #include "code\game\objects\items\rogueweapons\melee\blunt.dm"
 #include "code\game\objects\items\rogueweapons\melee\flail.dm"
 #include "code\game\objects\items\rogueweapons\melee\knives.dm"
+#include "code\game\objects\items\rogueweapons\melee\knives\templar_knives.dm"
 #include "code\game\objects\items\rogueweapons\melee\special.dm"
 #include "code\game\objects\items\rogueweapons\melee\alt_grip.dm"
 #include "code\game\objects\items\rogueweapons\melee\swords.dm"
