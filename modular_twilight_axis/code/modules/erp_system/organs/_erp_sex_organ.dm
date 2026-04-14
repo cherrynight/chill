@@ -214,17 +214,43 @@
 /// Returns links where this organ is init organ.
 /datum/erp_sex_organ/proc/get_active_links()
 	var/list/out = list()
+
+	if(!islist(links) || !links.len)
+		return out
+
 	for(var/datum/erp_sex_link/L in links)
-		if(L.init_organ == src)
-			out += L
+		if(!L || QDELETED(L))
+			continue
+		if(L.state != LINK_STATE_ACTIVE)
+			continue
+		if(L.init_organ != src)
+			continue
+		if(!L.is_valid())
+			continue
+
+		out += L
+
 	return out
 
 /// Returns links where this organ is target organ.
 /datum/erp_sex_organ/proc/get_passive_links()
 	var/list/out = list()
+
+	if(!islist(links) || !links.len)
+		return out
+
 	for(var/datum/erp_sex_link/L in links)
-		if(L.target_organ == src)
-			out += L
+		if(!L || QDELETED(L))
+			continue
+		if(L.state != LINK_STATE_ACTIVE)
+			continue
+		if(L.target_organ != src)
+			continue
+		if(!L.is_valid())
+			continue
+
+		out += L
+
 	return out
 
 /// Returns TRUE if organ has any liquid system enabled.
@@ -279,13 +305,26 @@
 			continue
 
 		if(L.init_organ != src && L.target_organ != src)
+			if(C?.links && (L in C.links))
+				C.links -= L
+			L.finish()
+			qdel(L)
 			changed = TRUE
 			continue
 
-		if(C)
-			if(!islist(C.links) || !(L in C.links))
-				changed = TRUE
-				continue
+		if(L.state != LINK_STATE_ACTIVE)
+			if(C?.links && (L in C.links))
+				C.links -= L
+			L.finish()
+			qdel(L)
+			changed = TRUE
+			continue
+
+		if(C && (!islist(C.links) || !(L in C.links)))
+			L.finish()
+			qdel(L)
+			changed = TRUE
+			continue
 
 		if(!L.is_valid())
 			if(C?.links && (L in C.links))

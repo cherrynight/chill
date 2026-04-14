@@ -41,6 +41,11 @@
 	if(!sex_organ)
 		sex_organ = new /datum/erp_sex_organ/vagina(src)
 
+	if(M)
+		SEND_SIGNAL(M, COMSIG_ERP_ANATOMY_CHANGED)
+
+	return .
+
 /datum/erp_sex_organ/vagina/extract_reagents(amount)
 	if(amount <= 0)
 		return null

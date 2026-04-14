@@ -14,11 +14,41 @@
 	if(!M || !M.client)
 		return
 
+	var/list/actors_to_sanitize = list()
+
 	if(controller.owner)
-		for(var/datum/erp_sex_organ/O in controller.owner.get_organs_ref())
+		actors_to_sanitize += controller.owner
+
+	if(controller.active_partner && controller.active_partner != controller.owner)
+		actors_to_sanitize += controller.active_partner
+
+	for(var/datum/erp_actor/A in actors_to_sanitize)
+		if(!A)
+			continue
+
+		A.mark_organs_dirty()
+
+		for(var/datum/erp_sex_organ/O in A.get_organs_ref())
 			if(!O || QDELETED(O))
 				continue
+
 			O.sanitize_owner_links(controller)
+
+			if(istype(O, /datum/erp_sex_organ/penis))
+				var/datum/erp_sex_organ/penis/P = O
+				if(P.source_organ && !QDELETED(P.source_organ))
+					P.refresh_from_organ(P.source_organ)
+
+		var/mob/living/owner_mob = A.physical
+		if(istype(owner_mob))
+			var/datum/component/erp_knotting/K = owner_mob.GetComponent(/datum/component/erp_knotting)
+			K?.sanitize_links()
+
+	if(controller.links_d)
+		for(var/i = controller.links.len; i >= 1; i--)
+			var/datum/erp_sex_link/L = controller.links[i]
+			if(!L || QDELETED(L) || !L.is_valid() || L.state != LINK_STATE_ACTIVE)
+				controller.links_d.stop_link_runtime(L)
 
 	controller.owner_client?.prefs?.apply_erp_kinks_to_mob(M)
 	controller.ui.ui_interact(M)

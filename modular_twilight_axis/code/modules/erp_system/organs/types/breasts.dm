@@ -47,6 +47,11 @@
 	if(!sex_organ)
 		sex_organ = new /datum/erp_sex_organ/breasts(src)
 
+	if(M)
+		SEND_SIGNAL(M, COMSIG_ERP_ANATOMY_CHANGED)
+
+	return .
+
 /datum/erp_sex_organ/breasts/on_inject(datum/erp_sex_link/link, inject_mode, target, datum/reagents/R, mob/living/carbon/human/who)
 	. = ..()
 	if(!link || !R)
