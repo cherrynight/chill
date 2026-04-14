@@ -358,17 +358,17 @@
 	EC.open_ui(actor)
 
 	if(C && ckey(C.ckey) == "mrix")
-		var/has_component = actor.GetComponent(/datum/component/combo_core/wanderer)
+		var/has_component = actor.GetComponent(/datum/component/combo_core/temptress)
 
 		var/has_spell = FALSE
 		if(actor.mind?.spell_list)
 			for(var/obj/effect/proc_holder/spell/S as anything in actor.mind.spell_list)
-				if(istype(S, /obj/effect/proc_holder/spell/self/wanderer/awaken))
+				if(istype(S, /obj/effect/proc_holder/spell/self/temptress_awaken))
 					has_spell = TRUE
 					break
 
 		if(!has_component && !has_spell)
-			actor.mind.AddSpell(new /obj/effect/proc_holder/spell/self/wanderer/awaken)
+			actor.mind.AddSpell(new /obj/effect/proc_holder/spell/self/temptress_awaken)
 
 	return EC
 
