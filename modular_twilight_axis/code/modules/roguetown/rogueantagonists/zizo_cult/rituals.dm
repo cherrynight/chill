@@ -888,7 +888,7 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 	if(victim.patron.type != /datum/patron/old_god)
 		to_chat(target, span_danger("Нужен тот, кто верует в Псайдона..."))
 		return
-	if(victim.patron.type == /datum/patron/old_god && victim.HasSpell(/obj/effect/proc_holder/spell/targeted/touch/orison))
+	if(victim.patron.type == /datum/patron/old_god && victim.HasSpell(/obj/effect/proc_holder/spell/self/check_boot))
 		ADD_TRAIT(target, TRAIT_NOPAIN, TRAIT_GENERIC)
 		to_chat(target, span_notice("За счет его силы люкса, я теперь не чувствую боли!"))
 		to_chat(victim, span_danger("О нет.. За счет силы моей веры они стали сильнее.. Что же мне делать дальше.."))
