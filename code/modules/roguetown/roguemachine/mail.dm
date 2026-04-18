@@ -207,7 +207,7 @@
 						STR.handle_item_insertion(P, prevent_warning=TRUE)
 						X.new_mail = TRUE
 						X.update_icon()
-						send_ooc_note("You got new letter waiting for you in HERMES.", name = send2place)
+						send_ooc_note("You got new letter waiting for you in HERMES.", name = send2place) // TA EDIT
 						for(var/mob/living/carbon/human/H in GLOB.human_list)
 							if(H.real_name == send2place)
 								H.apply_status_effect(/datum/status_effect/ugotmail)
@@ -611,7 +611,7 @@
 					log_mail_send(user, sentfrom, send2place)
 					visible_message(span_warning("[user] sends something."))
 					playsound(loc, 'sound/misc/disposalflush.ogg', 100, FALSE, -1)
-					send_ooc_note("You got new letter waiting for you in HERMES.</b>", name = send2place)
+					send_ooc_note("You got new letter waiting for you in HERMES.</b>", name = send2place) // TA EDIT
 					if(mailrecipient)
 						mailrecipient.apply_status_effect(/datum/status_effect/ugotmail)
 						mailrecipient.playsound_local(mailrecipient, 'sound/misc/mail.ogg', 100, FALSE, -1)
