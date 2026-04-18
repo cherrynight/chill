@@ -1582,6 +1582,7 @@ GLOBAL_LIST_INIT(temptress_combat_skills, list(
 	else
 		paths += /obj/effect/proc_holder/spell/self/temptress/erotic_embrace
 		paths += /obj/effect/proc_holder/spell/invoked/massage
+		paths += /datum/action/cooldown/spell/mirror_transform
 
 	for(var/path in paths)
 		var/obj/effect/proc_holder/spell/S = new path
