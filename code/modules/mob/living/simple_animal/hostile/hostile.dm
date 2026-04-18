@@ -17,7 +17,7 @@
 	var/projectiletype	//set ONLY it and NULLIFY casingtype var, if we have ONLY projectile
 	var/projectilesound
 	var/casingtype		//set ONLY it and NULLIFY projectiletype, if we have projectile IN CASING
-	var/move_to_delay = 3 //delay for the automated movement.
+	move_to_delay = 3 //delay for the automated movement.
 	var/list/friends = list()
 	var/list/emote_taunt = list()
 	var/taunt_chance = 0
@@ -561,7 +561,11 @@
 		for(var/direction in dir_list) //now we hit all of the directions we got in this fashion, since it's the only directions we should actually need
 			DestroyObjectsInDirection(direction)
 	for(var/obj/structure/O in get_step(src,dir_to_target))
-		if(O.density && O.climbable)
+		if(O.climbable)
+			O.climb_structure(src)
+			break
+	for(var/obj/structure/O in get_turf(src))
+		if(O.climbable)
 			O.climb_structure(src)
 			break
 

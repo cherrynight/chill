@@ -395,6 +395,27 @@
 			pic.color = get_detail_color()
 		add_overlay(pic)
 
+/obj/item/clothing/head/roguetown/helmet/heavy/knight/armet/owl
+	name = "strigidae armet"
+	desc = "An armet of distinct bird like design with a pronounced beak. \
+		Close to the teachings of the moon himself, it shields the curious gaze of the one wearing it. \
+		This one used to be in the hands of a pale elf and may be fitted with a great plume atop, to bear heraldic colors."
+	icon_state = "armetowl"
+
+/obj/item/clothing/head/roguetown/helmet/heavy/knight/armet/eiren_helmet/attackby(obj/item/W, mob/living/user, params)
+	..()
+	if(!(istype(W, /obj/item/natural/feather) && !detail_tag))
+		return
+	var/choice = input(user, "Choose a color.", "Greatplume") as anything in COLOR_MAP
+	user.visible_message(span_warning("[user] adds [W] to [src]."))
+	user.transferItemToLoc(W, src, FALSE, FALSE)
+	detail_color = COLOR_MAP[choice]
+	detail_tag = "_detail"
+	update_icon()
+	if(loc == user && ishuman(user))
+		var/mob/living/carbon/H = user
+		H.update_inv_head()
+
 /obj/item/clothing/head/roguetown/helmet/heavy/knight/iron/greatplume
 	name = "iron greatplumed armet"
 	desc = "A venerable iron greathelm with a visor, which protects the entire head. It is not the alloy that truly matters, but the champion who has chosen to don such alloys in the face of peril and adversity. The wider couplet atop its neckguard's rear can accept a uniquely large greatplume."
@@ -1039,8 +1060,9 @@
 
 /obj/item/clothing/head/roguetown/helmet/heavy/elven_helm
 	name = "woad elven helm"
-	desc = "An assembly of woven trunk, kept alive by ancient song, now twisted and warped for battle and scorn."
-	body_parts_covered = FULL_HEAD | NECK
+	desc = "A helm of thickly woven trunk, kept alive by ancient song and shaped to guard both face and spirit. Living fibers tighten and shift with each movement, as if the forest itself resists every blow struck against it. It is not merely worn - it watches alongside its bearer."
+	allowed_race = list(/datum/species/elf/wood, /datum/species/human/halfelf, /datum/species/elf/dark)
+	body_parts_covered = FULL_HEAD|NECK
 	armor = ARMOR_BLACKOAK //Resistant to blunt & stab, but very weak to slash.
 	icon = 'icons/roguetown/clothing/special/race_armor.dmi'
 	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/race_armor.dmi'
@@ -1055,6 +1077,18 @@
 	blocksound = SOFTHIT
 	experimental_inhand = FALSE
 	experimental_onhip = FALSE
+
+/obj/item/clothing/head/roguetown/helmet/heavy/elven_helm/light
+	name = "woad elven barbute"
+	desc = "A helm of woven trunk, kept alive by ancient song and crowned with living leaves of endless verdure. Lighter and more pliant than it's fuller counterpart, it bends with the will of it's bearer, never truly severed from the living grove."
+	body_parts_covered = HEAD|HAIR|NOSE|EARS|NECK
+	icon = 'icons/roguetown/clothing/special/race_armor.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/race_armor.dmi'
+	icon_state = "welfheadalt"
+	item_state = "welfheadalt"
+	block2add = null
+	max_integrity = ARMOR_INT_HELMET_IRON
+	armor_class = ARMOR_CLASS_LIGHT
 
 /obj/item/clothing/head/roguetown/helmet/heavy/frogmouth
 	name = "froggemund helmet"
