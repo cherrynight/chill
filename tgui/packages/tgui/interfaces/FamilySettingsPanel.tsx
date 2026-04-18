@@ -61,7 +61,7 @@ const FAMILY_TYPE_CARDS: FamilyTypeCard[] = [
   {
     value: 'couple',
     title: 'Создать семью',
-    desc: 'Найти супруга для нового дома',
+    desc: 'Найти себе партнера для создания нового дома',
     icon: 'heart',
   },
 ];
@@ -244,10 +244,42 @@ const FamilyTypeCardView = memo(function FamilyTypeCardView(
   );
 });
 
+const FAMILY_WINDOW_FULLSCREEN_SIZE = 10000;
+
 function closeFamilyWindow() {
   if (globalStore) {
     globalStore.dispatch(backendSuspendStart());
   }
+}
+
+function fitFamilyWindowToScreen() {
+  const pixelRatio = window.devicePixelRatio || 1;
+  const screen = window.screen as Screen & {
+    availLeft?: number;
+    availTop?: number;
+  };
+  const screenX = Math.round((screen.availLeft || 0) * pixelRatio);
+  const screenY = Math.round((screen.availTop || 0) * pixelRatio);
+  const screenW = Math.round(screen.availWidth * pixelRatio);
+  const screenH = Math.round(screen.availHeight * pixelRatio);
+  const browserX = Math.round(window.screenLeft * pixelRatio);
+  const browserY = Math.round(window.screenTop * pixelRatio);
+
+  Byond.winget(Byond.windowId, 'pos')
+    .then((pos) => {
+      const offsetX = Number(pos.x) - browserX;
+      const offsetY = Number(pos.y) - browserY;
+      Byond.winset(Byond.windowId, {
+        pos: `${screenX + offsetX},${screenY + offsetY}`,
+        size: `${screenW}x${screenH}`,
+      });
+    })
+    .catch(() => {
+      Byond.winset(Byond.windowId, {
+        pos: `${screenX},${screenY}`,
+        size: `${screenW}x${screenH}`,
+      });
+    });
 }
 
 export const FamilySettingsPanel = () => {
@@ -350,6 +382,12 @@ export const FamilySettingsPanel = () => {
   const isMemberMode = familyType === 'member';
   const usesRelativeRole = isLeaderMode || isMemberMode;
 
+  useEffect(() => {
+    fitFamilyWindowToScreen();
+    const timer = window.setTimeout(fitFamilyWindowToScreen, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   const handleResetToDefaults = () => {
     setFamilyType('none');
     setSpeciesPreferenceMode('ANY');
@@ -397,7 +435,11 @@ export const FamilySettingsPanel = () => {
   };
 
   return (
-    <Window title="Настройки семьи" width={1040} height={720}>
+    <Window
+      title="Настройки семьи"
+      width={FAMILY_WINDOW_FULLSCREEN_SIZE}
+      height={FAMILY_WINDOW_FULLSCREEN_SIZE}
+    >
       <Window.Content>
         <div className="FamilySettingsPanel">
           <div className="FamilySettingsPanel__header">
