@@ -55,7 +55,7 @@
 			to_chat(H, span_warning("Волею судьбы ваш путь лежал в авангарде, вместе с вашей верной алебардой."))
 			H.adjust_skillrank(/datum/skill/combat/polearms, 4, TRUE)
 			H.adjust_skillrank(/datum/skill/misc/athletics, 4, TRUE)
-			H.change_stat(STATKEY_STR, 1)
+			H.change_stat(STATKEY_STR, 2)
 			H.change_stat(STATKEY_PER, 2)
 			H.change_stat(STATKEY_CON, 3)
 			H.change_stat(STATKEY_WIL, 2)
@@ -64,11 +64,11 @@
 			backl = /obj/item/storage/backpack/rogue/satchel/black
 			backr = /obj/item/rogueweapon/scabbard/gwstrap
 			shoes = /obj/item/clothing/shoes/roguetown/grenzelhoft/gunslinger
-			gloves = /obj/item/clothing/gloves/roguetown/leather
+			gloves = /obj/item/clothing/gloves/roguetown/plate
 			cloak = /obj/item/clothing/cloak/duelcape
 			head = /obj/item/clothing/head/roguetown/helmet/sallet/morion
-			pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/otavan/generic
-			wrists = /obj/item/clothing/wrists/roguetown/bracers/iron
+			pants = /obj/item/clothing/under/roguetown/chainlegs
+			wrists = /obj/item/clothing/wrists/roguetown/bracers
 			belt = /obj/item/storage/belt/rogue/leather
 			neck = /obj/item/clothing/neck/roguetown/gorget
 			shirt = /obj/item/clothing/suit/roguetown/shirt/padedetrshirt
