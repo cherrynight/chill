@@ -231,6 +231,7 @@ SUBSYSTEM_DEF(familytree)
 		return
 	ftlog("stop_tracking: [H.real_name] ([H.ckey]) reason=[reason]")
 	H.familytree_module_signal_bound = FALSE
+	H.familytree_confirmation_pending = FALSE
 	UnregisterSignal(H, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT, COMSIG_MOB_DEATH, COMSIG_LIVING_REVIVE, COMSIG_JOB_RECEIVED, COMSIG_SEX_CLIMAX))
 
 /datum/controller/subsystem/familytree/proc/on_human_login(mob/living/carbon/human/H)
@@ -304,6 +305,10 @@ SUBSYSTEM_DEF(familytree)
 	if(H.family_datum)
 		ftlog("try_queue STOP: [H.real_name] family already assigned ([H.family_datum])")
 		stop_tracking_human(H, "family already assigned")
+		return
+
+	if(H.familytree_confirmation_pending)
+		ftlog("try_queue SKIP: [H.real_name] confirmation already pending")
 		return
 
 	if(H.familytree_assignment_scheduled)
@@ -380,6 +385,10 @@ SUBSYSTEM_DEF(familytree)
 		H.familytree_assignment_scheduled = FALSE
 		stop_tracking_human(H, "local assignment skipped; family already assigned")
 		return
+	if(H.familytree_confirmation_pending)
+		ftlog("run_local SKIP: [H.real_name] confirmation already pending")
+		H.familytree_assignment_scheduled = FALSE
+		return
 	H.familytree_assignment_scheduled = FALSE
 	ftlog("run_local GO: [H.real_name] calling AddLocal status=[status]")
 	AddLocal(H, status)
@@ -406,6 +415,10 @@ SUBSYSTEM_DEF(familytree)
 		ftlog("run_royal SKIP: [H.real_name] already has family")
 		H.familytree_assignment_scheduled = FALSE
 		stop_tracking_human(H, "royal assignment skipped; family already assigned")
+		return
+	if(H.familytree_confirmation_pending)
+		ftlog("run_royal SKIP: [H.real_name] confirmation already pending")
+		H.familytree_assignment_scheduled = FALSE
 		return
 	H.familytree_assignment_scheduled = FALSE
 	ftlog("run_royal GO: [H.real_name] calling AddRoyal status=[status]")

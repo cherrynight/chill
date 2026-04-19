@@ -412,6 +412,7 @@
 
 	if(!ruling_family.founder)
 		GenerateRoyalLineage(member, status)
+		familytree_admin_log_house_assignment(H, ruling_family, "generated ruling family lineage as [status]")
 		H.ShowFamilyUI(TRUE)
 		stop_tracking_human(H, "royal lineage generated")
 		ask_monarch_noble_permission(H)
@@ -436,6 +437,7 @@
 		if(FAMILY_OMMER)
 			CreateBranchFamily(member)
 
+	familytree_admin_log_house_assignment(H, ruling_family, "joined ruling family as [status]")
 	H.ShowFamilyUI(TRUE)
 	stop_tracking_human(H, "royal assignment completed")
 

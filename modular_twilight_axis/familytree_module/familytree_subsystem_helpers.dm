@@ -264,6 +264,7 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 	ftlog("pause_human: [H.real_name] ([H.ckey]) reason=[reason]")
 	viable_spouses -= H
 	H.familytree_assignment_scheduled = FALSE
+	H.familytree_confirmation_pending = FALSE
 
 /datum/controller/subsystem/familytree/proc/unsubscribe_familytree_human(mob/living/carbon/human/H, reason)
 	if(!H)
@@ -271,7 +272,138 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 	ftlog("unsubscribe_human: [H.real_name] ([H.ckey]) reason=[reason]")
 	viable_spouses -= H
 	H.familytree_assignment_scheduled = FALSE
+	H.familytree_confirmation_pending = FALSE
 	stop_tracking_human(H, reason)
+
+// Admin audit helpers are intentionally not guarded by FAMILYTREE_DEBUG_LOGGING.
+/datum/controller/subsystem/familytree/proc/familytree_pref_label(pref)
+	switch(pref)
+		if(FAMILY_NONE)
+			return "no family"
+		if(FAMILY_PARTIAL)
+			return "join family"
+		if(FAMILY_NEWLYWED)
+			return "create family"
+		if(FAMILY_FULL)
+			return "legacy full family"
+	return "unknown([pref])"
+
+/datum/controller/subsystem/familytree/proc/familytree_relative_pref_label(relative_role)
+	switch(relative_role)
+		if(RELATIVE_ANY)
+			return "auto"
+		if(RELATIVE_SIBLING)
+			return "sibling"
+		if(RELATIVE_PARENT)
+			return "parent"
+		if(RELATIVE_CHILD)
+			return "child"
+		if(RELATIVE_UNCLE_AUNT)
+			return "uncle/aunt"
+		if(RELATIVE_SPOUSE)
+			return "spouse"
+	return "unknown([relative_role])"
+
+/datum/controller/subsystem/familytree/proc/familytree_gender_pref_label(gender_pref)
+	switch(gender_pref)
+		if(ANY_GENDER)
+			return "any"
+		if(SAME_GENDER)
+			return "same"
+		if(DIFFERENT_GENDER)
+			return "different"
+	return "unknown([gender_pref])"
+
+/datum/controller/subsystem/familytree/proc/familytree_polygamy_pref_label(polygamy_pref)
+	switch(polygamy_pref)
+		if(POLYGAMY_DISABLED)
+			return "monogamy"
+		if(POLYGAMY_ALLOW_MULTIPLE)
+			return "can have multiple spouses"
+		if(POLYGAMY_ALLOW_BE_SECOND)
+			return "can be additional spouse"
+		if(POLYGAMY_ALLOW_BOTH)
+			return "both"
+	return "unknown([polygamy_pref])"
+
+/datum/controller/subsystem/familytree/proc/familytree_species_pref_summary(mob/living/carbon/human/H)
+	var/datum/preferences/P = H?.client?.prefs
+	if(!P)
+		return "species=no prefs"
+
+	var/mode = P.species_preference_mode || "ANY"
+	var/species_text = "species_mode=[mode]"
+	if(mode == "SPECIFIC_TYPE")
+		var/list/species_names = islist(P.preferred_species_types) ? P.preferred_species_types : list()
+		var/specific_species_text = species_names.len ? species_names.Join(", ") : "none"
+		species_text += "; species=[specific_species_text]"
+	species_text += "; anatomy=[P.preferred_species_anatomy]"
+	return species_text
+
+/datum/controller/subsystem/familytree/proc/familytree_search_summary(mob/living/carbon/human/H)
+	if(!H)
+		return "unknown"
+
+	var/list/parts = list()
+	var/datum/job/job = get_familytree_job(H)
+	parts += "pref=[familytree_pref_label(H.familytree_pref)]"
+	parts += "desired_role=[familytree_relative_pref_label(H.desired_relative_role)]"
+	parts += "gender=[familytree_gender_pref_label(H.gender_choice_pref)]"
+	parts += "polygamy=[familytree_polygamy_pref_label(H.polygamy_mode)]"
+	parts += familytree_species_pref_summary(H)
+	if(H.setspouse && length(H.setspouse))
+		parts += "favorite='[H.setspouse]'"
+	if(job)
+		parts += "job='[job.title]'"
+	return parts.Join("; ")
+
+/datum/controller/subsystem/familytree/proc/familytree_closest_relative_member(mob/living/carbon/human/H, datum/family_member/hint = null)
+	if(hint?.person && hint.person != H)
+		return hint
+	var/datum/family_member/member = H?.family_member_datum
+	if(!member)
+		return null
+
+	for(var/datum/family_member/spouse_relative as anything in member.get_spouse_members())
+		if(spouse_relative?.person && spouse_relative.person != H)
+			return spouse_relative
+	for(var/datum/family_member/parent_relative as anything in member.get_parent_members())
+		if(parent_relative?.person && parent_relative.person != H)
+			return parent_relative
+	for(var/datum/family_member/child_relative as anything in member.get_child_members())
+		if(child_relative?.person && child_relative.person != H)
+			return child_relative
+
+	for(var/datum/family_member/parent as anything in member.get_parent_members())
+		for(var/datum/family_member/sibling as anything in parent.get_child_members())
+			if(sibling && sibling != member && sibling.person && sibling.person != H)
+				return sibling
+
+	var/datum/heritage/family = member.family
+	if(family)
+		for(var/datum/family_member/any_relative as anything in family.members)
+			if(any_relative?.person && any_relative.person != H)
+				return any_relative
+
+	return null
+
+/datum/controller/subsystem/familytree/proc/familytree_relative_audit_text(mob/living/carbon/human/H, datum/family_member/relative)
+	if(!relative?.person)
+		return "none"
+	var/relation = H?.family_member_datum?.GetRelationshipTo(relative) || "relative"
+	return "[key_name(relative.person)] ([relation])"
+
+/datum/controller/subsystem/familytree/proc/familytree_admin_log_house_assignment(mob/living/carbon/human/H, datum/heritage/house, found_summary, datum/family_member/nearest_hint = null)
+	if(!H || QDELETED(H) || !house)
+		return
+	var/datum/family_member/nearest = familytree_closest_relative_member(H, nearest_hint)
+	var/house_name = house.housename || "no name"
+	var/search_summary = familytree_search_summary(H)
+	var/nearest_summary = familytree_relative_audit_text(H, nearest)
+	var/found_text = found_summary || "unknown"
+	var/message = "FAMILYTREE: [key_name(H)] joined house '[house_name]'. searched=[search_summary]; found=[found_text]; nearest_relative=[nearest_summary]"
+	log_admin(message)
+	ftlog(message, FTLOG_INFO)
 
 /datum/controller/subsystem/familytree/proc/is_job_of_type(datum/job/job, list/type_list)
 	if(!job || !type_list)
@@ -423,7 +555,7 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 		possible_roles += "parent"
 
 	if(!possible_roles.len)
-		return "sibling"
+		return null
 
 	return pick(possible_roles)
 

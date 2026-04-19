@@ -147,6 +147,8 @@
 			family.house_leader = founder.family_member_datum || family.founder
 		on_family_formed(family)
 		wake_waiting_relative_seekers(family)
+		familytree_admin_log_house_assignment(H, family, "created new house with spouse [key_name(spouse)]", spouse.family_member_datum)
+		familytree_admin_log_house_assignment(spouse, family, "created new house with spouse [key_name(H)]", H.family_member_datum)
 	introduce_pair(H, spouse)
 	bestow_wedding_rings(H, spouse)
 	stop_tracking_human(H, "newlywed flow matched spouse")
@@ -165,6 +167,7 @@
 		var/datum/heritage/new_house = new /datum/heritage(H, null)
 		register_family(new_house)
 		ftlog("AddLocal: [H.real_name] founded new house '[new_house.housename]'")
+		familytree_admin_log_house_assignment(H, new_house, "created new house; no compatible family match")
 		stop_tracking_human(H, "founded new house (no match)")
 		return
 	var/datum/heritage/house = match[1]
@@ -192,6 +195,7 @@
 		introduce_pair(H, partner_member.person)
 		bestow_wedding_rings(H, partner_member.person)
 	if(H.family_datum)
+		familytree_admin_log_house_assignment(H, house, "joined existing house as spouse of [key_name(partner_member.person)]", partner_member)
 		stop_tracking_human(H, "assigned to family")
 	else
 		retry_local_assignment(H, "family assignment failed")
@@ -264,6 +268,8 @@
 	else
 		house.CreateFamilyMember(H)
 	if(H.family_datum)
+		var/favorite_role = forced_role ? forced_role : "direct member"
+		familytree_admin_log_house_assignment(H, house, "joined favorite house as [favorite_role]")
 		to_chat(H, span_love("Вы успешно присоединились к семье!"))
 		stop_tracking_human(H, "assigned to favorite house")
 	else
@@ -329,7 +335,7 @@
 		if(!house_has_online_member(house))
 			reject_mask |= FTREJ_H_OFFLINE
 			continue
-		if(forced_role && !familytree_house_supports_role(house, H, forced_role))
+		if(!familytree_house_supports_role(house, H, forced_role))
 			reject_mask |= FTREJ_H_AGE
 			continue
 
@@ -340,11 +346,14 @@
 	if(candidates.len)
 		var/datum/heritage/chosen_house = pick_weighted_house(candidates, forced_role)
 		ftlog("AssignToHouse: [H.real_name] → JOINED existing house '[chosen_house.housename || "no name"]' (members=[chosen_house.member_nodes.len])")
-		AddPersonToHouse(chosen_house, H, FALSE, forced_role)
+		var/assigned_role = forced_role || DetermineAppropriateRole(chosen_house, H)
+		AddPersonToHouse(chosen_house, H, FALSE, assigned_role)
 		if(H.family_datum)
+			var/assigned_role_text = assigned_role || "relative"
+			familytree_admin_log_house_assignment(H, chosen_house, "joined existing house as [assigned_role_text]")
 			stop_tracking_human(H, "assigned to house")
 		else
-			ftlog("AssignToHouse: [H.real_name] selected house did not accept forced_role=[forced_role]", FTLOG_WARN)
+			ftlog("AssignToHouse: [H.real_name] selected house did not accept assigned_role=[assigned_role]", FTLOG_WARN)
 	else
 		ftlog("AssignToHouse: [H.real_name] → NO suitable existing house found. Staying without family.", FTLOG_WARN)
 
@@ -519,7 +528,7 @@
 	if(!house || !person)
 		return FALSE
 	if(!forced_role)
-		return TRUE
+		return DetermineAppropriateRole(house, person) ? TRUE : FALSE
 	switch(forced_role)
 		if("child")
 			return familytree_best_parent_member(house, person) ? TRUE : FALSE
@@ -572,6 +581,7 @@
 		var/datum/heritage/new_house = new /datum/heritage(H, null)
 		register_family(new_house)
 		ftlog("AssignToFamily: [H.real_name] founded new house '[new_house.housename]'")
+		familytree_admin_log_house_assignment(H, new_house, "created new house; spouse role found no eligible house")
 		return
 
 	for(var/datum/heritage/house as anything in eligible_houses)
@@ -585,6 +595,7 @@
 						if(new_member)
 							house.MarryMembers(new_member, member)
 							on_family_formed(house)
+							familytree_admin_log_house_assignment(H, house, "joined existing house as spouse of [key_name(member.person)]", member)
 							return
 
 		if(!house.housename)
@@ -593,6 +604,7 @@
 				house.founder = new_member
 				new_member.generation = 0
 				house.housename = house.SurnameFormatting(H)
+				familytree_admin_log_house_assignment(H, house, "founded unnamed eligible house")
 				return
 
 /datum/controller/subsystem/familytree/proc/familytree_is_new_family_candidate(mob/living/carbon/human/H)
@@ -788,6 +800,7 @@
 					for(var/datum/family_member/grandparent as anything in member.get_parent_members())
 						new_member.AddParent(grandparent)
 					break
+			familytree_admin_log_house_assignment(H, chosen_house, "joined existing house as uncle/aunt")
 
 /datum/controller/subsystem/familytree/proc/do_form_sibling_house(mob/living/carbon/human/initiator, mob/living/carbon/human/partner)
 	if(!initiator || QDELETED(initiator) || initiator.family_datum)
@@ -814,6 +827,8 @@
 	introduce_pair(initiator, partner)
 	ftlog("SIBLING HOUSE: [initiator.real_name] + [partner.real_name] formed closed house '[new_house.housename]', leader=[initiator.real_name]")
 	on_family_formed(new_house)
+	familytree_admin_log_house_assignment(initiator, new_house, "formed sibling house with [key_name(partner)]", partner_member)
+	familytree_admin_log_house_assignment(partner, new_house, "joined sibling house with [key_name(initiator)]", new_house.founder)
 
 	to_chat(initiator, span_love("Вы основали дом [new_house.housename]!"))
 	to_chat(partner, span_love("Вы вступили в дом [new_house.housename]."))
@@ -865,7 +880,7 @@
 			continue
 		if(!forced_role && WouldCreateAgeConflict(house, H))
 			continue
-		if(forced_role && !familytree_house_supports_role(house, H, forced_role))
+		if(!familytree_house_supports_role(house, H, forced_role))
 			continue
 		if(house.member_nodes.len >= 1 && house_has_online_member(house))
 			return TRUE
@@ -974,6 +989,9 @@
 /datum/controller/subsystem/familytree/proc/wait_for_relative_house(mob/living/carbon/human/H, reason)
 	if(!H || QDELETED(H) || H.family_datum || H.familytree_opted_out)
 		return
+	if(H.familytree_assignment_scheduled)
+		ftlog("WAIT_RELATIVE SKIP: [H.real_name] already scheduled reason=[reason]")
+		return
 	ftlog("WAIT_RELATIVE: [H.real_name] reason=[reason], scheduling re-assignment in 20s")
 	H.familytree_assignment_scheduled = TRUE
 	addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), 20 SECONDS)
@@ -990,6 +1008,9 @@
 
 /datum/controller/subsystem/familytree/proc/retry_local_assignment(mob/living/carbon/human/H, reason)
 	if(!H || QDELETED(H) || H.family_datum || H.familytree_opted_out)
+		return
+	if(H.familytree_assignment_scheduled)
+		ftlog("RETRY SKIP: [H.real_name] already scheduled reason=[reason]")
 		return
 	ftlog("RETRY: [H.real_name] reason=[reason], scheduling re-assignment in 10s")
 	to_chat(H, span_warning("Не удалось найти подходящую семью. Система попробует снова."))
