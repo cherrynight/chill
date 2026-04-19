@@ -262,24 +262,11 @@ function fitFamilyWindowToScreen() {
   const screenY = Math.round((screen.availTop || 0) * pixelRatio);
   const screenW = Math.round(screen.availWidth * pixelRatio);
   const screenH = Math.round(screen.availHeight * pixelRatio);
-  const browserX = Math.round(window.screenLeft * pixelRatio);
-  const browserY = Math.round(window.screenTop * pixelRatio);
 
-  Byond.winget(Byond.windowId, 'pos')
-    .then((pos) => {
-      const offsetX = Number(pos.x) - browserX;
-      const offsetY = Number(pos.y) - browserY;
-      Byond.winset(Byond.windowId, {
-        pos: `${screenX + offsetX},${screenY + offsetY}`,
-        size: `${screenW}x${screenH}`,
-      });
-    })
-    .catch(() => {
-      Byond.winset(Byond.windowId, {
-        pos: `${screenX},${screenY}`,
-        size: `${screenW}x${screenH}`,
-      });
-    });
+  Byond.winset(Byond.windowId, {
+    pos: `${screenX},${screenY}`,
+    size: `${screenW}x${screenH}`,
+  });
 }
 
 export const FamilySettingsPanel = () => {
@@ -383,7 +370,6 @@ export const FamilySettingsPanel = () => {
   const usesRelativeRole = isLeaderMode || isMemberMode;
 
   useEffect(() => {
-    fitFamilyWindowToScreen();
     const timer = window.setTimeout(fitFamilyWindowToScreen, 0);
     return () => window.clearTimeout(timer);
   }, []);
