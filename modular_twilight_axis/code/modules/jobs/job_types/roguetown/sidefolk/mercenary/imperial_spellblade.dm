@@ -47,12 +47,12 @@
 	shoes = /obj/item/clothing/shoes/roguetown/boots/leather/reinforced
 	pants = /obj/item/clothing/under/roguetown/heavy_leather_pants
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy
-	gloves = /obj/item/clothing/gloves/roguetown/plate
+	gloves = /obj/item/clothing/gloves/roguetown/plate/iron
 	belt = /obj/item/storage/belt/rogue/leather
 	neck = /obj/item/clothing/neck/roguetown/chaincoif/chainmantle
 	backl = /obj/item/storage/backpack/rogue/satchel
 	beltl = /obj/item/storage/belt/rogue/pouch/coins/poor
-	wrists = /obj/item/clothing/wrists/roguetown/bracers
+	wrists = /obj/item/clothing/wrists/roguetown/bracers/iron
 	backpack_contents = list(/obj/item/flashlight/flare/torch = 1,
 		/obj/item/reagent_containers/glass/bottle/alchemical/healthpot = 1,
 		/obj/item/chalk = 1,
