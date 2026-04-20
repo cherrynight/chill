@@ -171,9 +171,9 @@
 /datum/family_confirm_session/Destroy()
 	if(timerid)
 		deltimer(timerid)
-	if(person_a && !QDELETED(person_a) && result_a != CONFIRM_PENDING)
+	if(person_a && !QDELETED(person_a))
 		person_a.familytree_confirmation_pending = FALSE
-	if(person_b && !QDELETED(person_b) && result_b != CONFIRM_PENDING)
+	if(person_b && !QDELETED(person_b))
 		person_b.familytree_confirmation_pending = FALSE
 	person_a = null
 	person_b = null

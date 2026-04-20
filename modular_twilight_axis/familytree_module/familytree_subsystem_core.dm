@@ -151,8 +151,25 @@ SUBSYSTEM_DEF(familytree)
 	if(!SSgamemode.storyteller_active(/datum/storyteller/xylix))
 		return FALSE
 	xylix_roulette_active = TRUE
+	wake_xylix_viable_spouses()
+	refresh_xylix_royal_partner_jobs()
 	notify_xylix_participants()
 	return TRUE
+
+/datum/controller/subsystem/familytree/proc/wake_xylix_viable_spouses()
+	for(var/mob/living/carbon/human/H as anything in viable_spouses.Copy())
+		if(!H || QDELETED(H) || H.family_datum || H.familytree_opted_out || !H.client)
+			viable_spouses -= H
+			continue
+		load_familytree_runtime_preferences(H, H.client?.prefs)
+		apply_xylix_roulette_preferences(H)
+		if(!familytree_pref_enabled(H.familytree_pref))
+			stop_tracking_human(H, "familytree disabled before xylix wake")
+			continue
+		if(H.familytree_assignment_scheduled)
+			continue
+		H.familytree_assignment_scheduled = TRUE
+		addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), rand(1, 5) SECONDS)
 
 /datum/controller/subsystem/familytree/proc/notify_xylix_participants()
 	var/xylix_msg = span_danger("<font size='2'>Карты вашей судьбы могут быть подтасованы. Ксайликс наблюдает за семейной рулеткой.</font>")
@@ -179,6 +196,19 @@ SUBSYSTEM_DEF(familytree)
 	H.desired_relative_role = RELATIVE_ANY
 	H.allow_low_status_marriage = TRUE
 	H.allow_relatives_in_family = TRUE
+
+/datum/controller/subsystem/familytree/proc/load_familytree_runtime_preferences(mob/living/carbon/human/H, datum/preferences/P)
+	if(!H || !P)
+		return FALSE
+	P.familytree_module_load_character()
+	H.familytree_pref = P.family
+	H.gender_choice_pref = P.gender_choice_pref
+	H.setspouse = P.setspouse
+	H.polygamy_mode = P.polygamy_mode
+	H.desired_relative_role = P.desired_relative_role
+	H.allow_low_status_marriage = P.allow_low_status_marriage
+	H.allow_relatives_in_family = P.allow_relatives_in_family
+	return TRUE
 
 /datum/controller/subsystem/familytree/proc/on_mob_created(datum/controller/subsystem/processing/dcs/source, mob/new_mob)
 	SIGNAL_HANDLER
@@ -244,12 +274,17 @@ SUBSYSTEM_DEF(familytree)
 	ftlog("register_human: [H.real_name] signals bound OK")
 
 /datum/controller/subsystem/familytree/proc/stop_tracking_human(mob/living/carbon/human/H, reason = "unspecified")
-	if(!H || !H.familytree_module_signal_bound)
-		ftlog("stop_tracking SKIP: [H?.real_name] null or not bound")
+	if(!H)
+		ftlog("stop_tracking SKIP: null human")
+		return
+	H.familytree_assignment_scheduled = FALSE
+	H.familytree_confirmation_pending = FALSE
+	viable_spouses -= H
+	if(!H.familytree_module_signal_bound)
+		ftlog("stop_tracking SKIP: [H.real_name] not bound")
 		return
 	ftlog("stop_tracking: [H.real_name] ([H.ckey]) reason=[reason]")
 	H.familytree_module_signal_bound = FALSE
-	H.familytree_confirmation_pending = FALSE
 	UnregisterSignal(H, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT, COMSIG_MOB_DEATH, COMSIG_LIVING_REVIVE, COMSIG_JOB_RECEIVED, COMSIG_SEX_CLIMAX))
 
 /datum/controller/subsystem/familytree/proc/on_human_login(mob/living/carbon/human/H)
@@ -341,14 +376,7 @@ SUBSYSTEM_DEF(familytree)
 		ftlog("try_queue SKIP: [H.real_name] no prefs")
 		return
 
-	P.familytree_module_load_character()
-	H.familytree_pref = P.family
-	H.gender_choice_pref = P.gender_choice_pref
-	H.setspouse = P.setspouse
-	H.polygamy_mode = P.polygamy_mode
-	H.desired_relative_role = P.desired_relative_role
-	H.allow_low_status_marriage = P.allow_low_status_marriage
-	H.allow_relatives_in_family = P.allow_relatives_in_family
+	load_familytree_runtime_preferences(H, P)
 	check_xylix_roulette()
 	apply_xylix_roulette_preferences(H)
 	ftlog("try_queue: [H.real_name] pref=[H.familytree_pref] setspouse=[H.setspouse] role=[H.desired_relative_role]")

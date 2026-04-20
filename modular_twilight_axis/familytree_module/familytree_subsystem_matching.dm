@@ -79,9 +79,9 @@
 		ftlog("AddLocal: [H.real_name] -> FindNewlyWedMatch")
 		if(find_and_confirm_newlywed(H))
 			return
-		viable_spouses -= H
 		if(!(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE))
 			return
+		viable_spouses -= H
 
 	if(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE)
 		if(H.virginity && !xylix_roulette_active)
@@ -120,6 +120,8 @@
 	if(!H || QDELETED(H))
 		return FALSE
 	if(H.family_datum)
+		return FALSE
+	if(H.familytree_confirmation_pending)
 		return FALSE
 	if(!familytree_is_new_family_candidate(H))
 		return FALSE
@@ -169,6 +171,8 @@
 
 /datum/controller/subsystem/familytree/proc/find_and_confirm_family(mob/living/carbon/human/H, create_if_no_match = TRUE)
 	if(!H || QDELETED(H) || H.family_datum)
+		return
+	if(H.familytree_confirmation_pending)
 		return
 	var/list/match = FindFamilyMatch(H)
 	if(!match)
@@ -228,9 +232,13 @@
 
 	ftlog("TryFavorite: [H.real_name] found favorite=[favorite.real_name] ([favorite.ckey])")
 
+	if(favorite.familytree_opted_out)
+		return "waiting"
 	if(!xylix_roulette_active && favorite.setspouse && length(favorite.setspouse))
 		if(!familytree_names_match(favorite.setspouse, H.real_name))
 			return "waiting"
+	if(favorite.familytree_confirmation_pending)
+		return "waiting"
 
 	var/mutual_sibling = (H.desired_relative_role == RELATIVE_SIBLING && favorite.desired_relative_role == RELATIVE_SIBLING)
 
@@ -298,8 +306,14 @@
 			if(node.person && familytree_names_match(node.person.real_name, H.setspouse))
 				return node.person
 
-	for(var/mob/living/carbon/human/candidate as anything in viable_spouses)
+	for(var/mob/living/carbon/human/candidate as anything in viable_spouses.Copy())
+		if(!candidate || QDELETED(candidate))
+			viable_spouses -= candidate
+			continue
 		if(candidate == H)
+			continue
+		if(candidate.familytree_opted_out)
+			viable_spouses -= candidate
 			continue
 		if(familytree_names_match(candidate.real_name, H.setspouse))
 			return candidate
@@ -308,6 +322,8 @@
 		if(candidate == H)
 			continue
 		if(!candidate.client || candidate.stat == DEAD)
+			continue
+		if(candidate.familytree_opted_out)
 			continue
 		if(!familytree_pref_enabled(candidate.familytree_pref))
 			continue
@@ -675,21 +691,37 @@
 
 	var/reject_mask = 0
 	var/list/potential_matches = list()
-	for(var/mob/living/carbon/human/candidate as anything in viable_spouses)
-		if(!candidate || candidate == H)
+	for(var/mob/living/carbon/human/candidate as anything in viable_spouses.Copy())
+		if(!candidate || QDELETED(candidate))
+			viable_spouses -= candidate
 			continue
-		if(candidate.family_datum || !familytree_new_family_pair_eligible(H, candidate))
+		if(candidate == H)
+			continue
+		if(candidate.family_datum)
+			viable_spouses -= candidate
+			reject_mask |= FTREJ_N_BLOCK
+			continue
+		if(candidate.familytree_opted_out)
+			viable_spouses -= candidate
+			reject_mask |= FTREJ_N_OPTOUT
+			continue
+		if(!familytree_is_new_family_candidate(candidate))
+			viable_spouses -= candidate
+			reject_mask |= FTREJ_N_BLOCK
+			continue
+		if(!familytree_new_family_pair_eligible(H, candidate))
+			reject_mask |= FTREJ_N_BLOCK
+			continue
+		if(candidate.familytree_confirmation_pending)
+			reject_mask |= FTREJ_N_BLOCK
+			continue
+		var/cand_block = get_familytree_runtime_block_reason(candidate, TRUE)
+		if(cand_block)
+			viable_spouses -= candidate
 			reject_mask |= FTREJ_N_BLOCK
 			continue
 		if(!familytree_polygamy_compatible(H, candidate))
 			reject_mask |= FTREJ_N_POLY
-			continue
-		if(candidate.familytree_opted_out)
-			reject_mask |= FTREJ_N_OPTOUT
-			continue
-		var/cand_block = get_familytree_runtime_block_reason(candidate, TRUE)
-		if(cand_block)
-			reject_mask |= FTREJ_N_BLOCK
 			continue
 		if(!pronouns_compatible(H, candidate))
 			reject_mask |= FTREJ_N_PRONOUNS
@@ -749,6 +781,9 @@
 		houses_scanned++
 		for(var/datum/family_member/member as anything in house.members)
 			if(!member.person)
+				continue
+			if(member.person.familytree_confirmation_pending)
+				reject_mask |= FTREJ_F_OFFLINE
 				continue
 			if(!familytree_polygamy_compatible(H, member.person))
 				reject_mask |= FTREJ_F_POLY
@@ -912,6 +947,8 @@
 
 	for(var/mob/living/carbon/human/candidate as anything in GLOB.alive_mob_list)
 		if(candidate == H || !candidate.client || candidate.stat == DEAD || !familytree_pref_is_join_only(candidate.familytree_pref) || candidate.family_datum)
+			continue
+		if(candidate.familytree_confirmation_pending)
 			continue
 		if(!pronouns_compatible(H, candidate))
 			continue

@@ -498,6 +498,8 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 			return 1
 
 /datum/controller/subsystem/familytree/proc/CanBeParentOf(mob/living/carbon/human/parent, mob/living/carbon/human/child)
+	if(!parent || !child)
+		return FALSE
 	var/parent_age = parent.age
 	var/child_age = child.age
 	if(parent_age == AGE_ADULT)
@@ -509,6 +511,8 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 	return FALSE
 
 /datum/controller/subsystem/familytree/proc/CanBeSiblings(age1, age2)
+	if(!age1 || !age2)
+		return FALSE
 	if(age1 == age2)
 		return TRUE
 
