@@ -31,6 +31,10 @@
 	var/allow_relatives_in_family = TRUE
 
 /proc/familytree_pref_mask(pref)
+	if(isnum(pref))
+		var/runtime_mode = pref & FAMILYTREE_MODE_ALL
+		if(runtime_mode)
+			return runtime_mode
 	switch(pref)
 		if(FAMILY_PARTIAL)
 			return FAMILYTREE_MODE_JOIN
@@ -46,6 +50,9 @@
 /proc/familytree_pref_is_join(pref)
 	return !!(familytree_pref_mask(pref) & FAMILYTREE_MODE_JOIN)
 
+/proc/familytree_pref_is_join_only(pref)
+	return familytree_pref_mask(pref) == FAMILYTREE_MODE_JOIN
+
 /proc/familytree_pref_is_create(pref)
 	return !!(familytree_pref_mask(pref) & FAMILYTREE_MODE_CREATE)
 
@@ -57,11 +64,11 @@
 	return !!(mode & (FAMILYTREE_MODE_JOIN | FAMILYTREE_MODE_CREATE))
 
 /proc/familytree_sanitize_pref(pref)
-	switch(familytree_pref_mask(pref))
-		if(FAMILYTREE_MODE_JOIN, FAMILYTREE_MODE_LEGACY_SPOUSE)
-			return FAMILY_PARTIAL
-		if(FAMILYTREE_MODE_CREATE)
-			return FAMILY_NEWLYWED
+	var/mode = familytree_pref_mask(pref)
+	if(mode & FAMILYTREE_MODE_CREATE)
+		return FAMILY_NEWLYWED
+	if(mode & (FAMILYTREE_MODE_JOIN | FAMILYTREE_MODE_LEGACY_SPOUSE))
+		return FAMILY_PARTIAL
 	return FAMILY_NONE
 
 /proc/familytree_module_get_selectable_species() as /list

@@ -160,13 +160,19 @@ SUBSYSTEM_DEF(familytree)
 		if(!M.client || !ishuman(M))
 			continue
 		var/mob/living/carbon/human/H = M
-		if(!H.family_datum)
+		var/datum/preferences/P = H.client?.prefs
+		if(P)
+			P.familytree_module_load_character()
+		var/family_pref = P ? P.family : H.familytree_pref
+		if(!H.family_datum && !H.familytree_opted_out && familytree_pref_enabled(family_pref))
 			to_chat(H, xylix_msg)
 
 /datum/controller/subsystem/familytree/proc/apply_xylix_roulette_preferences(mob/living/carbon/human/H)
 	if(!H || !xylix_roulette_active)
 		return
-	H.familytree_pref = FAMILY_NEWLYWED
+	if(H.familytree_opted_out || !familytree_pref_enabled(H.familytree_pref))
+		return
+	H.familytree_pref = FAMILYTREE_MODE_ALL
 	H.gender_choice_pref = ANY_GENDER
 	H.setspouse = ""
 	H.polygamy_mode = POLYGAMY_ALLOW_BOTH
@@ -381,9 +387,16 @@ SUBSYSTEM_DEF(familytree)
 	if(!H || QDELETED(H))
 		ftlog("run_local ABORT: null/qdel", FTLOG_ERROR)
 		return
+	var/effective_status = status
 	check_xylix_roulette()
 	apply_xylix_roulette_preferences(H)
-	status = H.familytree_pref
+	if(xylix_roulette_active)
+		effective_status = H.familytree_pref
+	if(H.familytree_opted_out || !familytree_pref_enabled(effective_status))
+		ftlog("run_local STOP: [H.real_name] familytree disabled before local assignment")
+		H.familytree_assignment_scheduled = FALSE
+		stop_tracking_human(H, "familytree disabled for this character")
+		return
 	var/block_reason = get_familytree_runtime_block_reason(H, TRUE)
 	if(block_reason == "dead")
 		ftlog("run_local DEFER: [H.real_name] dead")
@@ -407,8 +420,8 @@ SUBSYSTEM_DEF(familytree)
 		H.familytree_assignment_scheduled = FALSE
 		return
 	H.familytree_assignment_scheduled = FALSE
-	ftlog("run_local GO: [H.real_name] calling AddLocal status=[status]")
-	AddLocal(H, status)
+	ftlog("run_local GO: [H.real_name] calling AddLocal status=[effective_status]")
+	AddLocal(H, effective_status)
 
 /datum/controller/subsystem/familytree/proc/run_royal_assignment(mob/living/carbon/human/H, status)
 	ftlog("run_royal_assignment: [H?.real_name] ([H?.ckey]) status=[status]")

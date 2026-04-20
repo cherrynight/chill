@@ -5,6 +5,8 @@
 	var/family_mode = familytree_pref_mask(status)
 	if(!family_mode)
 		return
+	if(H.familytree_opted_out)
+		return
 
 	var/block_reason = get_familytree_runtime_block_reason(H, TRUE)
 	if(block_reason == "dead")
@@ -59,24 +61,30 @@
 			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_desired_role), H), "house")
 		return
 
+	var/can_fallthrough_from_join = !!(family_mode & (FAMILYTREE_MODE_CREATE | FAMILYTREE_MODE_LEGACY_SPOUSE))
 	if(family_mode & FAMILYTREE_MODE_JOIN)
 		if(HasSuitableHouseForRelative(H))
 			ftlog("AddLocal: [H.real_name] -> AssignToHouse (pending confirm)")
 			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_house), H), "house")
+			return
 		else
 			ftlog("AddLocal: [H.real_name] -> NO suitable house, trying to form sibling house")
-			if(TryFormSiblingHouseFromPartial(H))
+			if(!can_fallthrough_from_join)
+				if(TryFormSiblingHouseFromPartial(H))
+					return
+				wait_for_relative_house(H, "no suitable house for relative")
 				return
-			wait_for_relative_house(H, "no suitable house for relative")
-		return
 
 	if(family_mode & FAMILYTREE_MODE_CREATE)
 		ftlog("AddLocal: [H.real_name] -> FindNewlyWedMatch")
-		INVOKE_ASYNC(src, PROC_REF(find_and_confirm_newlywed), H)
-		return
+		if(find_and_confirm_newlywed(H))
+			return
+		viable_spouses -= H
+		if(!(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE))
+			return
 
 	if(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE)
-		if(H.virginity)
+		if(H.virginity && !xylix_roulette_active)
 			ftlog("AddLocal: [H.real_name] SKIP: virginity gate")
 			stop_tracking_human(H, "legacy full family flow skipped; virginity gate")
 			return
@@ -110,19 +118,20 @@
 
 /datum/controller/subsystem/familytree/proc/find_and_confirm_newlywed(mob/living/carbon/human/H)
 	if(!H || QDELETED(H))
-		return
+		return FALSE
 	if(H.family_datum)
-		return
+		return FALSE
 	if(!familytree_is_new_family_candidate(H))
-		return
+		return FALSE
 	if(H.spouse_mob && !familytree_can_have_multiple_spouses(H))
-		return
+		return FALSE
 	var/mob/living/carbon/human/spouse = FindNewlyWedMatch(H)
 	if(!spouse)
 		ftlog("AddLocal: [H.real_name] newlywed no match found")
-		return
+		return FALSE
 	ftlog("AddLocal: [H.real_name] newlywed match=[spouse.real_name], requesting mutual confirm")
 	request_mutual_confirmation(H, spouse, CALLBACK(src, PROC_REF(do_execute_newlywed), H, spouse), "spouse")
+	return TRUE
 
 /datum/controller/subsystem/familytree/proc/do_execute_newlywed(mob/living/carbon/human/H, mob/living/carbon/human/spouse)
 	if(!H || QDELETED(H))
@@ -571,7 +580,7 @@
 						continue
 					if(!familytree_role_tiers_compatible(H, member.person))
 						continue
-					if(familytree_pref_is_join(member.person.familytree_pref))
+					if(familytree_pref_is_join_only(member.person.familytree_pref))
 						continue
 					has_single_adult = TRUE
 					eligible_houses += house
@@ -762,7 +771,7 @@
 			if(!familytree_role_tiers_compatible(H, member.person))
 				reject_mask |= FTREJ_F_TIER
 				continue
-			if(familytree_pref_is_join(member.person.familytree_pref))
+			if(familytree_pref_is_join_only(member.person.familytree_pref))
 				reject_mask |= FTREJ_F_PARTIAL
 				continue
 			if(member.person.familytree_opted_out)
@@ -902,7 +911,7 @@
 		return FALSE
 
 	for(var/mob/living/carbon/human/candidate as anything in GLOB.alive_mob_list)
-		if(candidate == H || !candidate.client || candidate.stat == DEAD || !familytree_pref_is_join(candidate.familytree_pref) || candidate.family_datum)
+		if(candidate == H || !candidate.client || candidate.stat == DEAD || !familytree_pref_is_join_only(candidate.familytree_pref) || candidate.family_datum)
 			continue
 		if(!pronouns_compatible(H, candidate))
 			continue

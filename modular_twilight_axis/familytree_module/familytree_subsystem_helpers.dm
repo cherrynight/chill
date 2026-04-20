@@ -285,6 +285,8 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 
 // Admin audit helpers are intentionally not guarded by FAMILYTREE_DEBUG_LOGGING.
 /datum/controller/subsystem/familytree/proc/familytree_pref_label(pref)
+	if(familytree_pref_mask(pref) == FAMILYTREE_MODE_ALL)
+		return "any family"
 	if(familytree_pref_is_join(pref))
 		return "join family"
 	if(familytree_pref_is_create(pref))
