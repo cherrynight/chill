@@ -182,15 +182,22 @@
 		return FALSE
 	if(!familytree_is_new_family_candidate(H))
 		return FALSE
-	if(H.spouse_mob && !familytree_can_have_multiple_spouses(H))
-		return FALSE
-	var/mob/living/carbon/human/spouse = FindNewlyWedMatch(H)
-	if(!spouse)
+	var/mob/living/carbon/human/match = FindNewlyWedMatch(H)
+	if(!match)
 		ftlog("AddLocal: [H.real_name] newlywed no match found")
 		return FALSE
-	ftlog("AddLocal: [H.real_name] newlywed match=[spouse.real_name], requesting mutual confirm")
-	request_mutual_confirmation(H, spouse, CALLBACK(src, PROC_REF(do_execute_newlywed), H, spouse), "spouse")
-	return TRUE
+	var/relation = familytree_new_family_pair_relation(H, match)
+	if(relation == "sibling")
+		ftlog("AddLocal: [H.real_name] sibling-house match=[match.real_name], requesting mutual confirm")
+		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_new_family_sibling), H, match), "sibling_house")
+		return TRUE
+	if(relation == "spouse")
+		if(H.spouse_mob && !familytree_can_have_multiple_spouses(H))
+			return FALSE
+		ftlog("AddLocal: [H.real_name] newlywed match=[match.real_name], requesting mutual confirm")
+		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_newlywed), H, match), "spouse")
+		return TRUE
+	return FALSE
 
 /datum/controller/subsystem/familytree/proc/do_execute_newlywed(mob/living/carbon/human/H, mob/living/carbon/human/spouse)
 	if(!H || QDELETED(H))
@@ -201,7 +208,7 @@
 	if(H.family_datum || spouse.family_datum)
 		retry_local_assignment(H, "new family spouse already has a family")
 		return
-	if(!familytree_new_family_pair_eligible(H, spouse))
+	if(familytree_new_family_pair_relation(H, spouse) != "spouse")
 		retry_local_assignment(H, "spouse no longer wants to create a new family")
 		return
 	if(familytree_new_family_pair_pref_reject_mask(H, spouse))
@@ -231,6 +238,34 @@
 	bestow_wedding_rings(H, spouse)
 	stop_tracking_human(H, "newlywed flow matched spouse")
 	stop_tracking_human(spouse, "newlywed flow matched spouse")
+
+/datum/controller/subsystem/familytree/proc/do_execute_new_family_sibling(mob/living/carbon/human/H, mob/living/carbon/human/sibling)
+	if(!H || QDELETED(H))
+		return
+	if(!sibling || QDELETED(sibling))
+		retry_local_assignment(H, "sibling unavailable after confirm")
+		return
+	if(H.family_datum || sibling.family_datum)
+		retry_local_assignment(H, "new family sibling already has a family")
+		return
+	if(familytree_new_family_pair_relation(H, sibling) != "sibling")
+		retry_local_assignment(H, "sibling no longer wants this new family role")
+		return
+	if(familytree_new_family_pair_pref_reject_mask(H, sibling))
+		retry_local_assignment(H, "sibling no longer matches creator preferences")
+		return
+	if(!familytree_estates_compatible(H, sibling))
+		retry_local_assignment(H, "sibling estate no longer compatible")
+		return
+	if(!familytree_role_tiers_compatible(H, sibling))
+		retry_local_assignment(H, "sibling role tier no longer compatible")
+		return
+	if(!CanBeSiblings(H.age, sibling.age))
+		retry_local_assignment(H, "sibling age no longer compatible")
+		return
+	var/mob/living/carbon/human/founder = familytree_new_family_founder(H, sibling)
+	var/mob/living/carbon/human/partner = founder == H ? sibling : H
+	do_form_sibling_house(founder, partner)
 
 /datum/controller/subsystem/familytree/proc/find_and_confirm_family(mob/living/carbon/human/H, create_if_no_match = TRUE)
 	if(!H || QDELETED(H) || H.family_datum)
@@ -341,10 +376,15 @@
 		return "assigned"
 
 	if((status_mode & (FAMILYTREE_MODE_CREATE | FAMILYTREE_MODE_JOIN | FAMILYTREE_MODE_LEGACY_SPOUSE)) && familytree_new_family_pair_eligible(H, favorite))
-		if(!familytree_polygamy_compatible(H, favorite))
-			return "skip"
-		request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), "spouse")
-		return "assigned"
+		var/relation = familytree_new_family_pair_relation(H, favorite)
+		if(relation == "sibling")
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_new_family_sibling), H, favorite), "sibling_house")
+			return "assigned"
+		if(relation == "spouse")
+			if(!familytree_polygamy_compatible(H, favorite))
+				return "skip"
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), "spouse")
+			return "assigned"
 
 	return "waiting"
 
@@ -690,6 +730,28 @@
 	var/b_creates = !!(b_mode & FAMILYTREE_MODE_CREATE)
 	return a_creates || b_creates
 
+/datum/controller/subsystem/familytree/proc/familytree_new_family_pair_relation(mob/living/carbon/human/A, mob/living/carbon/human/B)
+	if(!familytree_new_family_pair_eligible(A, B))
+		return null
+
+	var/a_role = A.desired_relative_role || RELATIVE_ANY
+	var/b_role = B.desired_relative_role || RELATIVE_ANY
+
+	if(a_role == RELATIVE_SIBLING || b_role == RELATIVE_SIBLING)
+		if((a_role == RELATIVE_SIBLING || a_role == RELATIVE_ANY) && (b_role == RELATIVE_SIBLING || b_role == RELATIVE_ANY))
+			return "sibling"
+		return null
+
+	if(a_role == RELATIVE_SPOUSE || b_role == RELATIVE_SPOUSE)
+		if((a_role == RELATIVE_SPOUSE || a_role == RELATIVE_ANY) && (b_role == RELATIVE_SPOUSE || b_role == RELATIVE_ANY))
+			return "spouse"
+		return null
+
+	if(a_role == RELATIVE_ANY && b_role == RELATIVE_ANY)
+		return "spouse"
+
+	return null
+
 /datum/controller/subsystem/familytree/proc/familytree_creator_pronouns_compatible(mob/living/carbon/human/creator, mob/living/carbon/human/partner)
 	if(xylix_roulette_active)
 		return TRUE
@@ -824,6 +886,10 @@
 		if(!familytree_new_family_pair_eligible(H, candidate))
 			reject_mask |= FTREJ_N_BLOCK
 			continue
+		var/relation = familytree_new_family_pair_relation(H, candidate)
+		if(!relation)
+			reject_mask |= FTREJ_N_BLOCK
+			continue
 		if(candidate.familytree_confirmation_pending)
 			reject_mask |= FTREJ_N_BLOCK
 			continue
@@ -832,8 +898,11 @@
 			viable_spouses -= candidate
 			reject_mask |= FTREJ_N_BLOCK
 			continue
-		if(!familytree_polygamy_compatible(H, candidate))
+		if(relation == "spouse" && !familytree_polygamy_compatible(H, candidate))
 			reject_mask |= FTREJ_N_POLY
+			continue
+		if(relation == "sibling" && !CanBeSiblings(H.age, candidate.age))
+			reject_mask |= FTREJ_N_BLOCK
 			continue
 		var/pref_reject_mask = familytree_new_family_pair_pref_reject_mask(H, candidate)
 		if(pref_reject_mask)
