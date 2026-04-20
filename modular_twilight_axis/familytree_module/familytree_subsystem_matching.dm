@@ -741,13 +741,18 @@
 	var/creator_tier = familytree_get_role_tier(creator)
 	var/partner_tier = familytree_get_role_tier(partner)
 
+	if((creator_tier == ROLE_TIER_LOW && partner_tier == ROLE_TIER_HIGH) || (creator_tier == ROLE_TIER_HIGH && partner_tier == ROLE_TIER_LOW))
+		return FALSE
+
 	if(creator_tier == partner_tier)
 		return TRUE
 	if(creator_tier == ROLE_TIER_NONE && partner_tier != ROLE_TIER_LOW)
 		return TRUE
 	if(partner_tier == ROLE_TIER_NONE && creator_tier != ROLE_TIER_LOW)
 		return TRUE
-	if(creator_tier == ROLE_TIER_LOW || partner_tier == ROLE_TIER_LOW)
+	if(creator_tier == ROLE_TIER_LOW && partner_tier != ROLE_TIER_LOW)
+		return partner.allow_low_status_marriage
+	if(partner_tier == ROLE_TIER_LOW && creator_tier != ROLE_TIER_LOW)
 		return creator.allow_low_status_marriage
 	return TRUE
 

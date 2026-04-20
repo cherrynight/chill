@@ -152,6 +152,9 @@
 	var/tier_a = familytree_get_role_tier(A)
 	var/tier_b = familytree_get_role_tier(B)
 
+	if((tier_a == ROLE_TIER_LOW && tier_b == ROLE_TIER_HIGH) || (tier_a == ROLE_TIER_HIGH && tier_b == ROLE_TIER_LOW))
+		return FALSE
+
 	if(tier_a == tier_b)
 		return TRUE
 
@@ -160,17 +163,22 @@
 	if(tier_b == ROLE_TIER_NONE && tier_a != ROLE_TIER_LOW)
 		return TRUE
 
-	var/has_low = (tier_a == ROLE_TIER_LOW || tier_b == ROLE_TIER_LOW)
-	if(has_low)
+	if(tier_a == ROLE_TIER_LOW || tier_b == ROLE_TIER_LOW)
 		var/datum/heritage/house = A.family_datum || B.family_datum
 		if(house && is_elite_family(house))
 			return FALSE
 
 		var/mob/living/carbon/human/leader = house?.house_leader?.person || house?.founder?.person
 		if(leader && (leader == A || leader == B))
-			return leader.allow_low_status_marriage
+			var/leader_tier = familytree_get_role_tier(leader)
+			if(leader_tier != ROLE_TIER_LOW)
+				return leader.allow_low_status_marriage
 
-		return A.allow_low_status_marriage || B.allow_low_status_marriage
+		if(tier_a == ROLE_TIER_LOW && tier_b != ROLE_TIER_LOW)
+			return B.allow_low_status_marriage
+		if(tier_b == ROLE_TIER_LOW && tier_a != ROLE_TIER_LOW)
+			return A.allow_low_status_marriage
+		return TRUE
 
 	return TRUE
 
