@@ -184,7 +184,13 @@
 	var/datum/family_node/node = family_nodes_by_person[person]
 	if(!node)
 		return
+	var/datum/heritage/house = person.family_datum || person.family_member_datum?.family || node.primary_house
+	if(house)
+		ftlog("graph_on_person_qdeleting: removing [person.real_name] from house '[house.housename || "no name"]'")
+		house.RemovePersonFromFamily(person, TRUE)
+	node = family_nodes_by_person[person] || node
 	remove_family_node(node)
+	stop_tracking_human(person, "human deleted or far traveled")
 
 /datum/controller/subsystem/familytree/proc/graph_on_member_removed(mob/living/carbon/human/person, datum/heritage/house)
 	if(!person)

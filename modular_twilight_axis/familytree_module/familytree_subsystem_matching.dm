@@ -1,7 +1,22 @@
+/datum/controller/subsystem/familytree/proc/familytree_join_create_phase_open()
+	if(!SSticker?.round_start_time)
+		return TRUE
+	return (world.time - SSticker.round_start_time) >= FAMILYTREE_JOIN_CREATE_DELAY
+
+/datum/controller/subsystem/familytree/proc/familytree_join_create_delay_remaining()
+	if(familytree_join_create_phase_open())
+		return 0
+	if(!SSticker?.round_start_time)
+		return 0
+	return max(0, FAMILYTREE_JOIN_CREATE_DELAY - (world.time - SSticker.round_start_time))
+
 /datum/controller/subsystem/familytree/proc/familytree_relative_join_phase_open()
 	if(!SSticker?.round_start_time)
 		return TRUE
 	return (world.time - SSticker.round_start_time) >= FAMILYTREE_RELATIVE_JOIN_DELAY
+
+/datum/controller/subsystem/familytree/proc/familytree_join_create_fallback_open()
+	return familytree_join_create_phase_open() && !familytree_relative_join_phase_open()
 
 /datum/controller/subsystem/familytree/proc/familytree_relative_join_delay_remaining()
 	if(familytree_relative_join_phase_open())
@@ -19,6 +34,18 @@
 	var/jitter = rand(10, 100)
 	var/delay = max(10 SECONDS, familytree_relative_join_delay_remaining() + jitter)
 	ftlog("WAIT_JOIN_PHASE: [H.real_name] reason=[reason], scheduling re-assignment in [delay / 10]s")
+	H.familytree_assignment_scheduled = TRUE
+	addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), delay)
+
+/datum/controller/subsystem/familytree/proc/wait_for_join_create_phase(mob/living/carbon/human/H, reason)
+	if(!H || QDELETED(H) || H.family_datum || H.familytree_opted_out)
+		return
+	if(H.familytree_assignment_scheduled)
+		ftlog("WAIT_JOIN_CREATE_PHASE SKIP: [H.real_name] already scheduled reason=[reason]")
+		return
+	var/jitter = rand(10, 100)
+	var/delay = max(10 SECONDS, familytree_join_create_delay_remaining() + jitter)
+	ftlog("WAIT_JOIN_CREATE_PHASE: [H.real_name] reason=[reason], scheduling re-assignment in [delay / 10]s")
 	H.familytree_assignment_scheduled = TRUE
 	addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), delay)
 
@@ -52,6 +79,7 @@
 		stop_tracking_human(H, "local assignment skipped; suitor job")
 		return
 
+	var/join_create_phase_open = familytree_join_create_phase_open()
 	var/relative_join_phase_open = familytree_relative_join_phase_open()
 
 	if(!xylix_roulette_active && H.setspouse && length(H.setspouse))
@@ -65,8 +93,11 @@
 			return
 		if(favorite_result == "waiting")
 			if(!relative_join_phase_open && (family_mode & FAMILYTREE_MODE_JOIN) && !(family_mode & FAMILYTREE_MODE_CREATE))
+				if(!join_create_phase_open)
+					wait_for_join_create_phase(H, "favorite unavailable before join/create fallback phase")
+					return
 				find_and_confirm_newlywed(H)
-				wait_for_relative_join_phase(H, "favorite unavailable during create-only phase")
+				wait_for_relative_join_phase(H, "favorite unavailable during join/create fallback phase")
 				return
 			H.familytree_setspouse_retries++
 			if(H.familytree_setspouse_retries >= 30 && !H.familytree_setspouse_timeout_offered)
@@ -82,7 +113,7 @@
 	var/can_try_relative_join = relative_join_phase_open && (family_mode & FAMILYTREE_MODE_JOIN)
 
 	if(!relative_join_phase_open && (family_mode & FAMILYTREE_MODE_JOIN))
-		ftlog("AddLocal: [H.real_name] relative join phase locked; create_mode=[!!(family_mode & FAMILYTREE_MODE_CREATE)]")
+		ftlog("AddLocal: [H.real_name] relative join phase locked; join_create_phase=[join_create_phase_open], create_mode=[!!(family_mode & FAMILYTREE_MODE_CREATE)]")
 
 	if(can_try_relative_join && H.desired_relative_role == RELATIVE_ANY && try_assign_noble_to_dynasty(H))
 		return
@@ -106,10 +137,8 @@
 			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_house), H), "house")
 			return
 		else
-			ftlog("AddLocal: [H.real_name] -> NO suitable house, trying to form sibling house")
+			ftlog("AddLocal: [H.real_name] -> NO suitable house")
 			if(!can_fallthrough_from_join)
-				if(TryFormSiblingHouseFromPartial(H))
-					return
 				wait_for_relative_house(H, "no suitable house for relative")
 				return
 
@@ -120,18 +149,28 @@
 		if(!(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE))
 			return
 		if(!relative_join_phase_open)
-			wait_for_relative_join_phase(H, "legacy spouse fallback locked during create-only phase")
+			if(!join_create_phase_open)
+				wait_for_join_create_phase(H, "legacy spouse fallback locked before join/create phase")
+			else
+				wait_for_relative_join_phase(H, "legacy spouse fallback locked during join/create phase")
 			return
 		viable_spouses -= H
 
 	if(!relative_join_phase_open && (family_mode & FAMILYTREE_MODE_JOIN))
+		if(!join_create_phase_open)
+			ftlog("AddLocal: [H.real_name] waiting for join/create fallback phase")
+			wait_for_join_create_phase(H, "join/create fallback phase locked")
+			return
 		ftlog("AddLocal: [H.real_name] waiting for relative join phase while available as new-family partner")
 		find_and_confirm_newlywed(H)
 		wait_for_relative_join_phase(H, "relative join phase locked")
 		return
 
 	if(!relative_join_phase_open && (family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE))
-		wait_for_relative_join_phase(H, "legacy spouse flow locked during create-only phase")
+		if(!join_create_phase_open)
+			wait_for_join_create_phase(H, "legacy spouse flow locked before join/create phase")
+		else
+			wait_for_relative_join_phase(H, "legacy spouse flow locked during join/create phase")
 		return
 
 	if(family_mode & FAMILYTREE_MODE_LEGACY_SPOUSE)
@@ -318,6 +357,18 @@
 		return
 	if(!familytree_polygamy_compatible(H, partner_member.person))
 		retry_local_assignment(H, "partner already married")
+		return
+	if(!pronouns_compatible(H, partner_member.person))
+		retry_local_assignment(H, "partner pronouns no longer compatible")
+		return
+	if(GetSpeciesCompatibilityFailureReason(H, partner_member.person))
+		retry_local_assignment(H, "partner species or anatomy no longer compatible")
+		return
+	if(!familytree_estates_compatible(H, partner_member.person))
+		retry_local_assignment(H, "partner estate no longer compatible")
+		return
+	if(!familytree_role_tiers_compatible(H, partner_member.person))
+		retry_local_assignment(H, "partner role tier no longer compatible")
 		return
 	ftlog("AddLocal: [H.real_name] -> AssignToFamily in house=[house.housename] (both confirmed)")
 	var/datum/family_member/new_member = house.CreateFamilyMember(H)
@@ -729,7 +780,7 @@
 	if(family_mode & FAMILYTREE_MODE_CREATE)
 		return TRUE
 	if(family_mode & FAMILYTREE_MODE_JOIN)
-		return TRUE
+		return familytree_join_create_fallback_open()
 	return FALSE
 
 /datum/controller/subsystem/familytree/proc/familytree_can_found_new_family(mob/living/carbon/human/H)
@@ -746,15 +797,38 @@
 	var/b_creates = !!(b_mode & FAMILYTREE_MODE_CREATE)
 	return a_creates || b_creates
 
+/datum/controller/subsystem/familytree/proc/familytree_new_family_join_any_relation(mob/living/carbon/human/A, mob/living/carbon/human/B)
+	var/a_join_only = familytree_pref_is_join_only(A?.familytree_pref)
+	var/b_join_only = familytree_pref_is_join_only(B?.familytree_pref)
+	if(a_join_only == b_join_only)
+		return null
+
+	var/mob/living/carbon/human/joiner = a_join_only ? A : B
+	var/mob/living/carbon/human/creator = a_join_only ? B : A
+
+	if(CanBeParentOf(creator, joiner))
+		return a_join_only ? "b_parent" : "a_parent"
+	if(CanBeSiblings(creator.age, joiner.age))
+		return "sibling"
+	if(CanBeParentOf(joiner, creator))
+		return a_join_only ? "a_parent" : "b_parent"
+	if(familytree_can_be_uncle_aunt_of(joiner, creator))
+		return a_join_only ? "a_uncle_aunt" : "b_uncle_aunt"
+	return null
+
 /datum/controller/subsystem/familytree/proc/familytree_new_family_pair_relation(mob/living/carbon/human/A, mob/living/carbon/human/B)
 	if(!familytree_new_family_pair_eligible(A, B))
 		return null
 
 	var/a_role = A.desired_relative_role || RELATIVE_ANY
 	var/b_role = B.desired_relative_role || RELATIVE_ANY
+	var/a_join_only = familytree_pref_is_join_only(A.familytree_pref)
+	var/b_join_only = familytree_pref_is_join_only(B.familytree_pref)
 
 	if(a_role == RELATIVE_SPOUSE || b_role == RELATIVE_SPOUSE)
-		if((a_role == RELATIVE_SPOUSE || a_role == RELATIVE_ANY) && (b_role == RELATIVE_SPOUSE || b_role == RELATIVE_ANY))
+		var/a_allows_spouse = (a_role == RELATIVE_SPOUSE || (!a_join_only && a_role == RELATIVE_ANY))
+		var/b_allows_spouse = (b_role == RELATIVE_SPOUSE || (!b_join_only && b_role == RELATIVE_ANY))
+		if(a_allows_spouse && b_allows_spouse)
 			return "spouse"
 		return null
 
@@ -791,6 +865,8 @@
 		return null
 
 	if(a_role == RELATIVE_ANY && b_role == RELATIVE_ANY)
+		if(a_join_only || b_join_only)
+			return familytree_new_family_join_any_relation(A, B)
 		return "spouse"
 
 	return null
@@ -977,6 +1053,12 @@
 
 /datum/controller/subsystem/familytree/proc/familytree_new_family_pair_pref_reject_mask(mob/living/carbon/human/A, mob/living/carbon/human/B)
 	var/reject_mask = 0
+	if(!pronouns_compatible(A, B))
+		reject_mask |= FTREJ_N_PRONOUNS
+	if(GetSpeciesCompatibilityFailureReason(A, B))
+		reject_mask |= FTREJ_N_SPECIES
+	if(!familytree_role_tiers_compatible(A, B))
+		reject_mask |= FTREJ_N_TIER
 	if(familytree_can_found_new_family(A))
 		reject_mask |= familytree_new_family_creator_pref_reject_mask(A, B)
 	if(familytree_can_found_new_family(B))
@@ -994,6 +1076,8 @@
 	if(!H || QDELETED(H) || H.family_datum)
 		return
 	if(!familytree_is_new_family_candidate(H))
+		if(familytree_pref_is_join(H.familytree_pref))
+			wait_for_relative_house(H, "new-family fallback is not active")
 		return
 	if(!(H in viable_spouses))
 		viable_spouses += H
