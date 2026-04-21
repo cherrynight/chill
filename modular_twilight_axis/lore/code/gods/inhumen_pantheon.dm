@@ -106,6 +106,20 @@
 	desc = "Бог силы и власти, которая приходит с нею. Пока другие божества обрекают свою паству на жалкое существование в мире, где власть приходит через их благословение и по праву рождения, Граггар провозглашает, что править может каждый, кто достаточно силен, чтобы забрать желаемое. «Слабые унаследуют лишь грязь», предупреждает он, напоминая о судьбе тех, кто не стремится стать сильнее."
 	undead_hater = TRUE
 	worshippers = "Племенные народы, безумцы, маньяки, жестокий люд."
+	miracles = list(/obj/effect/proc_holder/spell/targeted/touch/orison					= CLERIC_ORI,
+					/obj/effect/proc_holder/spell/self/graggar_bloodrage				= CLERIC_T0,
+					/obj/effect/proc_holder/spell/self/graggar_chainbreak				= CLERIC_T0,
+					/obj/effect/proc_holder/spell/self/heavy_stomp 		       			= CLERIC_T1,
+					/obj/effect/proc_holder/spell/invoked/blood_call 		       		= CLERIC_T1,
+					/obj/effect/proc_holder/spell/self/graggar_regenerate 		       	= CLERIC_T1,
+					/obj/effect/proc_holder/spell/invoked/lesser_heal 					= CLERIC_T1,
+					/obj/effect/proc_holder/spell/invoked/blood_heal					= CLERIC_T1,
+					/obj/effect/proc_holder/spell/self/graggar_call_to_slaughter 		= CLERIC_T1,
+					/obj/effect/proc_holder/spell/invoked/projectile/graggar_blood_net 	= CLERIC_T2,
+					/obj/effect/proc_holder/spell/invoked/silence/graggar				= CLERIC_T2,
+					/obj/effect/proc_holder/spell/invoked/revel_in_slaughter 			= CLERIC_T3,
+					/obj/effect/proc_holder/spell/invoked/resurrect/graggar				= CLERIC_T4,
+	)
 	confess_lines = list(
 		"ГРАГГАР - ЗВЕРЬ, КОТОРОМУ Я ПОКЛОНЯЮСЬ!",
 		"ЧЕРЕЗ ПРЕВОСХОДСТВО - К БОЖЕСТВЕННОСТИ!",
