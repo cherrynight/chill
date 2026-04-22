@@ -507,7 +507,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/sleevedtabard
 	name = "Tabard, Sleeved"
 	category = "Плащи"
-	path = /obj/item/clothing/cloak/tabard/sleevedtabard
+	path = /obj/item/clothing/cloak/sleevedtabard
 
 //SHOES
 /datum/loadout_item/darkboots
@@ -2946,47 +2946,41 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Броня", "Донат")
 	path = /obj/item/enchantingkit/nightmare_armet
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 /datum/loadout_item/donator_nightmare_scales
 	name = "Donator Kit - Nightmare Tears Scales - Required: Scalemail (Only Woman, No Small Races)"
 	category = list("Броня", "Донат")
 	path = /obj/item/enchantingkit/nightmare_scales
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 /datum/loadout_item/donator_nightmare_gauntlets
 	name = "Donator Kit - Nightmare Tears Gauntlets - Required: Plate Gauntlets (Only Woman, No Small Races)"
 	category = list("Броня", "Донат")
 	path = /obj/item/enchantingkit/nightmare_gauntlets
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 /datum/loadout_item/donator_nightmare_chausses
 	name = "Donator Kit - Nightmare Tears Chausses - Required: Steel Chain Chausses (Only Woman, No Small Races)"
 	category = list("Броня", "Донат")
 	path = /obj/item/enchantingkit/nightmare_chausses
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 /datum/loadout_item/donator_nightmare_boots
 	name = "Donator Kit - Nightmare Tears Boots - Required: Steel Boots"
 	category = list("Броня", "Донат")
 	path = /obj/item/enchantingkit/nightmare_boots
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 /datum/loadout_item/donator_nightmare_crown
 	name = "Donator Kit - Nightmare Tears Crown"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/nightmare_crown
 	donatitem = TRUE
-	donat_tier = 3
-	donat_ignore = list("wrvxth", "murken4ik")
+	ckeywhitelist = list("wrvxth", "murken4ik")
 
 // Nightmare Kit End
