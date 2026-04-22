@@ -42,7 +42,6 @@
 /obj/item/clothing/suit/roguetown/armor/regenerating/baotha/examine(var/mob/living/carbon/human/user)
 	. = ..()
 	if(iscarbon(user))
-		var/mob/living/carbon/c = user
 		if(user.patron.type == /datum/patron/inhumen/baotha)
 			. += ("This creature is a small gift from my patron, and I can make it take any form I desire.")
 
