@@ -1,4 +1,4 @@
 author: "PatapoIIIa"
 delete-after: True
 changes:
-  - bugfix: "fix vis_content visual"
+  - rscadd: "Add multy-language TGUI support"
