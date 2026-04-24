@@ -298,5 +298,10 @@
 	name = "Donator Item - Darling"
 	path = /obj/item/enchantingkit/weapon/darling
 	ckeywhitelist = list("castortroy23")
+
+/datum/loadout_item/donator/sumquoderis
+	name = "Donator Item - Sum Quod Eris"
+	path = /obj/item/enchantingkit/weapon/sumquoderis
+	ckeywhitelist = list("rivercadaver")
 	sort_category = "Donator"
 */
