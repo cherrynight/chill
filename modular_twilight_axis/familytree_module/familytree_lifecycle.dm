@@ -270,7 +270,19 @@
 	H.familytree_confirmation_pending = TRUE
 	INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), H, on_accept, confirm_type)
 
-/datum/controller/subsystem/familytree/proc/do_solo_confirmation(mob/living/carbon/human/H, datum/callback/on_accept, confirm_type)
+/datum/controller/subsystem/familytree/proc/familytree_confirmation_found_text(confirm_type, mob/living/carbon/human/person, mob/living/carbon/human/partner = null, mutual = FALSE)
+	if(confirm_type == "targeted_spouse" && partner)
+		return "Ваша судьба сошлась с [partner.real_name]!"
+	if(confirm_type == "spouse" || confirm_type == "targeted_spouse")
+		return "Вам нашли пару!"
+	if(confirm_type == "family")
+		return mutual ? "Система нашла для вас семейную связь!" : "Система нашла для вас семью!"
+	return "Система нашла для вас семью!"
+
+/datum/controller/subsystem/familytree/proc/familytree_confirmation_should_chat(confirm_type)
+	return confirm_type != "targeted_spouse"
+
+/datum/controller/subsystem/familytree/proc/do_solo_confirmation(mob/living/carbon/human/H, datum/callback/on_accept, confirm_type, mob/living/carbon/human/context_person = null)
 	if(!H || QDELETED(H))
 		return
 	if(!H?.client)
@@ -279,8 +291,9 @@
 		on_accept.Invoke()
 		return
 
-	var/found_text = (confirm_type == "spouse") ? "Вам нашли пару!" : "Система нашла для вас семью!"
-	to_chat(H, span_love(found_text))
+	var/found_text = familytree_confirmation_found_text(confirm_type, H, context_person)
+	if(familytree_confirmation_should_chat(confirm_type))
+		to_chat(H, span_love(found_text))
 
 	var/result = tgui_alert(H, "[found_text]\n\nХотите продолжить?\n\nЕсли вы не сделаете выбор — он будет засчитан как отказ.\nОтказавшись, вы потеряете возможность найти семью в этом раунде.", "Семейная система", list("Да", "Нет"), 60 SECONDS)
 
@@ -341,12 +354,12 @@
 	if(!person_a?.client)
 		person_a.familytree_confirmation_pending = FALSE
 		person_b.familytree_confirmation_pending = TRUE
-		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_b, on_both_accept, confirm_type)
+		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_b, on_both_accept, confirm_type, person_a)
 		return
 	if(!person_b?.client)
 		person_b.familytree_confirmation_pending = FALSE
 		person_a.familytree_confirmation_pending = TRUE
-		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_a, on_both_accept, confirm_type)
+		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_a, on_both_accept, confirm_type, person_b)
 		return
 
 	person_a.familytree_confirmation_pending = TRUE
@@ -384,8 +397,10 @@
 			qdel(session)
 		return
 
-	var/found_text = (session.confirm_type == "spouse") ? "Вам нашли пару!" : "Система нашла для вас семейную связь!"
-	to_chat(person, span_love(found_text))
+	var/mob/living/carbon/human/partner = is_person_a ? session.person_b : session.person_a
+	var/found_text = familytree_confirmation_found_text(session.confirm_type, person, partner, TRUE)
+	if(familytree_confirmation_should_chat(session.confirm_type))
+		to_chat(person, span_love(found_text))
 
 	var/result = tgui_alert(person, "[found_text]\n\nХотите продолжить?\n\nЕсли вы не сделаете выбор — он будет засчитан как отказ.\nОтказавшись, вы потеряете возможность найти семью в этом раунде.", "Семейная система", list("Да", "Нет"), 60 SECONDS)
 

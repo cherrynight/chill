@@ -231,7 +231,8 @@
 		if(H.spouse_mob && !familytree_can_have_multiple_spouses(H))
 			return FALSE
 		ftlog("AddLocal: [H.real_name] newlywed match=[match.real_name], requesting mutual confirm")
-		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_newlywed), H, match), "spouse")
+		var/confirm_type = familytree_mutual_setspouse(H, match) ? "targeted_spouse" : "spouse"
+		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_newlywed), H, match), confirm_type)
 		return TRUE
 	if(relation)
 		ftlog("AddLocal: [H.real_name] new-family relation=[relation] match=[match.real_name], requesting mutual confirm")
@@ -277,9 +278,6 @@
 		wake_waiting_relative_seekers(family)
 		familytree_admin_log_house_assignment(H, family, "created new house with spouse [key_name(spouse)]", spouse.family_member_datum)
 		familytree_admin_log_house_assignment(spouse, family, "created new house with spouse [key_name(H)]", H.family_member_datum)
-		if(familytree_mutual_setspouse(H, spouse))
-			notify_targeted_spouse_found(H, spouse)
-			notify_targeted_spouse_found(spouse, H)
 	introduce_pair(H, spouse)
 	bestow_wedding_rings(H, spouse)
 	stop_tracking_human(H, "newlywed flow matched spouse")
@@ -464,7 +462,8 @@
 		if(relation == "spouse")
 			if(!familytree_polygamy_compatible(H, favorite))
 				return "skip"
-			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), "spouse")
+			var/confirm_type = familytree_mutual_setspouse(H, favorite) ? "targeted_spouse" : "spouse"
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), confirm_type)
 			return "assigned"
 		if(relation)
 			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_new_family_relative), H, favorite, relation), "family")
@@ -584,7 +583,7 @@
 		return FALSE
 
 	ftlog("TARGETED MATCH: [H.real_name] <-> [favorite.real_name] forcing mutual spouse confirmation before regular matching")
-	request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_targeted_spouse_match), H, favorite), "spouse")
+	request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_targeted_spouse_match), H, favorite), "targeted_spouse")
 	return TRUE
 
 /datum/controller/subsystem/familytree/proc/do_execute_targeted_spouse_match(mob/living/carbon/human/H, mob/living/carbon/human/favorite)
@@ -613,17 +612,10 @@
 	wake_waiting_relative_seekers(family)
 	familytree_admin_log_house_assignment(H, family, "created targeted house with spouse [key_name(favorite)]", favorite.family_member_datum)
 	familytree_admin_log_house_assignment(favorite, family, "created targeted house with spouse [key_name(H)]", H.family_member_datum)
-	notify_targeted_spouse_found(H, favorite)
-	notify_targeted_spouse_found(favorite, H)
 	introduce_pair(H, favorite)
 	bestow_wedding_rings(H, favorite)
 	stop_tracking_human(H, "targeted spouse match completed")
 	stop_tracking_human(favorite, "targeted spouse match completed")
-
-/datum/controller/subsystem/familytree/proc/notify_targeted_spouse_found(mob/living/carbon/human/person, mob/living/carbon/human/partner)
-	if(!person?.client || !partner)
-		return
-	to_chat(person, "<span style='color:#f1d669;font-size:75%;'>Вы встретили своего дорогого [html_encode(partner.real_name)]!</span>")
 
 /datum/controller/subsystem/familytree/proc/AssignToHouse(mob/living/carbon/human/H, forced_role = null)
 	if(!H)
