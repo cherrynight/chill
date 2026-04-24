@@ -242,17 +242,30 @@
 		person.familytree_assignment_scheduled = TRUE
 		addtimer(CALLBACK(SSfamilytree, TYPE_PROC_REF(/datum/controller/subsystem/familytree, run_local_assignment), person, person.familytree_pref), 10 SECONDS)
 
-/datum/controller/subsystem/familytree/proc/request_family_confirmation(mob/living/carbon/human/H, datum/callback/on_accept, confirm_type = "family")
+/datum/controller/subsystem/familytree/proc/request_family_confirmation(mob/living/carbon/human/H, datum/callback/on_accept, confirm_type = "family", busy_attempt = 0, busy_deferred = FALSE)
 	if(!H || QDELETED(H))
 		return
 	if(H?.familytree_opted_out)
+		if(busy_deferred)
+			H.familytree_confirmation_pending = FALSE
 		ftlog("CONFIRM SKIP: [H?.real_name] opted out")
 		return
-	if(H?.familytree_confirmation_pending)
+	if(H?.familytree_confirmation_pending && !busy_deferred)
 		ftlog("CONFIRM SKIP: [H?.real_name] already has pending confirmation")
 		return
 	if(!H?.client)
+		H.familytree_confirmation_pending = FALSE
 		on_accept.Invoke()
+		return
+	var/busy_reason = is_familytree_player_busy(H)
+	if(busy_reason)
+		H.familytree_confirmation_pending = TRUE
+		if(busy_attempt >= familytree_busy_retry_limit)
+			ftlog("CONFIRM SKIP: [H.real_name] still busy ([busy_reason]) after [familytree_busy_retry_limit] retries type=[confirm_type]", "WARN")
+			H.familytree_confirmation_pending = FALSE
+			return
+		ftlog("CONFIRM DEFER: [H.real_name] busy=[busy_reason] retry=[busy_attempt + 1]/[familytree_busy_retry_limit] type=[confirm_type]")
+		addtimer(CALLBACK(src, PROC_REF(request_family_confirmation), H, on_accept, confirm_type, busy_attempt + 1, TRUE), familytree_busy_retry_delay)
 		return
 	H.familytree_confirmation_pending = TRUE
 	INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), H, on_accept, confirm_type)
@@ -285,25 +298,53 @@
 		H.familytree_opted_out = TRUE
 		unsubscribe_familytree_human(H, "player declined [confirm_type]")
 
-/datum/controller/subsystem/familytree/proc/request_mutual_confirmation(mob/living/carbon/human/person_a, mob/living/carbon/human/person_b, datum/callback/on_both_accept, confirm_type = "family")
+/datum/controller/subsystem/familytree/proc/request_mutual_confirmation(mob/living/carbon/human/person_a, mob/living/carbon/human/person_b, datum/callback/on_both_accept, confirm_type = "family", busy_attempt = 0, busy_deferred = FALSE)
 	if(!person_a || QDELETED(person_a) || !person_b || QDELETED(person_b))
+		if(busy_deferred)
+			if(person_a && !QDELETED(person_a))
+				person_a.familytree_confirmation_pending = FALSE
+			if(person_b && !QDELETED(person_b))
+				person_b.familytree_confirmation_pending = FALSE
 		ftlog("MUTUAL SKIP: invalid participant a=[person_a?.real_name] b=[person_b?.real_name]")
 		return
 	if(person_a?.familytree_opted_out || person_b?.familytree_opted_out)
+		if(busy_deferred)
+			person_a.familytree_confirmation_pending = FALSE
+			person_b.familytree_confirmation_pending = FALSE
 		ftlog("MUTUAL SKIP: opted out a=[person_a?.real_name] b=[person_b?.real_name]")
 		return
-	if(person_a?.familytree_confirmation_pending || person_b?.familytree_confirmation_pending)
+	if((person_a?.familytree_confirmation_pending || person_b?.familytree_confirmation_pending) && !busy_deferred)
 		ftlog("MUTUAL SKIP: pending confirmation a=[person_a?.real_name] b=[person_b?.real_name]")
 		return
 
+	var/busy_reason_a = person_a?.client ? is_familytree_player_busy(person_a) : null
+	var/busy_reason_b = person_b?.client ? is_familytree_player_busy(person_b) : null
+	if(busy_reason_a || busy_reason_b)
+		if(person_a.client)
+			person_a.familytree_confirmation_pending = TRUE
+		if(person_b.client)
+			person_b.familytree_confirmation_pending = TRUE
+		if(busy_attempt >= familytree_busy_retry_limit)
+			ftlog("MUTUAL SKIP: busy after [familytree_busy_retry_limit] retries type=[confirm_type] a=[person_a.real_name] busy=[busy_reason_a || "no"] b=[person_b.real_name] busy=[busy_reason_b || "no"]", "WARN")
+			person_a.familytree_confirmation_pending = FALSE
+			person_b.familytree_confirmation_pending = FALSE
+			return
+		ftlog("MUTUAL DEFER: type=[confirm_type] retry=[busy_attempt + 1]/[familytree_busy_retry_limit] a=[person_a.real_name] busy=[busy_reason_a || "no"] b=[person_b.real_name] busy=[busy_reason_b || "no"]")
+		addtimer(CALLBACK(src, PROC_REF(request_mutual_confirmation), person_a, person_b, on_both_accept, confirm_type, busy_attempt + 1, TRUE), familytree_busy_retry_delay)
+		return
+
 	if(!person_a?.client && !person_b?.client)
+		person_a.familytree_confirmation_pending = FALSE
+		person_b.familytree_confirmation_pending = FALSE
 		on_both_accept.Invoke()
 		return
 	if(!person_a?.client)
+		person_a.familytree_confirmation_pending = FALSE
 		person_b.familytree_confirmation_pending = TRUE
 		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_b, on_both_accept, confirm_type)
 		return
 	if(!person_b?.client)
+		person_b.familytree_confirmation_pending = FALSE
 		person_a.familytree_confirmation_pending = TRUE
 		INVOKE_ASYNC(src, PROC_REF(do_solo_confirmation), person_a, on_both_accept, confirm_type)
 		return

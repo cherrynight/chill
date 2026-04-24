@@ -35,6 +35,8 @@ SUBSYSTEM_DEF(familytree)
 
 	var/list/intimacy_pairs = list()
 	var/xylix_roulette_active = FALSE
+	var/familytree_busy_retry_limit = 30
+	var/familytree_busy_retry_delay = 10 SECONDS
 	var/familytree_log_file
 	var/ftlog_counter = 0
 	var/ftlog_error_count = 0
@@ -209,6 +211,19 @@ SUBSYSTEM_DEF(familytree)
 	H.allow_low_status_marriage = P.allow_low_status_marriage
 	H.allow_relatives_in_family = P.allow_relatives_in_family
 	return TRUE
+
+/datum/controller/subsystem/familytree/proc/is_familytree_player_busy(mob/living/carbon/human/H)
+	if(!H || QDELETED(H))
+		return null
+	if(H.notransform)
+		return "notransform"
+	if(istype(H.loc, /mob/dead/new_player))
+		return "new_player loc"
+	if(H.ckey && SSrole_class_handler?.class_select_handlers)
+		var/list/class_handlers = SSrole_class_handler.class_select_handlers
+		if(class_handlers[H.ckey])
+			return "class picker"
+	return null
 
 /datum/controller/subsystem/familytree/proc/on_mob_created(datum/controller/subsystem/processing/dcs/source, mob/new_mob)
 	SIGNAL_HANDLER
@@ -415,8 +430,8 @@ SUBSYSTEM_DEF(familytree)
 		ftlog("try_queue STOP: [H.real_name] familytree disabled (pref=FAMILY_NONE)")
 		stop_tracking_human(H, "familytree disabled for this character")
 
-/datum/controller/subsystem/familytree/proc/run_local_assignment(mob/living/carbon/human/H, status)
-	ftlog("run_local_assignment: [H?.real_name] ([H?.ckey]) status=[status]")
+/datum/controller/subsystem/familytree/proc/run_local_assignment(mob/living/carbon/human/H, status, busy_attempt = 0)
+	ftlog("run_local_assignment: [H?.real_name] ([H?.ckey]) status=[status] busy_attempt=[busy_attempt]")
 	if(!H || QDELETED(H))
 		ftlog("run_local ABORT: null/qdel", FTLOG_ERROR)
 		return
@@ -451,6 +466,16 @@ SUBSYSTEM_DEF(familytree)
 	if(H.familytree_confirmation_pending)
 		ftlog("run_local SKIP: [H.real_name] confirmation already pending")
 		H.familytree_assignment_scheduled = FALSE
+		return
+	var/busy_reason = is_familytree_player_busy(H)
+	if(busy_reason)
+		if(busy_attempt >= familytree_busy_retry_limit)
+			ftlog("run_local SKIP: [H.real_name] still busy ([busy_reason]) after [familytree_busy_retry_limit] retries", FTLOG_WARN)
+			H.familytree_assignment_scheduled = FALSE
+			return
+		ftlog("run_local DEFER: [H.real_name] busy=[busy_reason] retry=[busy_attempt + 1]/[familytree_busy_retry_limit]")
+		H.familytree_assignment_scheduled = TRUE
+		addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, effective_status, busy_attempt + 1), familytree_busy_retry_delay)
 		return
 	H.familytree_assignment_scheduled = FALSE
 	if(try_force_mutual_targeted_match(H))
