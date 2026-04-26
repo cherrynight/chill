@@ -8,13 +8,12 @@
 	metabolization_rate = 0.1 * REAGENTS_METABOLISM
 	harmful = TRUE
 
-
 /datum/reagent/organpoison/on_mob_life(mob/living/carbon/M)
 	if(HAS_TRAIT(M, TRAIT_ORGAN_EATER))
-		M.energy_add(-10) //Slowly add energy back.
+		M.reagents.add_reagent(/datum/reagent/medicine/stampot, 1)
 		if(M.patron.type == /datum/patron/inhumen/graggar)
 			var/mob/living/carbon/human/H = M
-			H.stamina_add(-10)
+			H.reagents.add_reagent(/datum/reagent/medicine/stampot, 1)
 			H.devotion?.update_devotion(5)
 	if(!HAS_TRAIT(M, TRAIT_NASTY_EATER) && !HAS_TRAIT(M, TRAIT_ORGAN_EATER))
 		M.add_nausea(9)

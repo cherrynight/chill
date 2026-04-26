@@ -115,23 +115,20 @@
 				name = "pristine dress"
 				desc = "A flowy, intricate dress made by the finest tailors in the land for the monarch's children."
 				icon_state = "princess"
-				mimic()
+				icon = 'icons/roguetown/clothing/shirts_royalty.dmi'
+				mob_overlay_icon = 'icons/roguetown/clothing/onmob/shirts_royalty.dmi'
 			if("gilded dress shirt")
 				name = "gilded dress shirt"
 				desc = "A gold-embroidered dress shirt specially tailored for the monarch's children."
 				icon_state = "prince"
-				mimic()
+				icon = 'icons/roguetown/clothing/shirts_royalty.dmi'
+				mob_overlay_icon = 'icons/roguetown/clothing/onmob/shirts_royalty.dmi'
 			if("Undo")
 				name = realname
 				desc = realdesc
 				icon = realicon
 				icon_state = realstate
 				mob_overlay_icon = realmob
-				armor = ARMOR_BRIGANDINE
-				AddComponent(/datum/component/cursed_item, TRAIT_CRACKHEAD, "CLOTH")
-		if(icon_state != realstate)
-			armor = ARMOR_PADDED
-			qdel(GetComponent(/datum/component/cursed_item))
 		playsound(user, pick('sound/magic/magic_nulled.ogg'), 20, TRUE)
 
 /obj/item/clothing/suit/roguetown/armor/regenerating/baotha/proc/mimic()
