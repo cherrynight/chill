@@ -114,19 +114,20 @@
 				name = "pristine dress"
 				desc = "A flowy, intricate dress made by the finest tailors in the land for the monarch's children."
 				icon_state = "princess"
+				mimic()
 			if("gilded dress shirt")
 				name = "gilded dress shirt"
 				desc = "A gold-embroidered dress shirt specially tailored for the monarch's children."
 				icon_state = "prince"
+				mimic()
 			if("Undo")
 				name = realname
 				desc = realdesc
 				icon = realicon
 				icon_state = realstate
 				mob_overlay_icon = realmob
-				if(icon_state != realstate)
-					armor = ARMOR_BRIGANDINE
-					AddComponent(/datum/component/cursed_item, TRAIT_CRACKHEAD, "CLOTH")
+				armor = ARMOR_BRIGANDINE
+				AddComponent(/datum/component/cursed_item, TRAIT_CRACKHEAD, "CLOTH")
 		if(icon_state != realstate)
 			armor = ARMOR_PADDED
 			qdel(GetComponent(/datum/component/cursed_item))
@@ -135,6 +136,7 @@
 /obj/item/clothing/suit/roguetown/armor/regenerating/baotha/proc/mimic()
 	icon = 'icons/roguetown/clothing/shirts.dmi'
 	mob_overlay_icon = 'icons/roguetown/clothing/onmob/shirts.dmi'
+
 /obj/item/clothing/suit/roguetown/shirt/padedetrshirt
 	name = "padded etruscan shirt"
 	desc = "A strong loosely worn quilted shirt that places little weight on the arms."
@@ -156,6 +158,7 @@
 	sewrepair = TRUE
 	detail_tag = "_detail"
 	detail_color = CLOTHING_WHITE
+
 /obj/item/clothing/suit/roguetown/shirt/padedetrshirt/update_icon()
 	cut_overlays()
 	if(get_detail_tag())
