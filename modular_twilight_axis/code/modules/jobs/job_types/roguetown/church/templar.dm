@@ -36,8 +36,6 @@
 /datum/outfit/job/roguetown/templar/crusader/pre_equip(mob/living/carbon/human/H)
 	. = ..()
 	ADD_TRAIT(H, TRAIT_CLERGY_TA, TRAIT_GENERIC)
-	H.change_stat(STATKEY_INT, 1)
-	H.change_stat(STATKEY_CON, 1)
 
 /* < pathfinder subclass > */
 
