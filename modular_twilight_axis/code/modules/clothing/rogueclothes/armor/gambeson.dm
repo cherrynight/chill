@@ -89,7 +89,8 @@
 				name = "royal gown"
 				desc = "An elaborate ball gown, a favoured fashion of queens and elevated nobility in Enigma."
 				icon_state = "royaldress"
-				mimic()
+				icon = 'icons/roguetown/clothing/shirts_royalty.dmi'
+				mob_overlay_icon = 'icons/roguetown/clothing/onmob/shirts_royalty.dmi'
 			if("white foreign shirt")
 				name = "white foreign shirt"
 				desc = "A shirt typically used by foreign gangs."
