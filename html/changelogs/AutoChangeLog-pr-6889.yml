@@ -1,0 +1,4 @@
+author: "Ketrai"
+delete-after: True
+changes:
+  - balance: "Increase medical EXP from sewing"
