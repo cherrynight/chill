@@ -382,6 +382,13 @@
 	color = "#bc9ab7"
 	sellprice = 30 //Rarer to obtain than iron, and feasible to sell off as salvage.
 
+/obj/item/ingot/avantyne
+	name = "avantyne wafer"
+	desc = "This ingot, though borne of unholy circumstance, rumbles with otherworldly potential. Chiseled onto the darksteel is a forbidden iteration of the psycross; a foreboding sign for those who bow to lesser gods."
+	icon_state = "ingotavantyne"
+	smeltresult = null
+	sellprice = 130
+
 //Components!
 
 /obj/item/ingot/component //Root. Don't use under most circumstances.
@@ -431,3 +438,39 @@
 	icon_state = "component_berserkhandle"
 	smeltresult = /obj/item/ingot/iron
 	sellprice = 33
+
+/obj/item/ingot/component/threadavantyne
+	name = "avantyne thread"
+	desc = "These strands, though borne of unholy circumstance, shimmer with otherworldly potential. Each wire of darksteel seem to twitch with vigor, whenever brought close to another alloy; like a parasite drawn to a host."
+	icon_state = "component_avantynethread"
+	sellprice = 66
+
+/obj/item/ingot/component/threadketryl
+	name = "ketryl thread"
+	desc = "Named after its mythical status, these glimmering strands are stronger than steel, yet unusually light at the same time."
+	icon_state = "component_ketrylthread"
+	sellprice = 111
+
+/obj/item/ingot/component/zizo
+	name = "avantyne fragment"
+	desc = "Whispering fragments of an otherworldly alloy. </br>Power always comes at a price."
+	icon_state = "component_zizo"
+	dropshrink = 0.7
+
+/obj/item/ingot/component/graggar
+	name = "vicious fragment"
+	desc = "Bleeding fragments of an otherworldly alloy. </br>Murder is nothing more than justice without arbitration."
+	icon_state = "component_graggar"
+	dropshrink = 0.7
+
+/obj/item/ingot/component/matthios
+	name = "gilded fragment"
+	desc = "Glimmering fragments of an otherworldly alloy. </br>Wealth drags even the noblest souls down to perdition."
+	icon_state = "component_matthios"
+	dropshrink = 0.7
+
+/obj/item/ingot/component/baotha
+	name = "saccharine fragment"
+	desc = "Aromatic fragments of an otherworldly alloy. </br>Despair is the gravest, most agonizing poison of them all."
+	icon_state = "component_baotha"
+	dropshrink = 0.7
