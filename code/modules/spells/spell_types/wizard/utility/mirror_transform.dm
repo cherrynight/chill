@@ -372,7 +372,9 @@
 
 		if("Penis")
 			var/list/valid_penis_organs = list("none")
-			for(var/penis_type in subtypesof(/obj/item/organ/penis))
+			var/list/penis_paths = list(/obj/item/organ/penis) + subtypesof(/obj/item/organ/penis)
+
+			for(var/penis_type in penis_paths)
 				var/obj/item/organ/penis/temp_penis = new penis_type
 				valid_penis_organs[temp_penis.name] = penis_type
 				qdel(temp_penis)
