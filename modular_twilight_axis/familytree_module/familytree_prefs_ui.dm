@@ -414,6 +414,12 @@
 
 	switch(action)
 		if("save")
+			var/old_setspouse = null
+			var/mob/living/carbon/human/H = null
+			if(ishuman(user))
+				H = user
+				old_setspouse = SSfamilytree.familytree_get_target_name(H)
+
 			var/new_family = _ui_to_family(params["familyType"])
 
 			P.family = new_family
@@ -436,9 +442,9 @@
 
 			P.familytree_module_sanitize_character()
 			P.familytree_module_save_character()
-			if(ishuman(user))
-				var/mob/living/carbon/human/H = user
+			if(H)
 				SSfamilytree.load_familytree_runtime_preferences(H, P)
+				SSfamilytree.on_familytree_target_preference_changed(H, old_setspouse)
 
 			SStgui.update_uis(src)
 			return TRUE

@@ -131,13 +131,26 @@
 /datum/controller/subsystem/familytree/proc/offer_setspouse_reset(mob/living/carbon/human/H, status)
 	if(!H?.client)
 		return
-	var/result = tgui_alert(H, "Вы уже 30 минут ожидаете фаворита '[H.setspouse]', но он не найден.\n\nХотите сбросить предпочтение по нику и искать пару по текущим настройкам?", "Семейная система", list("Да, сбросить", "Нет, продолжить ждать"))
+	var/offered_target = familytree_get_target_name(H)
+	if(!offered_target || !length(offered_target))
+		return
+	var/result = tgui_alert(H, "Вы уже 30 минут ожидаете фаворита '[offered_target]', но он не найден.\n\nХотите сбросить предпочтение по нику и искать пару по текущим настройкам?", "Семейная система", list("Да, сбросить", "Нет, продолжить ждать"), 60 SECONDS)
 
 	if(!H || QDELETED(H))
 		return
 
+	var/current_target = familytree_get_target_name(H)
+	if(current_target != offered_target)
+		ftlog("SETSPOUSE RESET STALE: [H.real_name] target changed from '[offered_target]' to '[current_target]'")
+		H.familytree_setspouse_retries = 0
+		H.familytree_setspouse_timeout_offered = FALSE
+		if(!H.familytree_assignment_scheduled && !H.familytree_confirmation_pending && !H.family_datum && !H.familytree_opted_out && familytree_pref_enabled(H.familytree_pref))
+			H.familytree_assignment_scheduled = TRUE
+			addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), 1 SECONDS)
+		return
+
 	if(result == "Да, сбросить")
-		ftlog("SETSPOUSE RESET: [H.real_name] cleared setspouse '[H.setspouse]'")
+		ftlog("SETSPOUSE RESET: [H.real_name] cleared setspouse '[offered_target]'")
 		H.setspouse = ""
 		var/datum/preferences/P = H.client?.prefs
 		if(P)
@@ -145,10 +158,14 @@
 			P.setspouse = ""
 			P.familytree_module_save_character()
 			load_familytree_runtime_preferences(H, P)
+		else
+			H.familytree_setspouse_retries = 0
+			H.familytree_setspouse_timeout_offered = FALSE
 		H.familytree_assignment_scheduled = FALSE
 		run_local_assignment(H, status)
 	else
-		ftlog("SETSPOUSE KEEP: [H.real_name] continues waiting for '[H.setspouse]'")
+		var/reset_result = result ? result : "timeout"
+		ftlog("SETSPOUSE KEEP: [H.real_name] continues waiting for '[offered_target]' result=[reset_result]")
 		H.familytree_assignment_scheduled = TRUE
 		addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, status), 60 SECONDS)
 

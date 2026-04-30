@@ -235,9 +235,13 @@ SUBSYSTEM_DEF(familytree)
 	if(!H || !P)
 		return FALSE
 	P.familytree_module_load_character()
+	var/old_setspouse = H.setspouse
 	H.familytree_pref = P.family
 	H.gender_choice_pref = P.gender_choice_pref
 	H.setspouse = P.setspouse
+	if(old_setspouse != H.setspouse)
+		H.familytree_setspouse_retries = 0
+		H.familytree_setspouse_timeout_offered = FALSE
 	H.species_preference_mode = P.species_preference_mode
 	H.preferred_species_types = islist(P.preferred_species_types) ? P.preferred_species_types.Copy() : list()
 	H.preferred_species_anatomy = P.preferred_species_anatomy
@@ -246,6 +250,25 @@ SUBSYSTEM_DEF(familytree)
 	H.allow_low_status_marriage = P.allow_low_status_marriage
 	H.allow_relatives_in_family = P.allow_relatives_in_family
 	return TRUE
+
+/datum/controller/subsystem/familytree/proc/on_familytree_target_preference_changed(mob/living/carbon/human/H, old_setspouse)
+	if(!H || QDELETED(H))
+		return
+	var/old_target = istext(old_setspouse) ? old_setspouse : ""
+	var/new_target = istext(H.setspouse) ? H.setspouse : ""
+	if(old_target == new_target)
+		return
+	H.familytree_setspouse_retries = 0
+	H.familytree_setspouse_timeout_offered = FALSE
+	ftlog("target preference changed for [H.real_name]: '[old_target]' -> '[new_target]'")
+	if(H.family_datum || H.familytree_opted_out || H.familytree_confirmation_pending)
+		return
+	if(!familytree_pref_enabled(H.familytree_pref))
+		return
+	if(H.familytree_assignment_scheduled)
+		return
+	H.familytree_assignment_scheduled = TRUE
+	addtimer(CALLBACK(src, PROC_REF(run_local_assignment), H, H.familytree_pref), 1 SECONDS)
 
 /datum/controller/subsystem/familytree/proc/is_familytree_player_busy(mob/living/carbon/human/H)
 	if(!H || QDELETED(H))
