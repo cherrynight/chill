@@ -393,12 +393,19 @@
 	if(!W || !sheath_item || !H)
 		return FALSE
 
-	var/free_hand = 0
-	if(owner.get_item_for_held_index(1) == null)
-		free_hand = 1
-	else if(owner.get_item_for_held_index(2) == null)
-		free_hand = 2
-	if(!free_hand)
+	var/dominant_hand = 0
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		if(human_owner.domhand)
+			dominant_hand = human_owner.domhand
+
+	if(!dominant_hand)
+		dominant_hand = owner.active_hand_index
+
+	if(!dominant_hand)
+		return FALSE
+
+	if(owner.get_item_for_held_index(dominant_hand))
 		return FALSE
 
 	H.sheathed = null
@@ -406,7 +413,7 @@
 
 	W.forceMove(owner.loc)
 	W.pickup(owner)
-	owner.put_in_hand(W, free_hand)
+	owner.put_in_hand(W, dominant_hand)
 
 	active_blade = W
 	if(in_counter_stance)
