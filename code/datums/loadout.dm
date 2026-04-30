@@ -3057,7 +3057,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donat_tier = 1
 
 /datum/loadout_item/etrjacket
-	name = "Wanderer's jacket - (only male, no small races)"
+	name = "Wanderer's jacket - (no small races)"
 	category = list("Одежда", "Донат")
 	path = /obj/item/clothing/suit/roguetown/armor/leather/etrjacket
 	donatitem = TRUE
@@ -3071,17 +3071,23 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donat_tier = 1
 
 /datum/loadout_item/donat/etrcape
-	name = "Wanderer's cape - (only male, no small races)"
+	name = "Wanderer's cape - (no small races)"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/etrcape
 	donatitem = TRUE
 	donat_tier = 1
 
 /datum/loadout_item/donat/etrpants
-	name = "Wanderer's pants - (only male, no small races)"
+	name = "Wanderer's pants - (no small races)"
 	category = list("Одежда", "Донат")
 	path = /obj/item/clothing/under/roguetown/trou/leather/etrpants
 	donatitem = TRUE
 	donat_tier = 1
 
+/datum/loadout_item/etrdress3
+	name = "Strapless gown - (only female, no small races)"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/etrdress3
+	donatitem = TRUE
+	donat_tier = 1
 // Etruscan vol.3 Kit End
