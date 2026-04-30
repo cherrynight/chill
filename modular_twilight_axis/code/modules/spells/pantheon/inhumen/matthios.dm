@@ -501,7 +501,7 @@
 			revert_cast()
 			return FALSE
 		var/mammonsonperson = get_mammons_in_atom(target)
-		var/mammonsinbank = SStreasury.bank_accounts[target]
+		var/mammonsinbank = SStreasury.get_balance(target)
 		var/totalvalue = mammonsinbank + mammonsonperson
 		if(HAS_TRAIT(target, TRAIT_NOBLE))
 			totalvalue += 101 // We're ALWAYS going to do a medium level smite minimum to nobles.
@@ -525,7 +525,7 @@
 			user.say("Жадность есть препятствие для свободы!")
 			target.visible_message(span_danger("[target] is burned by holy light!"), span_userdanger("I feel the weight of my wealth burning at my soul!"))
 			target.adjustFireLoss(80)
-			target.Stun(20)
+			//target.Stun(20)
 			playsound(user, 'sound/magic/churn.ogg', 100, TRUE)
 			return TRUE
 		if(totalvalue <=200)
@@ -533,7 +533,7 @@
 			target.visible_message(span_danger("[target] is burned by holy light!"), span_userdanger("I feel the weight of my wealth tearing at my soul!"))
 			target.adjustFireLoss(100)
 			target.adjust_fire_stacks(7, /datum/status_effect/fire_handler/fire_stacks/divine)
-			target.Stun(20)
+			//target.Stun(20)
 			target.ignite_mob()
 			playsound(user, 'sound/magic/churn.ogg', 100, TRUE)
 			return TRUE
@@ -543,13 +543,13 @@
 			target.adjustFireLoss(120)
 			target.adjust_fire_stacks(9, /datum/status_effect/fire_handler/fire_stacks/divine)
 			target.ignite_mob()
-			target.Stun(40)
+			//.Stun(40)
 			playsound(user, 'sound/magic/churn.ogg', 100, TRUE)
 			return TRUE
 		if(totalvalue <= 2500)
 			target.visible_message(span_danger("[target] is smited with holy light!"), span_userdanger("I feel the weight of my wealth rend my soul apart!"))
 			user.say("Твоя последняя транзакция! Бог Свободы отвергает тебя!!")
-			target.Stun(60)
+			//target.Stun(60)
 			target.emote("agony")
 			target.adjustFireLoss(140)
 			target.adjust_fire_stacks(9, /datum/status_effect/fire_handler/fire_stacks/divine)
