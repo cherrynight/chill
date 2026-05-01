@@ -1345,7 +1345,7 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 	S.set_up(1, 1, center)
 	S.start()
 
-	new /obj/item/rogueweapon/sword/long/avantyne(center)
+	new /obj/item/rogueweapon/sword/long/zizo(center)
 	playsound(get_turf(center), pick('sound/items/bsmith1.ogg','sound/items/bsmith2.ogg','sound/items/bsmith3.ogg','sound/items/bsmith4.ogg'), 100, FALSE)
 
 /datum/ritual/weaponary/summonaxe
