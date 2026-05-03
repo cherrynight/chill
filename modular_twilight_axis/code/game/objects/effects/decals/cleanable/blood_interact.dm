@@ -1,3 +1,6 @@
+#define BLOOD_HANDS_MIN 2
+#define BLOOD_HANDS_MAX 4
+
 /obj/effect/decal/cleanable/blood
 	mouse_opacity = MOUSE_OPACITY_ICON
 
@@ -22,5 +25,11 @@
 	if(!do_after(user, 1 SECONDS, needhand = TRUE, target = src))
 		return
 
-	user.bloody_hands = rand(2, 4)
+	if(QDELETED(user) || QDELETED(src))
+		return
+
+	user.bloody_hands = rand(BLOOD_HANDS_MIN, BLOOD_HANDS_MAX)
 	user.update_inv_gloves()
+
+#undef BLOOD_HANDS_MIN
+#undef BLOOD_HANDS_MAX
