@@ -1,4 +1,4 @@
-//HATS
+/*//HATS
 /datum/loadout_item/shalal
 	name = "Keffiyeh"
 	path = /obj/item/clothing/head/roguetown/roguehood/shalal
@@ -213,3 +213,4 @@
 	name = "Valorian Maid Headband"
 	path = /obj/item/clothing/head/roguetown/maidband
 	sort_category = "Hats"
+*/
