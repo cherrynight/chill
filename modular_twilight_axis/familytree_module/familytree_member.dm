@@ -536,9 +536,21 @@
 	if(grandchild_rel)
 		return grandchild_rel
 
+	var/great_grandparent_rel = GetGreatGrandparentRelation(other)
+	if(great_grandparent_rel)
+		return great_grandparent_rel
+
+	var/great_grandchild_rel = GetGreatRelation(other)
+	if(great_grandchild_rel)
+		return great_grandchild_rel
+
 	var/great_niece_nephew_rel = GetGreatNieceNephewRelation(other)
 	if(great_niece_nephew_rel)
 		return great_niece_nephew_rel
+
+	var/great_aunt_uncle_rel = GetGreatAuntUncleRelation(other)
+	if(great_aunt_uncle_rel)
+		return great_aunt_uncle_rel
 
 	var/aunt_uncle_rel = GetAuntUncleRelation(other)
 	if(aunt_uncle_rel)
@@ -548,11 +560,28 @@
 	if(niece_nephew_rel)
 		return niece_nephew_rel
 
-	var/great_rel = GetGreatRelation(other)
-	if(great_rel)
-		return great_rel
+	var/cousin_rel = GetCousinRelation(other)
+	if(cousin_rel)
+		return cousin_rel
+
+	var/cousin_once_removed_rel = GetCousinOnceRemovedRelation(other)
+	if(cousin_once_removed_rel)
+		return cousin_once_removed_rel
+
+	var/second_cousin_rel = GetSecondCousinRelation(other)
+	if(second_cousin_rel)
+		return second_cousin_rel
+
+	var/preserved_rel = GetPreservedRelationshipTo(other)
+	if(preserved_rel)
+		return preserved_rel
 
 	return "distant relative"
+
+/datum/family_member/proc/GetPreservedRelationshipTo(datum/family_member/other)
+	if(!person || !other?.person)
+		return null
+	return SSfamilytree.get_preserved_relationship(person, other)
 
 /datum/family_member/proc/AreFullSiblings(datum/family_member/other)
 	if(!other || other == src)
@@ -623,15 +652,11 @@
 
 /datum/family_member/proc/GetCousinOnceRemovedRelation(datum/family_member/other)
 	for(var/datum/family_member/parent as anything in get_blood_parent_members())
-		for(var/datum/family_member/their_parent as anything in other.get_blood_parent_members())
-			for(var/datum/family_member/their_grandparent as anything in their_parent.get_blood_parent_members())
-				if(parent.AreSiblings(their_grandparent))
-					return "first cousin once removed"
-	for(var/datum/family_member/grandparent as anything in get_blood_parent_members())
-		for(var/datum/family_member/gp_parent as anything in grandparent.get_blood_parent_members())
-			for(var/datum/family_member/their_parent as anything in other.get_blood_parent_members())
-				if(gp_parent.AreSiblings(their_parent))
-					return "first cousin once removed"
+		if(parent.GetCousinRelation(other))
+			return "first cousin once removed"
+	for(var/datum/family_member/their_parent as anything in other.get_blood_parent_members())
+		if(GetCousinRelation(their_parent))
+			return "first cousin once removed"
 	return null
 
 /datum/family_member/proc/GetSecondCousinRelation(datum/family_member/other)
@@ -712,6 +737,13 @@
 	for(var/datum/family_member/child as anything in get_blood_child_members())
 		if(other in child.get_blood_child_members())
 			return other.GetGrandchildTerm()
+	return null
+
+/datum/family_member/proc/GetGreatGrandparentRelation(datum/family_member/other)
+	for(var/datum/family_member/parent as anything in get_blood_parent_members())
+		for(var/datum/family_member/grandparent as anything in parent.get_blood_parent_members())
+			if(other in grandparent.get_blood_parent_members())
+				return other.GetGreatGrandparentTerm()
 	return null
 
 /datum/family_member/proc/GetCousinRelation(datum/family_member/other)
