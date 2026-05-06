@@ -45,7 +45,7 @@ export function AlertModal(props) {
 
   const [selected, setSelected] = useState(0);
 
-  const windowWidth = 420 + (buttons.length > 2 ? 55 : 0);
+  const windowWidth = 345 + (buttons.length > 2 ? 55 : 0);
 
   // very accurate estimate of padding for each num of buttons
   const paddingMagicNumber = 67 / buttons.length + 23;
@@ -62,7 +62,7 @@ export function AlertModal(props) {
   const windowHeight =
     165 +
     (isVerbose ? largeSpacing * buttons.length : 0) +
-    (message.length > 30 ? Math.ceil(message.length / 3) : 0) +
+    (message.length > 30 ? Math.ceil(message.length / 4) : 0) +
     (message.length && large_buttons ? 5 : 0);
 
   /** Changes button selection, etc */
