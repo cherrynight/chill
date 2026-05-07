@@ -405,6 +405,10 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 	#define TEMPO_DODGE_LOSS_NONE 2
 #define TEMPO_TAG_BINDABLE "defbindable"
 
+#define TEMPO_FACTION_KEEP (1 << 0)
+#define TEMPO_FACTION_WRETCH (1 << 1)
+#define TEMPO_FACTION_CHURCH (1 << 2)
+
 /*
 Medical defines
 */
@@ -420,9 +424,10 @@ Medical defines
 /*
  Misc. Category. Spin it out if needed
 */
-#define CRIT_DISMEMBER_DAMAGE_THRESHOLD 0.9 // 90% damage threshold for dismemberment / crit
+#define CRIT_DISMEMBER_DAMAGE_THRESHOLD 0.7 // 90% damage threshold for dismemberment / crit
 #define STANDING_DECAP_GRACE_PERIOD 2 SECONDS // Time after falling prone where you still count as standing for decap purpose
 #define INT_NOISE_DELAY 1 SECONDS
+#define CRIT_ARMOUR_THRESHOLD 0.35 // ratio of obj_integrity and max_integrity for zone armour. Beyond this, crits are prevented.
 
 /*
 	Critical Resistance Defines 
