@@ -362,10 +362,7 @@
 		return FALSE
 
 	playsound(get_turf(src), TRANQUILITY_SHROUD_RETRIBUTION_SOUND, 80, TRUE)
-	var/retribution_message = (reason == "grave") ? "A hollow laugh rattles through the open grave as gravebound bones turn on [src]." : "A hollow laugh rattles through the air as gravebound bones turn on [src]."
-	visible_message(span_danger(retribution_message), span_userdanger("Вы прогневали Некру."))
-	var/mob/living/speaker = pick(spawned_undead)
-	speaker.say("Вы прогневали Некру")
+	to_chat(src, span_userdanger("Ваши действия прогневили Некру. Вы чувствуете леденящий озноб и взгляд, устремленный на вас из темноты."))
 	return TRUE
 
 /mob/living/proc/tranquility_shroud_pick_retribution_turf()
