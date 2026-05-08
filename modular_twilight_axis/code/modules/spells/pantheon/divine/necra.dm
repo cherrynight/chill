@@ -397,9 +397,6 @@
 		ai_controller.set_blackboard_key(BB_HIGHEST_THREAT_MOB, target)
 		ai_controller.set_ai_status(AI_STATUS_ON)
 		ai_controller.CancelActions()
-	var/mob/living/simple_animal/hostile/hostile_mob = src
-	if(istype(hostile_mob))
-		hostile_mob.GiveTarget(target)
 	return TRUE
 
 /mob/living/proc/tranquility_shroud_has_lost_retribution_target(mob/living/target)
@@ -407,9 +404,10 @@
 		return TRUE
 	if(ai_controller && ai_controller.blackboard[BB_BASIC_MOB_CURRENT_TARGET] != target && ai_controller.blackboard[BB_HIGHEST_THREAT_MOB] != target)
 		return TRUE
-	var/mob/living/simple_animal/hostile/hostile_mob = src
-	if(istype(hostile_mob) && hostile_mob.target != target)
-		return TRUE
+	if(!ai_controller)
+		var/mob/living/simple_animal/hostile/hostile_mob = src
+		if(istype(hostile_mob) && hostile_mob.target != target)
+			return TRUE
 	return FALSE
 
 /mob/living/proc/tranquility_shroud_teleport_near_target(mob/living/target)
