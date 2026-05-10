@@ -59,17 +59,17 @@
 		return FALSE
 	tranquility_shroud_offenses++
 	if(tranquility_shroud_has_company())
-		to_chat(src, span_userdanger("Тёмные сады Некры отверзают зев — три драггера лезут из земли, чтобы утянуть вас и ваших спутников."))
-		tranquility_shroud_summon_draggers(3)
+		to_chat(src, span_userdanger("Тёмные сады Некры отверзают зев — три скелета лезут из земли, чтобы забрать вас и ваших спутников."))
+		tranquility_shroud_summon_skeletons(3)
 		return TRUE
 	if(tranquility_shroud_offenses <= 1)
 		return FALSE
-	var/dragger_count = tranquility_shroud_offenses - 1
+	var/skeleton_count = tranquility_shroud_offenses - 1
 	to_chat(src, span_userdanger("Земля стонет. Из неё восстают порождения садов Некры, чтобы утянуть вас прочь."))
-	tranquility_shroud_summon_draggers(dragger_count)
+	tranquility_shroud_summon_skeletons(skeleton_count)
 	return TRUE
 
-/mob/living/carbon/human/proc/tranquility_shroud_summon_draggers(count)
+/mob/living/carbon/human/proc/tranquility_shroud_summon_skeletons(count)
 	if(count <= 0)
 		return
 	var/list/turf/candidates = list()
@@ -84,8 +84,11 @@
 		if(!spawn_turf)
 			break
 		new /obj/effect/temp_visual/gib_animation(spawn_turf, "gibbed-h")
-		var/mob/living/simple_animal/hostile/rogue/dragger/grasper = new(spawn_turf)
+		var/mob/living/simple_animal/hostile/rogue/skeleton/grasper = new(spawn_turf, null, FALSE, TRUE)
 		grasper.faction = list(FACTION_CABAL)
+		grasper.move_to_delay = 2
+		grasper.add_filter("necra_garden_aura", 2, list("type" = "outline", "color" = "#7ad6ff", "alpha" = 160, "size" = 2))
+		grasper.add_filter("necra_garden_glow", 1, list("type" = "drop_shadow", "color" = "#5fbfe680", "size" = 3, "offset" = 0))
 		if(grasper.ai_controller)
 			grasper.ai_controller.set_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET, src)
 			grasper.ai_controller.set_blackboard_key(BB_HIGHEST_THREAT_MOB, src)
