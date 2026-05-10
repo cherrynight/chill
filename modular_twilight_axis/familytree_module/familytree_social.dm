@@ -188,6 +188,25 @@
 				return TRUE
 	return FALSE
 
+/proc/familytree_first_degree_tier_compatible(mob/living/carbon/human/A, mob/living/carbon/human/B)
+	if(!A || !B)
+		return TRUE
+	var/tier_a = familytree_get_role_tier(A)
+	var/tier_b = familytree_get_role_tier(B)
+
+	if(tier_a == tier_b)
+		return TRUE
+
+	if((tier_a == ROLE_TIER_HIGH && tier_b == ROLE_TIER_LOW) || (tier_a == ROLE_TIER_LOW && tier_b == ROLE_TIER_HIGH))
+		return FALSE
+
+	if(tier_a == ROLE_TIER_NONE && tier_b == ROLE_TIER_LOW)
+		return A.allow_low_status_marriage
+	if(tier_b == ROLE_TIER_NONE && tier_a == ROLE_TIER_LOW)
+		return B.allow_low_status_marriage
+
+	return TRUE
+
 /datum/preferences
 	var/polygamy_mode = POLYGAMY_DISABLED
 

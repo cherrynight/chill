@@ -706,11 +706,13 @@
 	if(!familytree_relative_species_compatible(person, anchor.person))
 		return possible_roles
 
-	if(CanBeParentOf(anchor.person, person) && familytree_parent_link_mode(anchor.person, person, house, adopted))
+	var/first_degree_ok = familytree_first_degree_tier_compatible(person, anchor.person)
+
+	if(first_degree_ok && CanBeParentOf(anchor.person, person) && familytree_parent_link_mode(anchor.person, person, house, adopted))
 		possible_roles += "child"
-	if(familytree_can_be_sibling_of_anchor(house, person, anchor))
+	if(first_degree_ok && familytree_can_be_sibling_of_anchor(house, person, anchor))
 		possible_roles += "sibling"
-	if(anchor.get_parent_members().len < 2 && CanBeParentOf(person, anchor.person))
+	if(first_degree_ok && anchor.get_parent_members().len < 2 && CanBeParentOf(person, anchor.person))
 		if(familytree_parent_link_mode(person, anchor.person, house, adopted))
 			possible_roles += "parent"
 	if((!forced_role || forced_role == "uncle_aunt") && anchor.get_parent_members().len < 2 && familytree_can_be_uncle_aunt_of(person, anchor.person))
@@ -826,9 +828,14 @@
 						success = FALSE
 						break
 			else
-				created_phantom_parent = familytree_create_phantom_member(house, anchor.generation - 1)
-				if(created_phantom_parent && anchor.AddParent(created_phantom_parent))
-					success = new_member.AddParent(created_phantom_parent)
+				var/datum/family_member/canonical_parent = familytree_find_canonical_phantom(house, anchor.generation - 1)
+				if(canonical_parent)
+					if(anchor.AddParent(canonical_parent))
+						success = new_member.AddParent(canonical_parent)
+				else
+					created_phantom_parent = familytree_create_phantom_member(house, anchor.generation - 1)
+					if(created_phantom_parent && anchor.AddParent(created_phantom_parent))
+						success = new_member.AddParent(created_phantom_parent)
 		if("parent")
 			var/parent_link_mode = familytree_parent_link_mode(person, anchor.person, house, adopted)
 			if(!adopted)
@@ -1158,15 +1165,52 @@
 /datum/controller/subsystem/familytree/proc/familytree_apply_uncle_aunt_relation(datum/heritage/house, datum/family_member/uncle_aunt, datum/family_member/nibling)
 	if(!house || !uncle_aunt || !nibling)
 		return FALSE
-	var/datum/family_member/parent = familytree_create_phantom_member(house, nibling.generation - 1)
-	var/datum/family_member/grandparent = familytree_create_phantom_member(house, nibling.generation - 2)
-	if(!parent || !grandparent)
-		return FALSE
-	if(!nibling.AddParent(parent))
-		return FALSE
-	if(!parent.AddParent(grandparent))
-		return FALSE
-	return uncle_aunt.AddParent(grandparent)
+
+	var/datum/family_member/parent_link = familytree_first_phantom_parent(nibling)
+	if(!parent_link)
+		parent_link = familytree_create_phantom_member(house, nibling.generation - 1)
+		if(!parent_link)
+			return FALSE
+		if(!nibling.AddParent(parent_link))
+			return FALSE
+
+	var/datum/family_member/grandparent_link = familytree_first_phantom_parent(parent_link)
+	if(!grandparent_link)
+		grandparent_link = familytree_find_canonical_phantom(house, nibling.generation - 2)
+		if(!grandparent_link)
+			grandparent_link = familytree_create_phantom_member(house, nibling.generation - 2)
+		if(!grandparent_link)
+			return FALSE
+		if(!parent_link.AddParent(grandparent_link))
+			return FALSE
+
+	return uncle_aunt.AddParent(grandparent_link)
+
+/datum/controller/subsystem/familytree/proc/familytree_first_phantom_parent(datum/family_member/member)
+	if(!member)
+		return null
+	for(var/datum/family_member/p as anything in member.get_parent_members())
+		if(p?.phantom)
+			return p
+	return null
+
+/datum/controller/subsystem/familytree/proc/familytree_find_canonical_phantom(datum/heritage/house, generation)
+	if(!house)
+		return null
+	var/datum/family_member/best = null
+	var/best_descendants = -1
+	for(var/datum/family_member/m as anything in house.members)
+		if(!m?.phantom)
+			continue
+		if(m.generation != generation)
+			continue
+		if(m.get_parent_members().len)
+			continue
+		var/desc_count = m.get_child_members().len
+		if(desc_count > best_descendants)
+			best_descendants = desc_count
+			best = m
+	return best
 
 /datum/controller/subsystem/familytree/proc/familytree_apply_new_family_relation(datum/heritage/house, mob/living/carbon/human/A, mob/living/carbon/human/B, relation)
 	if(!house || !A || !B)
@@ -1656,12 +1700,20 @@
 /datum/controller/subsystem/familytree/proc/pick_preferred_family_house(list/candidates)
 	if(!candidates.len)
 		return null
-	var/list/underfilled = list()
+	if(candidates.len == 1)
+		return candidates[1]
+
+	var/list/weighted = list()
 	for(var/datum/heritage/house as anything in candidates)
-		if(house.member_nodes.len < FAMILYTREE_PREFERRED_MIN_HOUSE_SIZE)
-			underfilled += house
-	if(underfilled.len)
-		return pick_least_filled_house(underfilled)
+		var/size = house.member_nodes.len
+		var/weight = 1
+		if(size < FAMILYTREE_PREFERRED_MIN_HOUSE_SIZE)
+			weight = (FAMILYTREE_PREFERRED_MIN_HOUSE_SIZE - size) * 3 + 1
+		weighted[house] = weight
+
+	var/datum/heritage/picked = pickweight(weighted)
+	if(picked)
+		return picked
 	return pick(candidates)
 
 /datum/controller/subsystem/familytree/proc/bestow_wedding_rings(mob/living/carbon/human/A, mob/living/carbon/human/B)
