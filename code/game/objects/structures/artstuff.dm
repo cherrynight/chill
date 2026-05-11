@@ -135,17 +135,6 @@
 		used_canvas.finalize_painting()
 
 /obj/item/canvas/proc/update_drawing(x, y, current_color)
-	var/pos_key = "[x][y]"
-	if(pos_key in overlay_to_index)
-		cut_overlay(overlay_to_index[pos_key])
-	
-	var/mutable_appearance/MA = mutable_appearance('icons/roguetown/items/paint_supplies/pixel.dmi', "pixel")
-	MA.color = current_color
-	MA.pixel_x = x
-	MA.pixel_y = y
-	add_overlay(MA)
-	overlay_to_index[pos_key] = MA
-	current_overlays++
 
 /obj/item/canvas/proc/upload_painting()
 	if(!author || !title)
@@ -183,8 +172,11 @@
 
 /atom/movable/screen/canvas/Initialize(mapload, ...)
 	. = ..()
-	draw = icon(icon, icon_state)
-	base = icon(icon, icon_state)
+	var/icon/I = icon(icon, icon_state)
+	I.Scale(160, 160) 
+	
+	draw = I
+	base = I
 	icon = draw
 	underlays += base
 
@@ -226,74 +218,65 @@
 		finalize_painting()
 
 /atom/movable/screen/canvas/proc/draw_pixel(x, y, color, is_erasing)
-	var/obj/item/paint_brush/brush = usr.get_active_held_item()
-	var/brush_size = 1
 	if(!host || !is_drawing) return
 	
 	if(current_ink >= max_ink)
 		is_drawing = FALSE
-		finalize_painting()
+		finalize_painting(usr)
 		return
-	
-	if(istype(brush))
-		brush_size = brush.brush_size
 
+	var/obj/item/paint_brush/brush = usr.get_active_held_item()
+	var/brush_size = istype(brush) ? brush.brush_size : 1
 	var/offset = (brush_size - 1) / 2
+
 	for(var/px = x - offset to x + offset)
 		for(var/py = y - offset to y + offset)
 			if(px < 0 || px >= host.canvas_size_x || py < 0 || py >= host.canvas_size_y)
 				continue
 
-			if(is_erasing)
-				modified_areas -= "[px][py]"
-				if("[px][py]" in overlay_to_index)
-					cut_overlay(overlay_to_index["[px][py]"])
-			else
-				if("[px][py]" in modified_areas)
-					if(shade_adjustment_mode)
-						var/pre_merge = draw.GetPixel(px+1, py+1)
-						if(pre_merge != color)
-							color = BlendRGB(color, pre_merge, 0.5)
-				modified_areas |= "[px][py]"
-				if("[px][py]" in overlay_to_index)
-					cut_overlay(overlay_to_index["[px][py]"])
+			var/pos_key = "[px][py]"
 
-			if(!is_erasing)
+			if(is_erasing)
+				modified_areas -= pos_key
+				if(pos_key in overlay_to_index)
+					cut_overlay(overlay_to_index[pos_key])
+					overlay_to_index -= pos_key
+			else
+				modified_areas |= pos_key
+				if(pos_key in overlay_to_index)
+					cut_overlay(overlay_to_index[pos_key])
+
 				var/mutable_appearance/MA = mutable_appearance(host.canvas_icon, "pixel")
 				MA.color = color
-				MA.pixel_x = (px) * host.canvas_divider_y
-				MA.pixel_y = (py) * host.canvas_divider_x
-				MA.layer = layer +1
-				MA.plane = plane
+				
+				MA.pixel_x = px * host.canvas_divider_x
+				MA.pixel_y = py * host.canvas_divider_y
+				
 				add_overlay(MA)
-				current_overlays++
-				overlay_to_index |= "[px][py]"
-				overlay_to_index["[px][py]"] = MA
-				if(current_overlays > 150)
-					icon = usr.client.RenderIcon(src)
-					current_overlays = 0
-					cut_overlays()
-					overlay_to_index = list()
-
-				host.update_drawing(px, py, color)
+				overlay_to_index[pos_key] = MA
 				current_ink++
 
-/atom/movable/screen/canvas/proc/finalize_painting() //TA EDIT
-	if(usr && usr.client)
-		var/icon/I = usr.client.RenderIcon(src)
-		if(I)
-			icon = I
-			cut_overlays()
-			overlay_to_index = list()
-			current_overlays = 0
-
+/atom/movable/screen/canvas/proc/finalize_painting(mob/user)
+	if(!user || !user.client) return
+	
+	var/icon/I = user.client.RenderIcon(src)
+	if(I)
+		icon = I
+		cut_overlays()
+		overlay_to_index = list()
+		
 		if(host)
-			var/icon/HI = usr.client.RenderIcon(host)
-			if(HI)
-				host.icon = HI
-				host.cut_overlays()
-				host.overlay_to_index = list()
-				host.current_overlays = 0
+			var/icon/world_icon = icon(I)
+			world_icon.Scale(host.canvas_size_x, host.canvas_size_y)
+			
+			host.icon = world_icon
+			host.cut_overlays() 
+			
+			draw = icon(I) 
+
+	current_ink = 0
+	current_overlays = 0
+
 
 /atom/movable/screen/canvas/proc/draw_line(start_x, start_y, end_x, end_y, color, is_erasing)
 	// AI suggested implementing bresenham and it blew my mind because i hadn't done that shit since college lol - Ryan FUCK YOU RYAN
@@ -315,47 +298,28 @@
 		if(e2 < dx) { err += dx; cy += sy }
 
 /atom/movable/screen/canvas/MouseMove(location, control, params)
+	if(world.cpu > 90) return 
+
 	. = ..()
-	if(!is_drawing)
-		return
-	if(host.item_flags & IN_STORAGE)
-		return
-
+	if(!is_drawing || !usr || !usr.client || !host) return
+	
 	var/list/param_list = params2list(params)
-	var/x = text2num(param_list["icon-x"])
-	var/y = text2num(param_list["icon-y"])
+	var/raw_x = text2num(param_list["icon-x"])
+	var/raw_y = text2num(param_list["icon-y"])
+	
+	if(isnull(raw_x) || isnull(raw_y)) return
 
-	if(x == null || y == null)
-		return
+	var/x = clamp(floor(raw_x / host.canvas_divider_x), 0, host.canvas_size_x - 1)
+	var/y = clamp(floor(raw_y / host.canvas_divider_y), 0, host.canvas_size_y - 1)
 
-	y = min(FLOOR(y / host.canvas_divider_y, 1), host.canvas_size_y-1)
-	x = min(FLOOR(x / host.canvas_divider_x, 1), host.canvas_size_x-1)
-	y = max(0, y)
-	x = max(0, x)
+	if(last_draw_x == x && last_draw_y == y) return
 
 	var/obj/item/paint_brush/brush = usr.get_active_held_item()
-	if(!istype(brush))
-		return
+	if(!istype(brush)) return
 
-	var/current_color = brush.current_color
-
-	if(drawing_is_erasing)
-		current_color = base_icon.GetPixel(x, y)
-	else if(!current_color)
-		return
-
-	if(shade_adjustment_mode)
-		if("[x][y]" in modified_areas)
-			draw_pixel(x, y, current_color, FALSE)
-			last_draw_x = x
-			last_draw_y = y
-		return
-
-	// Draw from last position to current position (regular drawing mode)
-	if(last_draw_x != null && last_draw_y != null && (last_draw_x != x || last_draw_y != y))
-		draw_line(last_draw_x, last_draw_y, x, y, current_color, drawing_is_erasing)
-	else
-		draw_pixel(x, y, current_color, drawing_is_erasing)
+	var/color = drawing_is_erasing ? "#ffffff" : brush.current_color
+	
+	draw_line(last_draw_x, last_draw_y, x, y, color, drawing_is_erasing)
 
 	last_draw_x = x
 	last_draw_y = y

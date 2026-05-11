@@ -3,7 +3,7 @@
 		return FALSE
 
 	if(!painting_id)
-		painting_id = "art_[author_ckey]_[world.timeofday]_[rand(100,999)]"
+		painting_id = "art_[author_ckey]_[world.realtime]_[rand(100,999)]"
 
 	var/mob/painter = usr
 	if(painter && painter.client)
