@@ -412,11 +412,11 @@
 	return FALSE
 
 /mob/living/proc/tranquility_shroud_is_undead_witness()
-	if(mob_biotypes & MOB_UNDEAD)
-		return TRUE
-	if(istype(src, /mob/living/carbon/human/species/skeleton))
+	if(istype(src, /mob/living/carbon/human/species/skeleton/npc))
 		return TRUE
 	if(istype(src, /mob/living/simple_animal/hostile/rogue/skeleton))
+		return TRUE
+	if(mob_biotypes & MOB_UNDEAD)
 		return TRUE
 	if(!mind)
 		return FALSE
