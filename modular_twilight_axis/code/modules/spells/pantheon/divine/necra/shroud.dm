@@ -13,6 +13,7 @@
 #define TRANQUILITY_SHROUD_DEADITE_SKIN "78a060"
 #define TRANQUILITY_SHROUD_VAMPIRE_SKIN "c9d3de"
 #define TRANQUILITY_SHROUD_SUN_BURN_DAMAGE 3
+#define TRANQUILITY_SHROUD_STORAGE_PICKUP_GRACE 1
 
 /datum/action/cooldown/spell/touch/shroud_of_tranquility
 	name = "Shroud of Tranquility"
@@ -226,6 +227,14 @@
 	))
 	return ..()
 
+/datum/element/tranquility_shroud/proc/is_player_rescue_grab(mob/living/source, atom/target)
+	if(QDELETED(source) || source.used_intent?.type != INTENT_GRAB || !isliving(target) || target == source)
+		return FALSE
+	var/mob/living/living_target = target
+	if(!living_target.tranquility_shroud_is_player_controlled())
+		return FALSE
+	return !(living_target.mobility_flags & MOBILITY_STAND)
+
 /datum/element/tranquility_shroud/proc/should_break_from_outgoing_aggression(mob/living/source, atom/target, obj/item/weapon)
 	if(QDELETED(source) || !isliving(target) || target == source)
 		return FALSE
@@ -254,6 +263,8 @@
 /datum/element/tranquility_shroud/proc/on_owner_unarmed_attack(mob/living/source, atom/target, proximity)
 	SIGNAL_HANDLER
 	if(!proximity)
+		return
+	if(is_player_rescue_grab(source, target))
 		return
 	if(should_break_from_outgoing_aggression(source, target, null))
 		source.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
@@ -312,6 +323,10 @@
 	if(QDELETED(source) || !isitem(entered) || !isturf(old_loc))
 		return
 	var/obj/item/picked_item = entered
+	if(picked_item.tranquility_shroud_recently_exited_storage())
+		return
+	if(!(picked_item.item_flags & IN_INVENTORY))
+		return
 	if(!picked_item.is_expensive_for_tranquility_shroud())
 		return
 	if(tranquility_shroud_turf_has_player_corpse(old_loc, source))
@@ -505,3 +520,14 @@
 
 /obj/item/proc/is_expensive_for_tranquility_shroud()
 	return get_real_price() > TRANQUILITY_SHROUD_EXPENSIVE_ITEM_VALUE
+
+/obj/item/var/tranquility_shroud_last_storage_exit_time = 0
+
+/obj/item/on_exit_storage(datum/component/storage/concrete/S)
+	. = ..()
+	tranquility_shroud_last_storage_exit_time = world.time
+
+/obj/item/proc/tranquility_shroud_recently_exited_storage()
+	return tranquility_shroud_last_storage_exit_time && world.time <= tranquility_shroud_last_storage_exit_time + TRANQUILITY_SHROUD_STORAGE_PICKUP_GRACE
+
+#undef TRANQUILITY_SHROUD_STORAGE_PICKUP_GRACE
