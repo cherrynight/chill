@@ -589,6 +589,74 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 		return TRUE
 	return FALSE
 
+/proc/familytree_donator_relatives_enabled(ckey)
+	if(!ckey)
+		return FALSE
+	var/plevel = check_patreon_lvl(ckey)
+	if(!isnum(plevel))
+		return FALSE
+	return plevel >= FAMILYTREE_DONATOR_RELATIVES_TIER
+
+/proc/familytree_role_text_ru(role)
+	switch(role)
+		if("spouse")
+			return "супруг(а)"
+		if("sibling")
+			return "брат/сестра"
+		if("child")
+			return "ребёнок"
+		if("parent")
+			return "родитель"
+		if("uncle_aunt")
+			return "дядя/тётя"
+		if("nibling")
+			return "племянник(ца)"
+		if("relative")
+			return "родственник"
+	return null
+
+/proc/familytree_new_family_role_text_ru(relation, is_a)
+	switch(relation)
+		if("spouse")
+			return familytree_role_text_ru("spouse")
+		if("sibling")
+			return familytree_role_text_ru("sibling")
+		if("a_parent")
+			return is_a ? familytree_role_text_ru("parent") : familytree_role_text_ru("child")
+		if("b_parent")
+			return is_a ? familytree_role_text_ru("child") : familytree_role_text_ru("parent")
+		if("a_uncle_aunt")
+			return is_a ? familytree_role_text_ru("uncle_aunt") : familytree_role_text_ru("nibling")
+		if("b_uncle_aunt")
+			return is_a ? familytree_role_text_ru("nibling") : familytree_role_text_ru("uncle_aunt")
+	return null
+
+/proc/familytree_forced_role_text_ru(forced_role)
+	switch(forced_role)
+		if("sibling")
+			return familytree_role_text_ru("sibling")
+		if("parent")
+			return familytree_role_text_ru("parent")
+		if("child")
+			return familytree_role_text_ru("child")
+		if("uncle_aunt")
+			return familytree_role_text_ru("uncle_aunt")
+	return null
+
+/proc/familytree_desired_role_text_ru(desired_role)
+	switch(desired_role)
+		if(RELATIVE_SIBLING)
+			return familytree_role_text_ru("sibling")
+		if(RELATIVE_PARENT)
+			return familytree_role_text_ru("parent")
+		if(RELATIVE_CHILD)
+			return familytree_role_text_ru("child")
+		if(RELATIVE_UNCLE_AUNT)
+			return familytree_role_text_ru("uncle_aunt")
+		if(RELATIVE_SPOUSE)
+			return familytree_role_text_ru("spouse")
+	return null
+
 /datum/controller/subsystem/familytree/proc/familytree_format_fate_reveal(mob/living/carbon/human/partner)
 	if(!partner)
 		return ""

@@ -128,14 +128,15 @@
 			if(forced_role && !HasSuitableHouseForRelative(H, forced_role))
 				wait_for_relative_house(H, "no suitable house for selected role")
 				return
-			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_desired_role), H), "house")
+			var/desired_role_text = familytree_desired_role_text_ru(H.desired_relative_role)
+			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_desired_role), H), "house", desired_role_text)
 		return
 
 	var/can_fallthrough_from_join = !!(family_mode & (FAMILYTREE_MODE_CREATE | FAMILYTREE_MODE_LEGACY_SPOUSE))
 	if(can_try_relative_join)
 		if(HasSuitableHouseForRelative(H))
 			ftlog("AddLocal: [H.real_name] -> AssignToHouse (pending confirm)")
-			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_house), H), "house")
+			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_house), H), "house", familytree_role_text_ru("relative"))
 			return
 		else
 			ftlog("AddLocal: [H.real_name] -> NO suitable house")
@@ -232,11 +233,14 @@
 			return FALSE
 		ftlog("AddLocal: [H.real_name] newlywed match=[match.real_name], requesting mutual confirm")
 		var/confirm_type = familytree_mutual_setspouse(H, match) ? "targeted_spouse" : "spouse"
-		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_newlywed), H, match), confirm_type)
+		var/spouse_text = familytree_role_text_ru("spouse")
+		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_newlywed), H, match), confirm_type, spouse_text, spouse_text)
 		return TRUE
 	if(relation)
 		ftlog("AddLocal: [H.real_name] new-family relation=[relation] match=[match.real_name], requesting mutual confirm")
-		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_new_family_relative), H, match, relation), "family")
+		var/relation_text_a = familytree_new_family_role_text_ru(relation, TRUE)
+		var/relation_text_b = familytree_new_family_role_text_ru(relation, FALSE)
+		request_mutual_confirmation(H, match, CALLBACK(src, PROC_REF(do_execute_new_family_relative), H, match, relation), "family", relation_text_a, relation_text_b)
 		return TRUE
 	return FALSE
 
@@ -274,6 +278,12 @@
 		family.closed = FALSE
 		if(!family.house_leader)
 			family.house_leader = founder.family_member_datum || family.founder
+		GenerateCommonerParents(family, founder.family_member_datum)
+		GenerateCommonerParents(family, partner.family_member_datum)
+		GenerateRandomSiblings(family, founder.family_member_datum, founder.familytree_random_siblings)
+		GenerateRandomSiblings(family, partner.family_member_datum, partner.familytree_random_siblings)
+		GenerateRandomChildren(family, founder.family_member_datum, founder.familytree_random_children)
+		GenerateRandomChildren(family, partner.family_member_datum, partner.familytree_random_children)
 		on_family_formed(family)
 		wake_waiting_relative_seekers(family)
 		familytree_admin_log_house_assignment(H, family, "created new house with spouse [key_name(spouse)]", spouse.family_member_datum)
@@ -336,6 +346,9 @@
 		ftlog("AddLocal: [H.real_name] family no match found, creating new house")
 		var/datum/heritage/new_house = new /datum/heritage(H, null)
 		register_family(new_house)
+		GenerateCommonerParents(new_house, new_house.founder)
+		GenerateRandomSiblings(new_house, new_house.founder, H.familytree_random_siblings)
+		GenerateRandomChildren(new_house, new_house.founder, H.familytree_random_children)
 		ftlog("AddLocal: [H.real_name] founded new house '[new_house.housename]'")
 		familytree_admin_log_house_assignment(H, new_house, "created new house; no compatible family match")
 		stop_tracking_human(H, "founded new house (no match)")
@@ -346,7 +359,8 @@
 	if(!partner)
 		return
 	ftlog("AddLocal: [H.real_name] family match=[partner.real_name] in house=[house.housename], requesting mutual confirm")
-	request_mutual_confirmation(H, partner, CALLBACK(src, PROC_REF(do_execute_family), H, house, partner_member), "family")
+	var/spouse_text = familytree_role_text_ru("spouse")
+	request_mutual_confirmation(H, partner, CALLBACK(src, PROC_REF(do_execute_family), H, house, partner_member), "family", spouse_text, spouse_text)
 
 /datum/controller/subsystem/familytree/proc/do_execute_family(mob/living/carbon/human/H, datum/heritage/house, datum/family_member/partner_member)
 	if(!H || QDELETED(H) || H.family_datum)
@@ -413,13 +427,14 @@
 
 	if(mutual_sibling)
 		ftlog("TryFavorite: [H.real_name] + [favorite.real_name] mutual sibling -> mutual confirm")
-		request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_form_sibling_house), H, favorite), "sibling_house")
+		var/sibling_text = familytree_role_text_ru("sibling")
+		request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_form_sibling_house), H, favorite), "sibling_house", sibling_text, sibling_text)
 		return "assigned"
 
 	if(favorite.family_datum)
 		var/datum/heritage/house = favorite.family_datum
-		if(status_mode & FAMILYTREE_MODE_CREATE)
-			ftlog("TryFavorite: [H.real_name] favorite [favorite.real_name] already has a family; new-family mode will wait")
+		if(!(status_mode & FAMILYTREE_MODE_JOIN) && (status_mode & FAMILYTREE_MODE_CREATE))
+			ftlog("TryFavorite: [H.real_name] favorite [favorite.real_name] already has a family; pure new-family mode will wait")
 			return "waiting"
 		if(!familytree_relative_join_phase_open())
 			ftlog("TryFavorite: [H.real_name] favorite has house but relative join phase is locked")
@@ -431,7 +446,8 @@
 				return "skip"
 			if(!familytree_estates_compatible(H, favorite) || !familytree_role_tiers_compatible(H, favorite))
 				return "skip"
-			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_family), H, house, favorite.family_member_datum), "family")
+			var/spouse_text = familytree_role_text_ru("spouse")
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_family), H, house, favorite.family_member_datum), "family", spouse_text, spouse_text)
 			return "assigned"
 		if(status_mode & FAMILYTREE_MODE_LEGACY_SPOUSE)
 			var/favorite_has_dummy_spouse = FALSE
@@ -446,9 +462,11 @@
 				return "skip"
 			if(!familytree_estates_compatible(H, favorite) || !familytree_role_tiers_compatible(H, favorite))
 				return "skip"
-			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_family), H, house, favorite.family_member_datum), "family")
+			var/spouse_text = familytree_role_text_ru("spouse")
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_family), H, house, favorite.family_member_datum), "family", spouse_text, spouse_text)
 		else
-			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_to_favorite_house), H, house, favorite.family_member_datum), "house")
+			var/forced_role_text = familytree_desired_role_text_ru(H.desired_relative_role) || familytree_role_text_ru("relative")
+			request_family_confirmation(H, CALLBACK(src, PROC_REF(do_assign_to_favorite_house), H, house, favorite.family_member_datum), "house", forced_role_text)
 		return "assigned"
 
 	if((status_mode & (FAMILYTREE_MODE_CREATE | FAMILYTREE_MODE_JOIN | FAMILYTREE_MODE_LEGACY_SPOUSE)) && familytree_new_family_pair_eligible(H, favorite))
@@ -463,10 +481,13 @@
 			if(!familytree_polygamy_compatible(H, favorite))
 				return "skip"
 			var/confirm_type = familytree_mutual_setspouse(H, favorite) ? "targeted_spouse" : "spouse"
-			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), confirm_type)
+			var/spouse_text = familytree_role_text_ru("spouse")
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_newlywed), H, favorite), confirm_type, spouse_text, spouse_text)
 			return "assigned"
 		if(relation)
-			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_new_family_relative), H, favorite, relation), "family")
+			var/relation_text_a = familytree_new_family_role_text_ru(relation, TRUE)
+			var/relation_text_b = familytree_new_family_role_text_ru(relation, FALSE)
+			request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_new_family_relative), H, favorite, relation), "family", relation_text_a, relation_text_b)
 			return "assigned"
 
 	return "waiting"
@@ -585,7 +606,8 @@
 		return FALSE
 
 	ftlog("TARGETED MATCH: [H.real_name] <-> [favorite.real_name] forcing mutual spouse confirmation before regular matching")
-	request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_targeted_spouse_match), H, favorite), "targeted_spouse")
+	var/spouse_text = familytree_role_text_ru("spouse")
+	request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_targeted_spouse_match), H, favorite), "targeted_spouse", spouse_text, spouse_text)
 	return TRUE
 
 /datum/controller/subsystem/familytree/proc/do_execute_targeted_spouse_match(mob/living/carbon/human/H, mob/living/carbon/human/favorite)
@@ -1002,6 +1024,9 @@
 		ftlog("AssignToFamily: [H.real_name] no eligible houses, creating new")
 		var/datum/heritage/new_house = new /datum/heritage(H, null)
 		register_family(new_house)
+		GenerateCommonerParents(new_house, new_house.founder)
+		GenerateRandomSiblings(new_house, new_house.founder, H.familytree_random_siblings)
+		GenerateRandomChildren(new_house, new_house.founder, H.familytree_random_children)
 		ftlog("AssignToFamily: [H.real_name] founded new house '[new_house.housename]'")
 		familytree_admin_log_house_assignment(H, new_house, "created new house; spouse role found no eligible house")
 		return
@@ -1027,6 +1052,9 @@
 				house.founder = new_member
 				new_member.generation = 0
 				house.housename = house.SurnameFormatting(H)
+				GenerateCommonerParents(house, new_member)
+				GenerateRandomSiblings(house, new_member, H.familytree_random_siblings)
+				GenerateRandomChildren(house, new_member, H.familytree_random_children)
 				familytree_admin_log_house_assignment(H, house, "founded unnamed eligible house")
 				return
 
@@ -1668,7 +1696,8 @@
 	if(candidates.len)
 		var/mob/living/carbon/human/chosen = pick(candidates)
 		ftlog("TryFormSiblingHouseFromPartial: [H.real_name] + [chosen.real_name] -> forming sibling house (candidates=[candidates.len])")
-		request_mutual_confirmation(H, chosen, CALLBACK(src, PROC_REF(do_form_sibling_house), H, chosen), "sibling_house")
+		var/sibling_text = familytree_role_text_ru("sibling")
+		request_mutual_confirmation(H, chosen, CALLBACK(src, PROC_REF(do_form_sibling_house), H, chosen), "sibling_house", sibling_text, sibling_text)
 		return TRUE
 
 	ftlog("TryFormSiblingHouseFromPartial: [H.real_name] → no mutual sibling found")
