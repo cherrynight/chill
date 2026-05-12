@@ -2704,7 +2704,6 @@
 /turf/open/floor/rogue/cobblerock,
 /area/rogue/indoors/wretchcamp)
 "mP" = (
-/obj/effect/landmark/vteleport,
 /obj/structure/fluff/walldeco/church/line{
 	dir = 4;
 	pixel_x = 2
@@ -4253,6 +4252,10 @@
 /obj/item/paper,
 /obj/item/paper,
 /obj/item/natural/feather,
+/obj/item/ritechalk{
+	pixel_y = 4;
+	pixel_x = 19
+	},
 /turf/open/floor/rogue/ruinedwood{
 	icon_state = "weird1"
 	},
@@ -6663,6 +6666,15 @@
 	},
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors/banditcamp)
+"GD" = (
+/obj/structure/fluff/walldeco/church/line{
+	dir = 8
+	},
+/obj/structure/vampire/portalmaker{
+	layer = 4
+	},
+/turf/open/floor/rogue/hexstone,
+/area/rogue/indoors/vampire_manor)
 "GE" = (
 /obj/structure/fluff/psycross/copper{
 	layer = 4
@@ -8505,15 +8517,10 @@
 /turf/open/floor/rogue/herringbone,
 /area/rogue/indoors/wretchcamp)
 "Pb" = (
-/obj/structure/vampire/portalmaker{
-	layer = 4
-	},
-/obj/structure/fluff/walldeco/church/line{
-	dir = 1
-	},
 /obj/structure/fluff/walldeco/church/line{
 	dir = 8
 	},
+/obj/effect/landmark/vteleportsending,
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors/vampire_manor)
 "Pd" = (
@@ -9620,7 +9627,6 @@
 /turf/open/floor/rogue/dirt,
 /area/rogue/indoors)
 "Ur" = (
-/obj/effect/landmark/vteleportsending,
 /obj/structure/fluff/walldeco/church/line{
 	dir = 8
 	},
@@ -9816,12 +9822,10 @@
 /area/rogue/indoors/vampire_manor)
 "Vm" = (
 /obj/structure/fluff/walldeco/church/line{
-	dir = 1
-	},
-/obj/structure/fluff/walldeco/church/line{
 	dir = 4;
 	pixel_x = 2
 	},
+/obj/effect/landmark/vteleport,
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors/vampire_manor)
 "Vn" = (
@@ -75963,7 +75967,7 @@ He
 CN
 Go
 xY
-kc
+GD
 Pb
 Ur
 yy
@@ -76115,7 +76119,7 @@ He
 Go
 Go
 xY
-kc
+mP
 Vm
 mP
 az
