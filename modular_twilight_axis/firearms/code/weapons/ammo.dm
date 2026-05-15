@@ -70,8 +70,6 @@
 	armor_penetration = PEN_NONE
 	speed = 0.1
 	intdamfactor = 3
-	secondary_damage = 30
-	secondary_damage_type = BURN
 	var/cannon_aoe_radius = 1
 	var/cannon_aoe_damage_ratio = 0.25
 	var/cannon_aoe_penetration = PEN_NONE
