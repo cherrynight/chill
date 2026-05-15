@@ -10,10 +10,10 @@
 		/datum/component/silverbless,\
 		pre_blessed = BLESSING_NONE,\
 		silver_type = SILVER_PSYDONIAN,\
-		added_force = 10,\
+		added_force = 5,\
 		added_blade_int = 100,\
 		added_int = 50,\
-		added_def = 0,\
+		added_def = 3,\
 	)
 
 /obj/item/inqarticles/garrote // Do not give this item out freely to other classes. Do not subtype this item for other classes. This is intended purely as the Confessor's identifying sidegrade, and as a bonus for the Inspector INQ. I will be very sad if you disregard this comment. Thank you. - Yische.

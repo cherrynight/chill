@@ -163,3 +163,22 @@
 /datum/client_colour/volf
 	colour = list(rgb(74, 114, 162), rgb(169, 116, 204), rgb(16, 16, 16), rgb(0,0,0))
 	priority = 1
+
+/atom/movable/screen/alert/status_effect/debuff/blindness/psy
+	name = "Blindness"
+	desc = "I see naught but darkness!"
+
+/datum/status_effect/debuff/blindness/psy
+	id = "blindness"
+	alert_type = /atom/movable/screen/alert/status_effect/debuff/blindness/psy
+	duration = 15 SECONDS
+
+/datum/status_effect/debuff/blindness/on_creation(mob/living/new_owner, assocskill)
+	. = ..()
+
+/datum/status_effect/debuff/blindness/psy/on_apply()
+	. = ..()
+
+/datum/status_effect/debuff/blindness/psy/on_remove()
+	. = ..()
+	to_chat(owner, span_warning("My vision returns...!"))

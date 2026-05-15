@@ -124,8 +124,8 @@
 /datum/status_effect/debuff/psypowder
 	id = "blind"
 	alert_type = /atom/movable/screen/alert/status_effect/debuff/psypowder
-	effectedstats = list(STATKEY_STR = -3, STATKEY_SPD = -2)
-	duration = 10 SECONDS
+	effectedstats = list(STATKEY_STR = -5, STATKEY_SPD = -5, STATKEY_CON = -3)
+	duration = 15 SECONDS
 
 /atom/movable/screen/alert/status_effect/debuff/thunderpowder
 	name = "Struck by Thunder"
@@ -267,7 +267,7 @@
 							T.apply_status_effect(/datum/status_effect/debuff/thunderpowder)
 						if("psypowder")
 							T.apply_status_effect(/datum/status_effect/debuff/psypowder)
-							T.apply_status_effect(/datum/status_effect/debuff/blindness)
+							T.apply_status_effect(/datum/status_effect/debuff/blindness/psy)
 						if("terrorpowder")
 							gunpowder_npc_critfactor += 1
 				if(!T.mind)
