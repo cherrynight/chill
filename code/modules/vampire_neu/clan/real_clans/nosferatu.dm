@@ -44,6 +44,7 @@
 		TRAIT_LIMBATTACHMENT,
 		TRAIT_KEENEARS,
 		TRAIT_SILVER_WEAK,
+		TRAIT_ZOMBIE_IMMUNE,
 	)
 	covens_to_select = 0
 
@@ -57,8 +58,6 @@
 	. = ..()
 
 	if(is_vampire)
-		var/obj/item/organ/eyes/night_vision/vampire/NV = new()
-		NV.Insert(H, TRUE, FALSE)
 		H.ventcrawler = VENTCRAWLER_ALWAYS //I don't think this does anything because we have no vents
 
 /datum/clan/nosferatu/apply_clan_components(mob/living/carbon/human/H)

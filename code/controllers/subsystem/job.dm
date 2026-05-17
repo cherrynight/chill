@@ -111,11 +111,13 @@ SUBSYSTEM_DEF(job)
 				old_job.current_positions = max(old_job.current_positions - 1, 0)
 				
 		
-		if(!latejoin && player.client && player.client.prefs) //TA EDIT START
+		// TA EDIT START - load the character slot mapped to the assigned job for roundstart and latejoin.
+		if(player.client && player.client.prefs)
 			var/assigned_slot = player.client.prefs.job_characters[rank]
 			if(assigned_slot && assigned_slot != player.client.prefs.loaded_slot)
 				player.client.prefs.load_character(assigned_slot)
-				player.client.prefs.save_preferences() //TA EDIT END
+				player.client.prefs.save_preferences()
+		// TA EDIT END
 				
 		player.mind.assigned_role = rank
 		unassigned -= player
@@ -157,7 +159,7 @@ SUBSYSTEM_DEF(job)
 		if(player.mind && (job.title in player.mind.restricted_roles))
 			JobDebug("FOC incompatible with antagonist role, Player: [player]")
 			continue
-		if(length(job.allowed_races) && !(player.client.prefs.pref_species.type in job.allowed_races))
+		if(length(job.forbidden_races) && (player.client.prefs.pref_species.type in job.forbidden_races))
 			JobDebug("FOC incompatible with species, Player: [player], Job: [job.title], Race: [player.client.prefs.pref_species.name]")
 			continue
 		if(length(job.allowed_patrons) && !(player.client.prefs.selected_patron?.type in job.allowed_patrons))
@@ -231,7 +233,7 @@ SUBSYSTEM_DEF(job)
 			JobDebug("GRJ incompatible with antagonist role, Player: [player], Job: [job.title]")
 			continue
 
-		if(length(job.allowed_races) && !(player.client.prefs.pref_species.type in job.allowed_races))
+		if(length(job.forbidden_races) && (player.client.prefs.pref_species.type in job.forbidden_races))
 			JobDebug("GRJ incompatible with species, Player: [player], Job: [job.title], Race: [player.client.prefs.pref_species.name]")
 			continue
 
@@ -468,7 +470,7 @@ SUBSYSTEM_DEF(job)
 					JobDebug("DO incompatible with antagonist role, Player: [player], Job:[job.title]")
 					continue
 
-				if(length(job.allowed_races) && !(player.client.prefs.pref_species.type in job.allowed_races))
+				if(length(job.forbidden_races) && (player.client.prefs.pref_species.type in job.forbidden_races))
 					JobDebug("DO incompatible with species, Player: [player], Job: [job.title], Race: [player.client.prefs.pref_species.name]")
 					continue
 
@@ -564,7 +566,7 @@ SUBSYSTEM_DEF(job)
 				if(player.mind && (job.title in player.mind.restricted_roles))
 					continue
 
-				if(length(job.allowed_races) && !(player.client.prefs.pref_species.type in job.allowed_races))
+				if(length(job.forbidden_races) && (player.client.prefs.pref_species.type in job.forbidden_races))
 					continue
 				
 				if(length(job.allowed_patrons) && !(player.client.prefs.selected_patron?.type in job.allowed_patrons))

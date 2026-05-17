@@ -1,4 +1,7 @@
 /datum/clan_leader/crimson_fang
+	lord_spells = list(
+		/obj/effect/proc_holder/spell/targeted/shapeshift/vampire/bat
+	)
 	lord_verbs = list(
 		/mob/living/carbon/human/proc/punish_spawn
 	)
@@ -33,6 +36,7 @@
 		TRAIT_DARKVISION,
 		TRAIT_LIMBATTACHMENT,
 		TRAIT_SILVER_WEAK,
+		TRAIT_ZOMBIE_IMMUNE,
 	)
 	covens_to_select = 0
 

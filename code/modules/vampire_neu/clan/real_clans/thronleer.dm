@@ -1,4 +1,7 @@
 /datum/clan_leader/thronleer
+	lord_spells = list(
+		/obj/effect/proc_holder/spell/targeted/shapeshift/vampire/bat
+	)
 	lord_verbs = list(
 		/mob/living/carbon/human/proc/punish_spawn
 	)
@@ -35,6 +38,7 @@
 		TRAIT_LIMBATTACHMENT,
 		TRAIT_KEENEARS,
 		TRAIT_SILVER_WEAK,
+		TRAIT_ZOMBIE_IMMUNE,
 	)
 	clane_covens = list(
 		/datum/coven/obfuscate,
