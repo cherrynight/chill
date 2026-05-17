@@ -3879,7 +3879,6 @@
 #include "modular_twilight_axis\code\modules\spells\pantheon\divine\necra\garden_skeleton.dm"
 #include "modular_twilight_axis\code\modules\spells\pantheon\divine\necra\shroud.dm"
 #include "modular_twilight_axis\code\modules\spells\pantheon\divine\necra\shroud_disguise.dm"
-#include "modular_twilight_axis\code\modules\spells\pantheon\divine\necra\shroud_punishment.dm"
 #include "modular_twilight_axis\code\modules\spells\pantheon\divine\necra\shroud_retaliation.dm"
 #include "modular_twilight_axis\code\modules\surgery\organs\feature_organs\horns.dm"
 #include "modular_twilight_axis\code\modules\surgery\organs\feature_organs\tails.dm"
