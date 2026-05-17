@@ -606,9 +606,28 @@
 	if(h_block || f_block)
 		return FALSE
 
+	var/relation = familytree_new_family_pair_relation(H, favorite)
+	if(relation != "spouse")
+		var/relation_text = relation || "none"
+		ftlog("TARGETED MATCH SKIP: [H.real_name] <-> [favorite.real_name] mutual target relation=[relation_text], falling back to regular matching")
+		return FALSE
+	if(!familytree_targeted_spouse_pair_valid(H, favorite))
+		return FALSE
+
 	ftlog("TARGETED MATCH: [H.real_name] <-> [favorite.real_name] forcing mutual spouse confirmation before regular matching")
 	var/spouse_text = familytree_role_text_ru("spouse")
 	request_mutual_confirmation(H, favorite, CALLBACK(src, PROC_REF(do_execute_targeted_spouse_match), H, favorite), "targeted_spouse", spouse_text, spouse_text)
+	return TRUE
+
+/datum/controller/subsystem/familytree/proc/familytree_targeted_spouse_pair_valid(mob/living/carbon/human/H, mob/living/carbon/human/favorite)
+	if(!familytree_new_family_relation_valid(H, favorite, "spouse"))
+		return FALSE
+	if(familytree_new_family_pair_pref_reject_mask(H, favorite))
+		return FALSE
+	if(!familytree_estates_compatible(H, favorite))
+		return FALSE
+	if(familytree_pair_blocked(H, favorite))
+		return FALSE
 	return TRUE
 
 /datum/controller/subsystem/familytree/proc/do_execute_targeted_spouse_match(mob/living/carbon/human/H, mob/living/carbon/human/favorite)
@@ -619,6 +638,12 @@
 		return
 	if(H.family_datum || favorite.family_datum)
 		retry_local_assignment(H, "targeted spouse already has a family")
+		return
+	if(familytree_new_family_pair_relation(H, favorite) != "spouse")
+		retry_local_assignment(H, "targeted pair no longer wants spouse relation")
+		return
+	if(!familytree_targeted_spouse_pair_valid(H, favorite))
+		retry_local_assignment(H, "targeted spouse pair no longer compatible")
 		return
 	ftlog("TARGETED MATCH: [H.real_name] + [favorite.real_name] -> forced spouse match")
 	viable_spouses -= H

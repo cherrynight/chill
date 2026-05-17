@@ -914,7 +914,7 @@ export const FamilySettingsPanel = () => {
 
                   <div className="FamilySettingsPanel__field">
                     <div className="FamilySettingsPanel__field-label">
-                      Любимое имя (для супруга)
+                      Любимое имя (цель семьи)
                     </div>
                     <div
                       className="FamilySettingsPanel__field-input"
