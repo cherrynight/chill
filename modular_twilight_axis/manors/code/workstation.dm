@@ -109,6 +109,7 @@
 		/datum/roguestock/stockpile/tea,
 		/datum/roguestock/stockpile/coffee,
 		/datum/roguestock/stockpile/rocknut,
+		/datum/roguestock/stockpile/silk,
 	)
 	generate_profit = TRUE
 
@@ -117,8 +118,9 @@
 
 /datum/workstation/trade/big
 	workstation_size = 20
+
 /datum/workstation/fish
-	workstation_name = "Fishing Grounds"
+	workstation_name = "Заводи"
 	workstation_theme = "fish"
 	produce = list(
 		/datum/roguestock/stockpile/fishmince,
@@ -133,10 +135,9 @@
 		/datum/roguestock/stockpile/clam,
 		/datum/roguestock/stockpile/lobster,
 		/datum/roguestock/stockpile/shrimp,
+		/datum/roguestock/stockpile/gold,
+		/datum/roguestock/stockpile/salt,
 	)
-
-/datum/workstation/fish/small
-	workstation_size = 5
 
 /datum/workstation/fish/medium
 	workstation_size = 10
@@ -145,7 +146,7 @@
 	workstation_size = 20
 
 /datum/workstation/mining
-	workstation_name = "Mines"
+	workstation_name = "Шахты"
 	workstation_theme = "mining"
 	produce = list(
 		/datum/roguestock/stockpile/iron,
@@ -156,14 +157,28 @@
 		/datum/roguestock/stockpile/coal,
 		/datum/roguestock/stockpile/stone,
 		/datum/roguestock/stockpile/clay,
-		/datum/roguestock/stockpile/cinnabar,
 	)
-
-/datum/workstation/mining/small
-	workstation_size = 5
 
 /datum/workstation/mining/medium
 	workstation_size = 10
 
 /datum/workstation/mining/big
+	workstation_size = 20
+
+/datum/workstation/forest
+	workstation_name = "Леса"
+	workstation_theme = "forest"
+	produce = list(
+		/datum/roguestock/stockpile/wood,
+		/datum/roguestock/stockpile/wood,
+		/datum/roguestock/stockpile/wood,
+		/datum/roguestock/stockpile/wood,
+		/datum/roguestock/stockpile/coal,
+		/datum/roguestock/stockpile/coal,
+	)
+
+/datum/workstation/forest/medium
+	workstation_size = 10
+
+/datum/workstation/forest/big
 	workstation_size = 20

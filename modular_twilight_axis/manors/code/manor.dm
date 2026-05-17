@@ -49,14 +49,14 @@
 				if("village")
 					workstation_types = list(
 						/datum/workstation/field/big,
-						/datum/workstation/farm/small,
-						/datum/workstation/trade/small
+						/datum/workstation/farm,
+						/datum/workstation/trade
 					)
 				if("hunter_mansion")
 					workstation_types = list(
 						/datum/workstation/hunt/big,
-						/datum/workstation/fruit/small,
-						/datum/workstation/forest/small
+						/datum/workstation/fruit,
+						/datum/workstation/forest
 					)
 				if("fisher_hamlet")
 					workstation_types = list(
@@ -67,8 +67,8 @@
 				if("mining_settlement")
 					workstation_types = list(
 						/datum/workstation/mining/big,
-						/datum/workstation/field/small,
-						/datum/workstation/trade/small
+						/datum/workstation/field,
+						/datum/workstation/trade
 					)
 				else
 					workstation_types = list(
@@ -81,59 +81,59 @@
 				if("village")
 					workstation_types = list(
 						/datum/workstation/field/medium,
-						/datum/workstation/trade/small,
-						/datum/workstation/farm/small
+						/datum/workstation/trade,
+						/datum/workstation/farm
 					)
 				if("hunter_mansion")
 					workstation_types = list(
 						/datum/workstation/hunt/medium,
-						/datum/workstation/fruit/small,
-						/datum/workstation/forest/small
+						/datum/workstation/fruit,
+						/datum/workstation/forest
 					)
 				if("fisher_hamlet")
 					workstation_types = list(
 						/datum/workstation/fish/medium,
-						/datum/workstation/field/small,
-						/datum/workstation/trade/small
+						/datum/workstation/field,
+						/datum/workstation/trade
 					)
 				if("mining_settlement")
 					workstation_types = list(
 						/datum/workstation/mining/medium,
-						/datum/workstation/field/small,
-						/datum/workstation/trade/small
+						/datum/workstation/field,
+						/datum/workstation/trade
 					)
 				else
 					workstation_types = list(
 						/datum/workstation/field/medium,
-						/datum/workstation/fruit/small,
-						/datum/workstation/hunt/small
+						/datum/workstation/fruit,
+						/datum/workstation/hunt
 					)
 		else
 			switch(type)
 				if("village")
 					workstation_types = list(
-						/datum/workstation/field/small,
-						/datum/workstation/farm/small
+						/datum/workstation/field,
+						/datum/workstation/farm
 					)
 				if("hunter_mansion")
 					workstation_types = list(
-						/datum/workstation/hunt/small,
-						/datum/workstation/forest/small
+						/datum/workstation/hunt,
+						/datum/workstation/forest
 					)
 				if("fisher_hamlet")
 					workstation_types = list(
-						/datum/workstation/fish/small,
-						/datum/workstation/field/small
+						/datum/workstation/fish,
+						/datum/workstation/field
 					)
 				if("mining_settlement")
 					workstation_types = list(
-						/datum/workstation/mining/small,
-						/datum/workstation/trade/small
+						/datum/workstation/mining,
+						/datum/workstation/trade
 					)
 				else
 					workstation_types = list(
-						/datum/workstation/field/small,
-						/datum/workstation/fruit/small,
+						/datum/workstation/field,
+						/datum/workstation/fruit,
 					)
 
 
