@@ -10,7 +10,7 @@
 
 /datum/manor
 	var/manor_name = "Неизвестное имение"
-	var/manor_size = 15
+	var/manor_size = "big"
 	var/manor_type = "manor"
 	var/min_workers = 5
 	var/total_workers = 5
@@ -29,6 +29,114 @@
 		return owner.client.prefs.manor_type
 	return manor_type
 
+/datum/manor/proc/get_manor_size(mob/living/carbon/human/owner)
+	if(!owner)
+		return manor_size
+	if(owner.advjob == "Knight Banneret" || owner.mind?.assigned_role in list("Marshal", "Steward", "Hand"))
+		return "big"
+	if(owner.mind?.assigned_role in list("Councillor", "Knight"))
+		return "medium"
+	if(HAS_TRAIT(owner, TRAIT_NOBLE) && HAS_TRAIT(owner, TRAIT_RESIDENT))
+		return "small"
+	return manor_size
+
+/datum/manor/proc/update_workstation_types(type = "manor", manor_size = "big")
+	if(!type)
+		type = manor_type
+	switch(manor_size)
+		if("big")
+			switch(type)
+				if("village")
+					workstation_types = list(
+						/datum/workstation/field/big,
+						/datum/workstation/farm/small,
+						/datum/workstation/trade/small
+					)
+				if("hunter_mansion")
+					workstation_types = list(
+						/datum/workstation/hunt/big,
+						/datum/workstation/fruit/small,
+						/datum/workstation/forest/small
+					)
+				if("fisher_hamlet")
+					workstation_types = list(
+						/datum/workstation/fish/medium,
+						/datum/workstation/field/medium,
+						/datum/workstation/trade/medium
+					)
+				if("mining_settlement")
+					workstation_types = list(
+						/datum/workstation/mining/big,
+						/datum/workstation/field/small,
+						/datum/workstation/trade/small
+					)
+				else
+					workstation_types = list(
+						/datum/workstation/field/medium,
+						/datum/workstation/fruit/medium,
+						/datum/workstation/hunt/medium
+					)
+		if("medium")
+			switch(type)
+				if("village")
+					workstation_types = list(
+						/datum/workstation/field/medium,
+						/datum/workstation/trade/small,
+						/datum/workstation/farm/small
+					)
+				if("hunter_mansion")
+					workstation_types = list(
+						/datum/workstation/hunt/medium,
+						/datum/workstation/fruit/small,
+						/datum/workstation/forest/small
+					)
+				if("fisher_hamlet")
+					workstation_types = list(
+						/datum/workstation/fish/medium,
+						/datum/workstation/field/small,
+						/datum/workstation/trade/small
+					)
+				if("mining_settlement")
+					workstation_types = list(
+						/datum/workstation/mining/medium,
+						/datum/workstation/field/small,
+						/datum/workstation/trade/small
+					)
+				else
+					workstation_types = list(
+						/datum/workstation/field/medium,
+						/datum/workstation/fruit/small,
+						/datum/workstation/hunt/small
+					)
+		else
+			switch(type)
+				if("village")
+					workstation_types = list(
+						/datum/workstation/field/small,
+						/datum/workstation/farm/small
+					)
+				if("hunter_mansion")
+					workstation_types = list(
+						/datum/workstation/hunt/small,
+						/datum/workstation/forest/small
+					)
+				if("fisher_hamlet")
+					workstation_types = list(
+						/datum/workstation/fish/small,
+						/datum/workstation/field/small
+					)
+				if("mining_settlement")
+					workstation_types = list(
+						/datum/workstation/mining/small,
+						/datum/workstation/trade/small
+					)
+				else
+					workstation_types = list(
+						/datum/workstation/field/small,
+						/datum/workstation/fruit/small,
+					)
+
+
 /datum/manor/proc/get_owner_patron(mob/living/carbon/human/owner)
 	if(!owner || !owner.mind)
 		return null
@@ -41,6 +149,8 @@
 
 	manor_name = get_owner_display_name(owner)
 	manor_type = get_owner_manor_type(owner)
+	manor_size = get_manor_size(owner)
+	update_workstation_types(manor_type, manor_size)
 
 	var/owner_patron = get_owner_patron(owner)
 	if(owner_patron)
@@ -56,8 +166,8 @@
 		if(/datum/patron/divine/xylix)
 			if(/datum/workstation/trade in workstation_types)
 				for(var/datum/workstation/trade/trade_station in workstations)
-					trade_station.workstation_size += 10
-					workers_limit += 10
+					trade_station.workstation_size += 5
+					workers_limit += 5
 			else
 				var/datum/workstation/trade/new_trade = new /datum/workstation/trade()
 				workstations += new_trade
@@ -197,23 +307,7 @@
 		"profit_money" = total_profit_money
 	)
 
-/datum/manor/standart
-	workstation_types = list(
-		/datum/workstation/field/medium,
-		/datum/workstation/fruit/medium,
-		/datum/workstation/hunt/medium,
-		/datum/workstation/farm/medium,
-	)
-
-/datum/manor/village
-	manor_type = "village"
-	workstation_types = list(
-		/datum/workstation/field/big,
-		/datum/workstation/farm/medium,
-		/datum/workstation/trade/medium,
-	)
-
-/obj/structure/roguemachine/stockpile/proc/can_open_manor_panel(mob/living/carbon/human/user)
+/obj/structure/roguemachine/mail/proc/can_open_manor_panel(mob/living/carbon/human/user)
 	if(!istype(user) || !user.mind)
 		return FALSE
 
@@ -222,8 +316,7 @@
 	qdel(access_probe)
 	return allowed
 
-/obj/structure/roguemachine/stockpile/MiddleClick(mob/user, params)
-	. = ..()
+/obj/structure/roguemachine/mail/proc/open_manor_panel(mob/user)
 	if(.)
 		return
 	if(!ishuman(user))

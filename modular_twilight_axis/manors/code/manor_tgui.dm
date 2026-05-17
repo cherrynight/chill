@@ -66,7 +66,13 @@
 
 /datum/manor_panel/proc/is_allowed_manor_role(mob/user)
 	var/role_name = get_primary_role(user)
-	if(role_name == "hand" || role_name == "steward")
+	if(user?.advjob == "Knight Banneret")
+		return TRUE
+	if(role_name in list("marshal", "steward", "hand"))
+		return TRUE
+	if(role_name in list("councillor", "knight"))
+		return TRUE
+	if(HAS_TRAIT(user, TRAIT_NOBLE) && HAS_TRAIT(user, TRAIT_RESIDENT))
 		return TRUE
 	return FALSE
 
@@ -89,7 +95,7 @@
 	if(existing_manor)
 		return existing_manor.ensure_initialized(user)
 
-	var/datum/manor/new_manor = new /datum/manor/standart()
+	var/datum/manor/new_manor = new /datum/manor()
 	new_manor.on_creation(user)
 	user.mind.set_owned_manor(new_manor)
 	return new_manor

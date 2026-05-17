@@ -32,10 +32,10 @@
 	)
 
 /datum/workstation/field/medium
-	workstation_size = 15
+	workstation_size = 10
 
 /datum/workstation/field/big
-	workstation_size = 30
+	workstation_size = 20
 
 /datum/workstation/fruit
 	workstation_name = "Сады"
@@ -54,10 +54,10 @@
 	)
 
 /datum/workstation/fruit/medium
-	workstation_size = 15
+	workstation_size = 10
 
 /datum/workstation/fruit/big
-	workstation_size = 30
+	workstation_size = 20
 
 /datum/workstation/hunt
 	workstation_name = "Охотничьи угодья"
@@ -74,10 +74,10 @@
 	)
 
 /datum/workstation/hunt/medium
-	workstation_size = 15
+	workstation_size = 10
 
 /datum/workstation/hunt/big
-	workstation_size = 30
+	workstation_size = 20
 
 /datum/workstation/farm
 	workstation_name = "Фермы"
@@ -94,10 +94,10 @@
 	)
 
 /datum/workstation/farm/medium
-	workstation_size = 15
+	workstation_size = 10
 
 /datum/workstation/farm/big
-	workstation_size = 30
+	workstation_size = 20
 
 /datum/workstation/trade
 	workstation_name = "Торговые ряды"
@@ -113,7 +113,57 @@
 	generate_profit = TRUE
 
 /datum/workstation/trade/medium
-	workstation_size = 15
+	workstation_size = 10
 
 /datum/workstation/trade/big
-	workstation_size = 30
+	workstation_size = 20
+/datum/workstation/fish
+	workstation_name = "Fishing Grounds"
+	workstation_theme = "fish"
+	produce = list(
+		/datum/roguestock/stockpile/fishmince,
+		/datum/roguestock/stockpile/fishfilet,
+		/datum/roguestock/stockpile/dried_fish,
+		/datum/roguestock/stockpile/salmon,
+		/datum/roguestock/stockpile/bass,
+		/datum/roguestock/stockpile/carp,
+		/datum/roguestock/stockpile/sole,
+		/datum/roguestock/stockpile/cod,
+		/datum/roguestock/stockpile/crab,
+		/datum/roguestock/stockpile/clam,
+		/datum/roguestock/stockpile/lobster,
+		/datum/roguestock/stockpile/shrimp,
+	)
+
+/datum/workstation/fish/small
+	workstation_size = 5
+
+/datum/workstation/fish/medium
+	workstation_size = 10
+
+/datum/workstation/fish/big
+	workstation_size = 20
+
+/datum/workstation/mining
+	workstation_name = "Mines"
+	workstation_theme = "mining"
+	produce = list(
+		/datum/roguestock/stockpile/iron,
+		/datum/roguestock/stockpile/copper,
+		/datum/roguestock/stockpile/tin,
+		/datum/roguestock/stockpile/gold,
+		/datum/roguestock/stockpile/silver,
+		/datum/roguestock/stockpile/coal,
+		/datum/roguestock/stockpile/stone,
+		/datum/roguestock/stockpile/clay,
+		/datum/roguestock/stockpile/cinnabar,
+	)
+
+/datum/workstation/mining/small
+	workstation_size = 5
+
+/datum/workstation/mining/medium
+	workstation_size = 10
+
+/datum/workstation/mining/big
+	workstation_size = 20
