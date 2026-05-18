@@ -165,7 +165,7 @@
 
 	switch(patron)
 		if(/datum/patron/divine/xylix)
-			if(/datum/workstation/trade in workstation_types)
+			if((/datum/workstation/trade || /datum/workstation/trade/medium || /datum/workstation/trade/big) in workstation_types)
 				for(var/datum/workstation/trade/trade_station in workstations)
 					trade_station.workstation_size += 5
 					workers_limit += 5

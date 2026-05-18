@@ -196,6 +196,7 @@
 	if(!manor)
 		return list(
 			"manor_name" = "Нет доступного владения",
+			"manor_type" = "manor",
 			"manor_patron_key" = "astrata",
 			"total_workers" = 0,
 			"workers_assigned" = 0,
@@ -212,6 +213,7 @@
 
 	return list(
 		"manor_name" = manor.manor_name,
+		"manor_type" = manor.manor_type,
 		"manor_patron_key" = get_patron_key(manor.patron),
 		"total_workers" = manor.total_workers,
 		"workers_assigned" = manor.get_assigned_workers(),

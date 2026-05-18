@@ -113,6 +113,23 @@ const getKindTheme = (kind: string) => {
   }
 };
 
+const getManorType = (type: string) => {
+  switch (type) {
+    case 'manor':
+      return 'Поместье';
+    case 'hunter_mansion':
+      return 'Охотничья усадьба';
+    case 'fisher_hamlet':
+      return 'Рыбацкий хутор';
+    case 'mining_settlement':
+      return 'Шахтерский поселок';
+    case 'village':
+      return 'Деревня';
+    default:
+      return 'Имение';
+  }
+};
+
 const panelBackground: React.CSSProperties = {
   background:
     'radial-gradient(circle at top, rgba(154,108,49,0.18), transparent 26%),' +
@@ -295,19 +312,18 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
         background: `${theme.overlay}, ${theme.card}`,
         border: `1px solid ${theme.border}`,
         boxShadow: '0 14px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05)',
-        textShadow: '-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black',
-        color: '#3b2510',
+        textShadow: '-1px -1px 2px black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black',
       }}>
       <Scene kind={ws.kind} />
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           <div>
-            <div style={{ fontSize: '25px', fontWeight: 800, lineHeight: 1.1, color: theme.accent, textShadow: '-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black' }}>{ws.name}</div>
-            <div style={{ fontSize: '15px', marginTop: '5px', letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.78 }}>{theme.subtitle}</div>
+            <div style={{ fontSize: '25px', fontWeight: 800, lineHeight: 1.1, color: theme.accent, textShadow: '-1px -1px 2px black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black' }}>{ws.name}</div>
+            <div style={{ fontSize: '15px', marginTop: '5px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{theme.subtitle}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '23px', fontWeight: 800, color: theme.accent }}>{ws.workers_employed}/{ws.workers_max}</div>
-            <div style={{ fontSize: '15px', opacity: 0.78 }}>рабочих</div>
+            <div style={{ fontSize: '23px', fontWeight: 800, color: theme.accent, textShadow: '-1px -1px 2px black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black' }}>{ws.workers_employed}/{ws.workers_max}</div>
+            <div style={{ fontSize: '15px' }}>рабочих</div>
           </div>
         </div>
 
@@ -326,7 +342,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
               boxShadow: '0 0 16px rgba(255,255,255,0.16)',
             }} />
           </div>
-          <div style={{ marginTop: '6px', fontSize: '15px', display: 'flex', justifyContent: 'space-between', opacity: 0.8 }}>
+          <div style={{ marginTop: '6px', fontSize: '15px', display: 'flex', justifyContent: 'space-between' }}>
             <span>Заполненность угодья</span>
             <span>{Math.round(percent)}%</span>
           </div>
@@ -343,7 +359,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
             <Button style={workerButton} onClick={() => act('dec_workers', { id: ws.id })}>−</Button>
             <Button style={workerButton} onClick={() => act('inc_workers', { id: ws.id })}>+</Button>
           </div>
-          <div style={{ textAlign: 'right', fontSize: '15px', opacity: 0.88 }}>
+          <div style={{ textAlign: 'right', fontSize: '15px' }}>
             <div>Бонус производства: {ws.production_bonus}</div>
             <div>{ws.generate_profit ? 'Даёт прибыль' : 'Даёт сырьё'}</div>
           </div>
@@ -357,6 +373,7 @@ export const ManorPanel = () => {
   const { act, data } = useBackend<ManorPanelData>();
   const {
     manor_name,
+    manor_type,
     manor_patron_key,
     total_workers,
     workers_assigned,
@@ -380,7 +397,7 @@ export const ManorPanel = () => {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '29px', fontWeight: 900, lineHeight: 1.02 }}>{manor_name}</div>
                     <div style={{ marginTop: '6px', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', opacity: 0.72 }}>
-                      Двор и угодья
+                      {getManorType(manor_type)}
                     </div>
                   </div>
                 </div>
