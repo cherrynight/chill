@@ -2,9 +2,16 @@
 #define NECRA_GARDEN_HOWL_MAX 18 SECONDS
 #define NECRA_GARDEN_LIFESPAN 5 MINUTES
 #define MOVESPEED_ID_NECRA_GARDEN "necra_garden_swift"
+#define MOVESPEED_ID_NECRA_GARDEN_RETURN "necra_garden_return"
+#define BB_NECRA_GARDEN_RETURN_TARGET "necra_garden_return_target"
 
 /datum/ai_controller/human_npc/necra_garden
+	var/datum/weakref/necra_garden_summoner_ref
+	var/datum/weakref/necra_garden_last_target_ref
+	var/necra_garden_returning_to_summoner = FALSE
+	var/necra_garden_ignore_target_change = FALSE
 	planning_subtrees = list(
+		/datum/ai_planning_subtree/necra_garden_return_to_summoner,
 		/datum/ai_planning_subtree/call_for_help,
 		/datum/ai_planning_subtree/generic_break_restraints,
 		/datum/ai_planning_subtree/use_throwable,
@@ -19,6 +26,119 @@
 		/datum/ai_planning_subtree/leap_attack,
 		/datum/ai_planning_subtree/basic_melee_attack_subtree/human_npc,
 	)
+
+/datum/ai_planning_subtree/necra_garden_return_to_summoner/SelectBehaviors(datum/ai_controller/controller, seconds_per_tick)
+	var/datum/ai_controller/human_npc/necra_garden/garden_ai = controller
+	if(!istype(garden_ai) || !garden_ai.necra_garden_returning_to_summoner)
+		return
+	return garden_ai.necra_garden_process_return_to_summoner()
+
+/datum/targetting_datum/basic/necra_garden/can_attack(mob/living/living_mob, atom/the_target)
+	var/datum/ai_controller/human_npc/necra_garden/garden_ai = living_mob.ai_controller
+	if(istype(garden_ai) && garden_ai.necra_garden_get_summoner() == the_target)
+		return necra_garden_can_attack_summoner(living_mob, the_target)
+	return ..()
+
+/datum/targetting_datum/basic/necra_garden/proc/necra_garden_can_attack_summoner(mob/living/living_mob, atom/the_target)
+	if(isturf(the_target) || !the_target)
+		return FALSE
+	if(ismob(the_target))
+		var/mob/M = the_target
+		if(M.status_flags & GODMODE)
+			return FALSE
+	if(living_mob.see_invisible < the_target.invisibility)
+		return FALSE
+	if(isturf(the_target.loc) && living_mob.z != the_target.z)
+		return FALSE
+	if(isliving(the_target))
+		var/mob/living/L = the_target
+		if(L.stat)
+			return FALSE
+		return TRUE
+	return FALSE
+
+/datum/ai_controller/human_npc/necra_garden/TryPossessPawn(atom/new_pawn)
+	. = ..()
+	set_blackboard_key(BB_TARGETTING_DATUM, new /datum/targetting_datum/basic/necra_garden)
+	RegisterSignal(new_pawn, COMSIG_AI_BLACKBOARD_KEY_SET(BB_BASIC_MOB_CURRENT_TARGET), PROC_REF(necra_garden_on_target_set))
+
+/datum/ai_controller/human_npc/necra_garden/UnpossessPawn(destroy)
+	var/mob/living/living_pawn = pawn
+	if(istype(living_pawn))
+		living_pawn.remove_movespeed_modifier(MOVESPEED_ID_NECRA_GARDEN_RETURN)
+	UnregisterSignal(pawn, COMSIG_AI_BLACKBOARD_KEY_SET(BB_BASIC_MOB_CURRENT_TARGET))
+	necra_garden_summoner_ref = null
+	necra_garden_last_target_ref = null
+	necra_garden_returning_to_summoner = FALSE
+	return ..()
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_set_summoner(mob/living/target)
+	if(!istype(target) || necra_garden_summoner_ref)
+		return
+	necra_garden_summoner_ref = WEAKREF(target)
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_get_summoner()
+	var/mob/living/summoner_target = necra_garden_summoner_ref?.resolve()
+	if(summoner_target && !QDELETED(summoner_target))
+		return summoner_target
+	return null
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_on_target_set(mob/living/source, key)
+	SIGNAL_HANDLER
+	if(necra_garden_ignore_target_change)
+		return
+	var/atom/new_target = blackboard[BB_BASIC_MOB_CURRENT_TARGET]
+	if(QDELETED(new_target))
+		return
+	if(!necra_garden_summoner_ref && isliving(new_target))
+		necra_garden_set_summoner(new_target)
+	var/atom/last_target = necra_garden_last_target_ref?.resolve()
+	var/mob/living/summoner_target = necra_garden_get_summoner()
+	if(last_target && new_target != last_target && summoner_target && new_target != summoner_target)
+		necra_garden_begin_return_to_summoner(summoner_target)
+	necra_garden_last_target_ref = WEAKREF(new_target)
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_begin_return_to_summoner(mob/living/summoner_target)
+	var/mob/living/living_pawn = pawn
+	if(necra_garden_returning_to_summoner || QDELETED(living_pawn) || QDELETED(summoner_target))
+		return
+	necra_garden_returning_to_summoner = TRUE
+	if(!living_pawn.has_movespeed_modifier(MOVESPEED_ID_NECRA_GARDEN_RETURN))
+		living_pawn.add_movespeed_modifier(MOVESPEED_ID_NECRA_GARDEN_RETURN, multiplicative_slowdown = -1.0)
+	clear_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET)
+	clear_blackboard_key(BB_HIGHEST_THREAT_MOB)
+	clear_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION)
+	set_blackboard_key(BB_NECRA_GARDEN_RETURN_TARGET, summoner_target)
+	set_ai_status(AI_STATUS_ON)
+	CancelActions()
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_stop_return_to_summoner()
+	necra_garden_returning_to_summoner = FALSE
+	var/mob/living/living_pawn = pawn
+	if(istype(living_pawn))
+		living_pawn.remove_movespeed_modifier(MOVESPEED_ID_NECRA_GARDEN_RETURN)
+	clear_blackboard_key(BB_NECRA_GARDEN_RETURN_TARGET)
+
+/datum/ai_controller/human_npc/necra_garden/proc/necra_garden_process_return_to_summoner()
+	var/mob/living/living_pawn = pawn
+	var/mob/living/summoner_target = necra_garden_get_summoner()
+	if(QDELETED(living_pawn) || living_pawn.stat == DEAD || QDELETED(summoner_target) || summoner_target.stat == DEAD)
+		necra_garden_stop_return_to_summoner()
+		return
+	if(can_see(living_pawn, summoner_target))
+		necra_garden_stop_return_to_summoner()
+		necra_garden_ignore_target_change = TRUE
+		set_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET, summoner_target)
+		set_blackboard_key(BB_HIGHEST_THREAT_MOB, summoner_target)
+		clear_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION)
+		CancelActions()
+		necra_garden_last_target_ref = WEAKREF(summoner_target)
+		necra_garden_ignore_target_change = FALSE
+		return
+	if(blackboard[BB_NECRA_GARDEN_RETURN_TARGET] != summoner_target)
+		set_blackboard_key(BB_NECRA_GARDEN_RETURN_TARGET, summoner_target)
+	queue_behavior(/datum/ai_behavior/travel_towards, BB_NECRA_GARDEN_RETURN_TARGET)
+	return SUBTREE_RETURN_FINISH_PLANNING
 
 /mob/living/carbon/human/species/skeleton/npc/necra_garden
 	threat_point = THREAT_MODERATE
@@ -49,6 +169,9 @@
 /mob/living/carbon/human/species/skeleton/npc/necra_garden/proc/aggro_at(atom/target)
 	if(QDELETED(src) || QDELETED(target) || stat == DEAD)
 		return
+	var/datum/ai_controller/human_npc/necra_garden/garden_ai = ai_controller
+	if(istype(garden_ai) && isliving(target))
+		garden_ai.necra_garden_set_summoner(target)
 	if(ai_controller)
 		ai_controller.set_blackboard_key(BB_BASIC_MOB_CURRENT_TARGET, target)
 		ai_controller.set_blackboard_key(BB_HIGHEST_THREAT_MOB, target)
