@@ -221,10 +221,7 @@
 	var/retaliation_used = FALSE
 	var/list/cached_appearance
 	var/granted_undead_faction = FALSE
-	var/granted_norun_trait = FALSE
-	var/granted_zombie_immune_trait = FALSE
-	var/granted_rotman_trait = FALSE
-	var/granted_zombie_speech_trait = FALSE
+	var/list/granted_shroud_traits
 	var/vampire_sunlit = FALSE
 
 /datum/status_effect/tranquility_shroud/on_creation(mob/living/new_owner, mob/living/caster, caster_holy_skill, applied_shroud_tier = CLERIC_T0, selected_mode = TRANQUILITY_SHROUD_MODE_RESTLESS)

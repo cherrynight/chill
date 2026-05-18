@@ -16,14 +16,7 @@
 /datum/status_effect/tranquility_shroud/proc/remove_shroud_disguise()
 	if(granted_undead_faction)
 		release_undead_faction()
-	if(granted_norun_trait)
-		release_norun_trait()
-	if(granted_zombie_immune_trait)
-		release_zombie_immune_trait()
-	if(granted_rotman_trait)
-		release_rotman_trait()
-	if(granted_zombie_speech_trait)
-		release_zombie_speech_trait()
+	release_deadite_traits()
 	if(ishuman(owner))
 		restore_skin_appearance()
 
@@ -47,66 +40,34 @@
 	granted_undead_faction = FALSE
 
 /datum/status_effect/tranquility_shroud/proc/grant_deadite_traits()
-	grant_norun_trait()
-	grant_zombie_immune_trait()
-	grant_rotman_trait()
-	grant_zombie_speech_trait()
+	for(var/trait as anything in list(TRAIT_NORUN, TRAIT_ZOMBIE_IMMUNE, TRAIT_ROTMAN, TRAIT_ZOMBIE_SPEECH))
+		grant_shroud_trait(trait)
 
-/datum/status_effect/tranquility_shroud/proc/grant_norun_trait()
-	if(QDELETED(owner) || granted_norun_trait)
+/datum/status_effect/tranquility_shroud/proc/release_deadite_traits()
+	if(!granted_shroud_traits)
 		return
-	if(!HAS_TRAIT_FROM(owner, TRAIT_NORUN, TRANQUILITY_SHROUD_TRAIT_SOURCE))
-		ADD_TRAIT(owner, TRAIT_NORUN, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_norun_trait = TRUE
+	for(var/trait as anything in granted_shroud_traits.Copy())
+		release_shroud_trait(trait)
 
-/datum/status_effect/tranquility_shroud/proc/release_norun_trait()
-	if(!granted_norun_trait)
+/datum/status_effect/tranquility_shroud/proc/grant_shroud_trait(trait)
+	if(QDELETED(owner))
 		return
-	if(owner && !QDELETED(owner))
-		REMOVE_TRAIT(owner, TRAIT_NORUN, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_norun_trait = FALSE
-
-/datum/status_effect/tranquility_shroud/proc/grant_zombie_immune_trait()
-	if(QDELETED(owner) || granted_zombie_immune_trait)
+	if(!granted_shroud_traits)
+		granted_shroud_traits = list()
+	if(trait in granted_shroud_traits)
 		return
-	if(!HAS_TRAIT_FROM(owner, TRAIT_ZOMBIE_IMMUNE, TRANQUILITY_SHROUD_TRAIT_SOURCE))
-		ADD_TRAIT(owner, TRAIT_ZOMBIE_IMMUNE, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_zombie_immune_trait = TRUE
+	if(!HAS_TRAIT_FROM(owner, trait, TRANQUILITY_SHROUD_TRAIT_SOURCE))
+		ADD_TRAIT(owner, trait, TRANQUILITY_SHROUD_TRAIT_SOURCE)
+	granted_shroud_traits += trait
 
-/datum/status_effect/tranquility_shroud/proc/release_zombie_immune_trait()
-	if(!granted_zombie_immune_trait)
+/datum/status_effect/tranquility_shroud/proc/release_shroud_trait(trait)
+	if(!granted_shroud_traits || !(trait in granted_shroud_traits))
 		return
 	if(owner && !QDELETED(owner))
-		REMOVE_TRAIT(owner, TRAIT_ZOMBIE_IMMUNE, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_zombie_immune_trait = FALSE
-
-/datum/status_effect/tranquility_shroud/proc/grant_rotman_trait()
-	if(QDELETED(owner) || granted_rotman_trait)
-		return
-	if(!HAS_TRAIT_FROM(owner, TRAIT_ROTMAN, TRANQUILITY_SHROUD_TRAIT_SOURCE))
-		ADD_TRAIT(owner, TRAIT_ROTMAN, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_rotman_trait = TRUE
-
-/datum/status_effect/tranquility_shroud/proc/release_rotman_trait()
-	if(!granted_rotman_trait)
-		return
-	if(owner && !QDELETED(owner))
-		REMOVE_TRAIT(owner, TRAIT_ROTMAN, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_rotman_trait = FALSE
-
-/datum/status_effect/tranquility_shroud/proc/grant_zombie_speech_trait()
-	if(QDELETED(owner) || granted_zombie_speech_trait)
-		return
-	if(!HAS_TRAIT_FROM(owner, TRAIT_ZOMBIE_SPEECH, TRANQUILITY_SHROUD_TRAIT_SOURCE))
-		ADD_TRAIT(owner, TRAIT_ZOMBIE_SPEECH, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_zombie_speech_trait = TRUE
-
-/datum/status_effect/tranquility_shroud/proc/release_zombie_speech_trait()
-	if(!granted_zombie_speech_trait)
-		return
-	if(owner && !QDELETED(owner))
-		REMOVE_TRAIT(owner, TRAIT_ZOMBIE_SPEECH, TRANQUILITY_SHROUD_TRAIT_SOURCE)
-	granted_zombie_speech_trait = FALSE
+		REMOVE_TRAIT(owner, trait, TRANQUILITY_SHROUD_TRAIT_SOURCE)
+	granted_shroud_traits -= trait
+	if(!length(granted_shroud_traits))
+		granted_shroud_traits = null
 
 /datum/status_effect/tranquility_shroud/proc/apply_skin_disguise()
 	var/mob/living/carbon/human/H = owner
