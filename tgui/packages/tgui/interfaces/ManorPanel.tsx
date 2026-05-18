@@ -32,72 +32,72 @@ const getKindTheme = (kind: string) => {
     case 'field':
       return {
         accent: '#d7b065',
-        border: 'rgba(246, 214, 150, 0.35)',
-        card: 'linear-gradient(180deg, rgba(110,74,30,0.96), rgba(71,45,18,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(222,168,77,0.18), rgba(0,0,0,0.08) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(244, 213, 151, 0.12)',
         subtitle: 'Злаки и овощи',
       };
     case 'orchard':
       return {
         accent: '#8fc86d',
-        border: 'rgba(186, 232, 154, 0.33)',
-        card: 'linear-gradient(180deg, rgba(57,88,37,0.96), rgba(28,51,19,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(155,223,105,0.18), rgba(0,0,0,0.08) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(193, 243, 161, 0.12)',
         subtitle: 'Фрукты и ягоды',
       };
     case 'hunt':
       return {
         accent: '#88a8d8',
-        border: 'rgba(164, 194, 242, 0.33)',
-        card: 'linear-gradient(180deg, rgba(46,58,84,0.97), rgba(24,31,49,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(142,170,225,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(180, 203, 248, 0.11)',
         subtitle: 'Мех, шкуры и дичь',
       };
     case 'farm':
       return {
         accent: '#d4ae71',
-        border: 'rgba(237, 205, 154, 0.34)',
-        card: 'linear-gradient(180deg, rgba(116,87,43,0.96), rgba(65,46,18,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(233,194,112,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(245, 216, 172, 0.11)',
         subtitle: 'Скот и припасы',
       };
     case 'trade':
       return {
         accent: '#c7a2e5',
-        border: 'rgba(211, 180, 245, 0.34)',
-        card: 'linear-gradient(180deg, rgba(88,53,96,0.97), rgba(47,28,55,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(206,153,241,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(222, 191, 248, 0.11)',
-        subtitle: 'Экзотические товары и прибыль',
+        subtitle: 'Товары и прибыль',
       };
     case 'fish':
       return {
         accent: '#a2bfe5',
-        border: 'rgba(180, 203, 245, 0.34)',
-        card: 'linear-gradient(180deg, rgba(88,53,96,0.97), rgba(47,28,55,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(206,153,241,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(203, 191, 248, 0.11)',
         subtitle: 'Рыба и морские сокровища',
       };
     case 'mining':
       return {
         accent: '#e5a2a2',
-        border: 'rgba(245, 180, 180, 0.34)',
-        card: 'linear-gradient(180deg, rgba(88,53,96,0.97), rgba(47,28,55,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(206,153,241,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(222, 191, 248, 0.11)',
         subtitle: 'Руды и ископаемые',
       };
     case 'forest':
       return {
         accent: '#a2e5a7',
-        border: 'rgba(180, 245, 196, 0.34)',
-        card: 'linear-gradient(180deg, rgba(88,53,96,0.97), rgba(47,28,55,0.98))',
-        overlay: 'linear-gradient(135deg, rgba(206,153,241,0.16), rgba(0,0,0,0.1) 70%)',
+        border: 'transparent',
+        card: 'transparent',
+        overlay: 'transparent',
         chip: 'rgba(222, 191, 248, 0.11)',
         subtitle: 'Древисина и уголь',
       };
@@ -216,7 +216,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'field') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('field_icon.jpg')} alt="Поля" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('field_icon.png')} alt="Поля" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -224,7 +224,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'orchard') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('fruit_icon.jpg')} alt="Сады" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('fruit_icon.png')} alt="Сады" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -232,7 +232,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'hunt') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('hunting_icon.jpg')} alt="Охотничьи угодья" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('hunting_icon.png')} alt="Охотничьи угодья" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -240,7 +240,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'farm') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('ranch_icon.jpg')} alt="Фермы" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('ranch_icon.png')} alt="Фермы" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -248,7 +248,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'trade') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('trade_icon.jpg')} alt="Торговые ряды" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('trade_icon.png')} alt="Торговые ряды" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -256,7 +256,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'fish') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('fishing_icon.jpg')} alt="Заводи" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('fishing_icon.png')} alt="Заводи" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -264,7 +264,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'mining') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('mine_icon.jpg')} alt="Шахты" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('mine_icon.png')} alt="Шахты" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -272,7 +272,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'forest') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('forest_icon.jpg')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'cover', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('forest_icon.png')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -296,17 +296,18 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
         border: `1px solid ${theme.border}`,
         boxShadow: '0 14px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05)',
         textShadow: '-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black',
+        color: '#3b2510',
       }}>
       <Scene kind={ws.kind} />
       <div style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           <div>
-            <div style={{ fontSize: '25px', fontWeight: 800, lineHeight: 1.1, textShadow: '-2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black' }}>{ws.name}</div>
-            <div style={{ fontSize: '11px', marginTop: '5px', letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.78 }}>{theme.subtitle}</div>
+            <div style={{ fontSize: '25px', fontWeight: 800, lineHeight: 1.1, color: theme.accent, textShadow: '-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black' }}>{ws.name}</div>
+            <div style={{ fontSize: '15px', marginTop: '5px', letterSpacing: '0.12em', textTransform: 'uppercase', opacity: 0.78 }}>{theme.subtitle}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '23px', fontWeight: 800, color: theme.accent }}>{ws.workers_employed}/{ws.workers_max}</div>
-            <div style={{ fontSize: '11px', opacity: 0.78 }}>рабочих</div>
+            <div style={{ fontSize: '15px', opacity: 0.78 }}>рабочих</div>
           </div>
         </div>
 
@@ -325,7 +326,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
               boxShadow: '0 0 16px rgba(255,255,255,0.16)',
             }} />
           </div>
-          <div style={{ marginTop: '6px', fontSize: '11px', display: 'flex', justifyContent: 'space-between', opacity: 0.8 }}>
+          <div style={{ marginTop: '6px', fontSize: '15px', display: 'flex', justifyContent: 'space-between', opacity: 0.8 }}>
             <span>Заполненность угодья</span>
             <span>{Math.round(percent)}%</span>
           </div>
@@ -342,7 +343,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
             <Button style={workerButton} onClick={() => act('dec_workers', { id: ws.id })}>−</Button>
             <Button style={workerButton} onClick={() => act('inc_workers', { id: ws.id })}>+</Button>
           </div>
-          <div style={{ textAlign: 'right', fontSize: '11px', opacity: 0.88 }}>
+          <div style={{ textAlign: 'right', fontSize: '15px', opacity: 0.88 }}>
             <div>Бонус производства: {ws.production_bonus}</div>
             <div>{ws.generate_profit ? 'Даёт прибыль' : 'Даёт сырьё'}</div>
           </div>

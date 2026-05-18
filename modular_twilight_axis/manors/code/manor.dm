@@ -31,7 +31,7 @@
 
 /datum/manor/proc/get_manor_size(mob/living/carbon/human/owner)
 	if(owner)
-		if(owner.advjob == "Knight Banneret" || owner.mind?.assigned_role in list("Marshal", "Steward", "Hand"))
+		if(owner.advjob == "Knight Banneret" || (owner.mind?.assigned_role in list("Marshal", "Steward", "Hand")))
 			return "big"
 		if(owner.mind?.assigned_role in list("Councillor", "Knight"))
 			return "medium"

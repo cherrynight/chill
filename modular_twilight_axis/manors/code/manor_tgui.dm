@@ -21,13 +21,14 @@
 
 /datum/asset/simple/manor
 	assets = list(
-		"field_icon.jpg" = 'modular_twilight_axis/manors/icons/field_icon.jpg',
-		"fishing_icon.jpg" = 'modular_twilight_axis/manors/icons/fishing_icon.jpg',
-		"forest_icon.jpg" = 'modular_twilight_axis/manors/icons/forest_icon.jpg',
-		"fruit_icon.jpg" = 'modular_twilight_axis/manors/icons/fruit_icon.jpg',
-		"hunting_icon.jpg" = 'modular_twilight_axis/manors/icons/hunting_icon.jpg',
-		"ranch_icon.jpg" = 'modular_twilight_axis/manors/icons/ranch_icon.jpg',
-		"trade_icon.jpg" = 'modular_twilight_axis/manors/icons/trade_icon.jpg',
+		"field_icon.png" = 'modular_twilight_axis/manors/icons/field_icon.png',
+		"fishing_icon.png" = 'modular_twilight_axis/manors/icons/fishing_icon.png',
+		"forest_icon.png" = 'modular_twilight_axis/manors/icons/forest_icon.png',
+		"fruit_icon.png" = 'modular_twilight_axis/manors/icons/fruit_icon.png',
+		"hunting_icon.png" = 'modular_twilight_axis/manors/icons/hunting_icon.png',
+		"ranch_icon.png" = 'modular_twilight_axis/manors/icons/ranch_icon.png',
+		"trade_icon.png" = 'modular_twilight_axis/manors/icons/trade_icon.png',
+		"mine_icon.png" = 'modular_twilight_axis/manors/icons/mine_icon.png',
 	)
 
 /datum/manor_panel/ui_assets(mob/user)
