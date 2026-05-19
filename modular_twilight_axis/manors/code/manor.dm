@@ -39,7 +39,7 @@
 			return "small"
 	return manor_size
 
-/datum/manor/proc/set_up_patron_bonuses(datum/workstaton/workstation)
+/datum/manor/proc/set_up_patron_bonuses(workers_limit)
 	switch(patron)
 		if(/datum/patron/divine/xylix)
 			var/has_trade_district = FALSE
@@ -73,6 +73,7 @@
 				var/datum/workstation/mining/new_mining = new /datum/workstation/mining()
 				workstations += new_mining
 				workers_limit += new_mining.workstation_size
+	return workers_limit
 
 /datum/manor/proc/update_workstation_types(type = "manor", manor_size = "big")
 	if(!type)
@@ -197,7 +198,8 @@
 		var/datum/workstation/new_workstation = new workstation_type()
 		workstations += new_workstation
 		workers_limit += new_workstation.workstation_size
-		set_up_patron_bonuses(new_workstation)
+	
+	workers_limit += set_up_patron_bonuses(workers_limit)
 
 	if(workers_limit < min_workers)
 		workers_limit = min_workers
@@ -283,7 +285,7 @@
 			produced_summary[selected_good] = produced_summary[selected_good] ? produced_summary[selected_good] + units : units
 			this_workstation_units += units
 
-		this_workstation_units = ceil(this_workstation_units * production_increase)
+		this_workstation_units = ceil(this_workstation_units * workstation.production_increase)
 		total_units += this_workstation_units
 		workstation.last_cycle_productivity = max(this_workstation_units, 0)
 		if(workstation.generate_profit)
