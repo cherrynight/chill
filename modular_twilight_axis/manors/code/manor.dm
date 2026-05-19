@@ -308,20 +308,28 @@
 		return null
 
 	var/coin_income = 0
+	var/estate_levy = 0
 	if(SStreasury.has_account(owner))
 		if(total_units)
-			coin_income = ceil(total_units / 10)
-			SStreasury.generate_money_account(coin_income, owner)
+			coin_income = ceil(total_units / 5)
 		if(total_profit_money)
-			SStreasury.generate_money_account(total_profit_money, owner)
 			coin_income += total_profit_money
+	if(coin_income > 0)
+		var/datum/fund/owner_account = SStreasury.get_account(owner)
+		if(owner_account)
+			estate_levy = SStreasury.apply_tax(owner_account, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Estate production income")
+			coin_income -= estate_levy
+			SStreasury.generate_money_account(coin_income, owner)
 
 	var/message = "За этот дае ваше имение поставило Короне: "
 	for(var/good in produced_summary)
 		message += "[produced_summary[good]]x [get_readable_good_name(good)]; "
 
 	if(coin_income)
-		message += "чистая прибыль составила [coin_income] маммон."
+		if(estate_levy)
+			message += "чистая прибыль составила [coin_income] маммон, за вычетом крестьянского оброка в размере [estate_levy] маммон."
+		else
+			message += "чистая прибыль составила [coin_income] маммон."
 	else
 		message += "чистая прибыль от поместья отсутствует."
 	if(owner.client)

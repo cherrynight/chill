@@ -28,6 +28,7 @@ SUBSYSTEM_DEF(treasury)
 		TAX_CATEGORY_IMPORT_TARIFF = 0.15,
 		TAX_CATEGORY_EXPORT_DUTY = 0.15,
 		TAX_CATEGORY_FINE = 1.0,
+		TAX_CATEGORY_ESTATE_LEVY = 0.15, //TA EDIT
 	)
 	var/trade_spread = 0.10
 	var/mint_multiplier = 0.8
@@ -655,6 +656,8 @@ SUBSYSTEM_DEF(treasury)
 			return "Import Tariff"
 		if(TAX_CATEGORY_EXPORT_DUTY)
 			return "Export Duty"
+		if(TAX_CATEGORY_ESTATE_LEVY) //TA EDIT
+			return "Estate Peasants Levy" //TA EDIT
 		if(TAX_CATEGORY_FINE)
 			return "Fine"
 	return capitalize(category)
