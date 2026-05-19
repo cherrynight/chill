@@ -1504,3 +1504,22 @@
   zRainbowcat:
   - bugfix: Hoardmaster
   - bugfix: bandits
+2026-05-19:
+  FreeStylaLT:
+  - bugfix: Binds triggering incorrectly on vuln hits. They now follow the same targeting
+      requirements as regular hit binds.
+  - bugfix: Fixed skin armor not having its regeneration disrupted by attacks properly.
+  Ketrai:
+  - balance: Hunting bag exp down, group hunting exp up.
+  Lamasmaster:
+  - bugfix: Graggar Warcry
+  Ryan180602:
+  - rscadd: donor item
+  radarseas:
+  - rscadd: added Two Extra crafting window recipes,
+  - rscdel: my literal remaining sanity, looking at what isn't logged.
+  - bugfix: fixed some platforms not making noise when crafted,
+  - refactor: roguewindow/stone -> roguewindow/stone_"whatever varient here" for the
+      recipes of crafting.
+  - admin: added crafting logging for walls/platforms/stairs.
+  - server: new logs for CRAFT, they are under game.log
