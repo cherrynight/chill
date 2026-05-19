@@ -307,7 +307,7 @@
 			SStreasury.generate_money_account(total_profit_money, owner)
 			coin_income += total_profit_money
 
-	var/message = "За этот дае ваше поместье поставило Короне: "
+	var/message = "За этот дае ваше имение поставило Короне: "
 	for(var/datum/roguestock/stockpile/good in produced_summary)
 		message += "[produced_summary[good]]x [get_readable_good_name(good)]; "
 
