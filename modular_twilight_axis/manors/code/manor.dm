@@ -204,11 +204,7 @@
 /datum/manor/proc/get_stockpile_entry_for_good(good_path)
 	if(!good_path)
 		return null
-	var/datum/roguestock/stockpile/stockpile = new good_path()
-	if(!stockpile)
-		return null
-	var/trade_good_id = stockpile.trade_good_id
-	qdel(stockpile)
+	var/trade_good_id = initial(good_path.trade_good_id)
 	if(!trade_good_id)
 		return null
 	return SSeconomy.find_stockpile_by_trade_good(trade_good_id)
@@ -216,12 +212,8 @@
 /datum/manor/proc/get_readable_good_name(good_path, fallback = "Ресурс")
 	if(!good_path)
 		return fallback
-	var/as_text = "[good_path]"
-	var/last_slash = findlasttext(as_text, "/")
-	if(last_slash)
-		as_text = copytext(as_text, last_slash + 1)
-	as_text = replacetext(as_text, "_", " ")
-	if(!length(as_text))
+	var/as_text = initial(good_path.name)
+	if(!as_text)
 		return fallback
 	return uppertext(copytext(as_text, 1, 2)) + copytext(as_text, 2)
 

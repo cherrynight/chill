@@ -124,7 +124,7 @@ GLOBAL_VAR_INIT(date_override_offset, 0)
 	if(!SStreasury || !SSeconomy)
 		return
 
-	for(var/mob/living/player in GLOB.mob_list)
+	for(var/mob/living/player in GLOB.player_list)
 		if(player && player.mind)
 			var/datum/manor/manor = player.mind.get_owned_manor()
 			if(!manor)
