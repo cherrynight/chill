@@ -313,6 +313,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
         border: `1px solid ${theme.border}`,
         boxShadow: '0 14px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.05)',
         textShadow: '-1px -1px 3px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black',
+        color: '#ff9d76',
       }}>
       <Scene kind={ws.kind} />
       <div style={{ position: 'relative', zIndex: 1 }}>
