@@ -1498,24 +1498,12 @@
   - bugfix: Graggar Warcry
   Quinalion:
   - image: Zizo miracles resprite.
-  rarytech:
-  - rscadd: Added Xylix mask to donators loadout
   Ryan180602:
   - rscadd: graghereticaxe special
   - rscadd: donor item
-  sakke03:
-  - bugfix: Baotha's blessing no longer gives permanent overdose immunity
-  sinerume:
-  - rscadd: TRAIT_SEEPRICES_SHITTY for Outlaw(Wretch)
-  string-thing:
-  - balance: increased the range of restoration to be in line with the current standard
-      for heals
   WeNeedMorePhoron:
   - bugfix: Probably fixed an issue with preview icons being janky
   - rscadd: Optimized the Steward UI. Report any oddities or invalidated data.
-  zRainbowcat:
-  - bugfix: Hoardmaster
-  - bugfix: bandits
   radarseas:
   - rscadd: Vampire varient surcoats, hoods and cloaks.
   - refactor: refactored vampknight tabard to just vamp, all vampire surcoats are
@@ -1527,3 +1515,45 @@
       recipes of crafting.
   - admin: added crafting logging for walls/platforms/stairs.
   - server: new logs for CRAFT, they are under game.log
+  rarytech:
+  - rscadd: Added Xylix mask to donators loadout
+  sakke03:
+  - bugfix: Baotha's blessing no longer gives permanent overdose immunity
+  sinerume:
+  - rscadd: TRAIT_SEEPRICES_SHITTY for Outlaw(Wretch)
+  string-thing:
+  - balance: increased the range of restoration to be in line with the current standard
+      for heals
+  zRainbowcat:
+  - bugfix: Hoardmaster
+  - bugfix: bandits
+2026-05-20:
+  Ryan180602:
+  - bugfix: blood colour for species specific blood colour
+  - bugfix: donor item
+  SpadesNeil:
+  - rscdel: Removes "Emperor of Flame" from shamisen
+  - refactor: Alphabetizes the .dme
+  WeNeedMorePhoron:
+  - rscadd: Removed the shared SPIDERS_LOWER faction from drow raider, which resulted
+      in anthraxi sharing a faction with drow, thus making them free kills for anthraxi.
+      Because I hear about Anthraxi just farming drow quests and that pisses me off
+  - rscadd: Aragn now have a backup melee tree which is no longer blocked by the cocoon
+      tree, so they are actually a threat instead of chasing you longingly
+  - rscadd: Fixed aggro on spider cocooning so that they no longer chase someone they
+      cannot aggro onto
+  - bugfix: Removed every single runtime fixes from the runtimes fix pack after discovered
+      it drove typecacheof to the highest performance eating individual proc with
+      30s of overtime and 150s of total cpu time out of 1701 total on a mid pop.
+  - bugfix: Fixed an erroneously untested runtime fixes that I presumed was tested
+      and pulled in. This is my bad. Spells Projectiles should work again.
+  changelingonberry:
+  - admin: dont log linux machine id user
+  kbitykbitykbity:
+  - rscadd: Added portable peddlers to the game, can be crafted with engineering skill.
+  - rscadd: Added Bunny Ears (Droopy) sprite.
+  plsleavemealon:
+  - rscadd: Kazengunese/lingyue spellblades now get a proper eastern loadout when
+      choosing eastern weapons.
+  zeroisthebiggay:
+  - rscadd: makes arcyne potential grant a level of literacy
