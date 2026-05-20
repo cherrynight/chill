@@ -319,6 +319,7 @@
 /obj/machinery/light/rogue/candle/floorcandle/alt/pink{
 	pixel_y = -15
 	},
+/obj/structure/fluff/psycross/baotha,
 /turf/open/floor/rogue/grasspurple,
 /area/rogue/outdoors/bograt/safe)
 "by" = (
@@ -3341,9 +3342,8 @@
 /turf/open/floor/rogue/cobble/mossy,
 /area/rogue/outdoors/bograt/safe)
 "pA" = (
-/obj/structure/flora/ausbushes/ppflowers,
-/obj/structure/zizo_bane,
 /obj/machinery/light/rogue/candle/blue/l,
+/obj/structure/flora/roguetree/burnt,
 /turf/open/floor/rogue/dirt,
 /area/rogue/outdoors/bograt/safe)
 "pB" = (
@@ -6619,6 +6619,10 @@
 /obj/structure/flora/rogueshroom,
 /turf/open/floor/rogue/grasspurple,
 /area/rogue/indoors/banditcamp)
+"FD" = (
+/obj/structure/fluff/psycross/baotha/decorated,
+/turf/open/floor/rogue/grasspurple,
+/area/rogue/outdoors/bograt/safe)
 "FE" = (
 /obj/item/reagent_containers/glass/bowl,
 /turf/open/floor/rogue/ruinedwood/spiral,
@@ -7256,6 +7260,13 @@
 "Ix" = (
 /obj/item/skull,
 /turf/open/floor/rogue/dirt/road,
+/area/rogue/outdoors/bograt/safe)
+"Iy" = (
+/obj/machinery/light/rogue/candle/floorcandle/alt/pink{
+	pixel_y = -15
+	},
+/obj/structure/fluff/psycross/baotha,
+/turf/open/floor/rogue/grasspurple,
 /area/rogue/outdoors/bograt/safe)
 "IB" = (
 /obj/structure/mirror,
@@ -19915,7 +19926,7 @@ Iu
 Sr
 Iu
 Sr
-Iu
+Sr
 Iu
 Iu
 Sr
@@ -20063,9 +20074,9 @@ WO
 WO
 WO
 Sr
-Iu
-Iu
-Iu
+Sr
+Sr
+Sr
 Iu
 Sr
 Iu
@@ -20217,12 +20228,12 @@ TK
 AW
 AW
 TK
-Iu
-Iu
+Sr
+Sr
 pA
-Iu
-Iu
-Iu
+Sr
+Sr
+Sr
 AW
 CT
 iy
@@ -20372,9 +20383,9 @@ tH
 tH
 tH
 AW
-Iu
-Iu
-Iu
+Sr
+Sr
+Sr
 AW
 CT
 iy
@@ -20521,12 +20532,12 @@ qN
 VG
 gu
 VG
-iZ
+Iy
 YB
 TK
 AW
 TK
-Iu
+Sr
 AW
 CT
 iy
@@ -20678,7 +20689,7 @@ lB
 PJ
 dc
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -20817,7 +20828,7 @@ Ov
 Iu
 Iu
 TK
-tV
+FD
 sY
 sY
 im
@@ -20830,7 +20841,7 @@ uO
 lB
 cr
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -20982,7 +20993,7 @@ XI
 lB
 tV
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -21134,7 +21145,7 @@ sY
 uO
 lB
 AW
-Iu
+Sr
 AW
 CT
 iy
@@ -21286,7 +21297,7 @@ iZ
 sY
 zI
 TK
-Iu
+Sr
 AW
 CT
 iy
@@ -21438,7 +21449,7 @@ VG
 sY
 Fb
 AW
-Iu
+Sr
 AW
 CT
 iy
@@ -21590,7 +21601,7 @@ VG
 sY
 gS
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -21742,7 +21753,7 @@ sY
 XI
 lB
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -21894,7 +21905,7 @@ sY
 uO
 QC
 tH
-Iu
+Sr
 AW
 CT
 iy
@@ -22046,7 +22057,7 @@ sY
 VG
 eu
 AW
-Iu
+Sr
 AW
 CT
 iy
@@ -22198,7 +22209,7 @@ lB
 im
 AW
 TK
-Iu
+Sr
 AW
 CT
 iy
@@ -22345,12 +22356,12 @@ TK
 IT
 HT
 dw
-kr
+VG
 bx
 TK
 TK
-Iu
-Iu
+Sr
+Sr
 AW
 CT
 iy
@@ -22500,9 +22511,9 @@ tH
 tH
 AW
 TK
-Iu
-Iu
-Iu
+Sr
+Sr
+Sr
 AW
 CT
 iy
