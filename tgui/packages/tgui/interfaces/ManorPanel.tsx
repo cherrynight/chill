@@ -335,7 +335,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'mage_tower') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('forest_icon.png')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('mage_tower_icon.png')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
@@ -343,7 +343,7 @@ const Scene = ({ kind }: { kind: string }) => {
   if (kind === 'cathedral') {
     return (
       <>
-        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('forest_icon.png')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
+        <div style={{ ...common, left: '0', right: '0', bottom: '0', width: '100%', height: '100%' }}><img src={resolveAsset('cathedral_icon.png')} alt="Леса" style={{width: '100%', height: '100%', objectFit: 'fill', display: 'block', userSelect: 'none'}} /></div>
       </>
     );
   }
