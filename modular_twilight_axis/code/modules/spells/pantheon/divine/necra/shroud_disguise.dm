@@ -79,14 +79,14 @@
 	)
 	if(uses_vampire_mask())
 		H.original_skin_tone = H.skin_tone
-		H.skin_tone = TRANQUILITY_SHROUD_VAMPIRE_SKIN
-		to_chat(H, span_notice("Моя кожа бледнеет и холодеет, словно у новообращённого вампира."))
+		H.skin_tone = "c9d3de"
+		to_chat(H, span_notice("Моя кожа бледнеет, и чужая холодная тишина прячется под ней."))
 		H.update_body()
 		return
 	if(uses_deadite_mask())
 		H.original_skin_tone = H.skin_tone
-		H.skin_tone = TRANQUILITY_SHROUD_DEADITE_SKIN
-		to_chat(H, span_notice("Моя кожа принимает зеленоватую, мертвенную бледность зомби."))
+		H.skin_tone = "78a060"
+		to_chat(H, span_notice("Моя кожа принимает зеленоватый мертвенный оттенок."))
 		H.update_body()
 
 /datum/status_effect/tranquility_shroud/proc/restore_skin_appearance()

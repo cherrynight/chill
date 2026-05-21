@@ -2,39 +2,25 @@
 #define TRANQUILITY_SHROUD_APPLY_TIME 2 SECONDS
 #define TRANQUILITY_SHROUD_FORGET_RANGE 12
 #define TRANQUILITY_SHROUD_TRAIT_SOURCE "tranquility_shroud"
-#define TRANQUILITY_SHROUD_REMOVAL_AGGRESSION "aggression"
-#define TRANQUILITY_SHROUD_REMOVAL_UNDEAD_ATTACK "undead_attack"
 #define TRANQUILITY_SHROUD_MODE_RESTLESS "restless"
 #define TRANQUILITY_SHROUD_MODE_DEADITE "deadite"
 #define TRANQUILITY_SHROUD_MODE_VAMPIRE "vampire"
-#define TRANQUILITY_SHROUD_CHOICE_RESTLESS "Безмолвный саван"
-#define TRANQUILITY_SHROUD_CHOICE_DEADITE "Облик зомби"
-#define TRANQUILITY_SHROUD_CHOICE_VAMPIRE "Личина вампира"
-#define TRANQUILITY_SHROUD_DEADITE_SKIN "78a060"
-#define TRANQUILITY_SHROUD_VAMPIRE_SKIN "c9d3de"
 #define TRANQUILITY_SHROUD_SUN_BURN_DAMAGE 3
-#define TRANQUILITY_SHROUD_ICON 'modular_twilight_axis/code/modules/spells/pantheon/divine/necra/necra_shroud.dmi'
-#define TRANQUILITY_SHROUD_ICON_SPELL "consecrateburial"
-#define TRANQUILITY_SHROUD_ICON_HAND "shroud_hand"
-#define TRANQUILITY_SHROUD_ICON_DEFENCE "shroud_defence"
-#define TRANQUILITY_SHROUD_ICON_T0 "shroud_t0"
-#define TRANQUILITY_SHROUD_ICON_T2 "shroud_t2"
-#define TRANQUILITY_SHROUD_ICON_T3 "shroud_t3"
 
 /datum/stressevent/tranquility_shroud/restless
 	stressadd = 2
 	timer = 12 MINUTES
-	desc = span_red("Могильная тишина давит на мои мысли.")
+	desc = span_red("Холод окатывает всё моё тело и заставляет меня дрожать от озноба...")
 
 /datum/stressevent/tranquility_shroud/deadite
 	stressadd = 4
 	timer = 12 MINUTES
-	desc = span_boldred("Моё тело кажется чужим: холодным и слишком близким к мёртвому.")
+	desc = span_boldred("Холод заставляет моё тело коченеть, а ноги с трудом перебирают по земле...")
 
 /datum/stressevent/tranquility_shroud/vampire
 	stressadd = 6
 	timer = 12 MINUTES
-	desc = span_boldred("Ложное проклятие в моей плоти гложет разум.")
+	desc = span_boldred("Бледный туман покрывает мою кожу, а голоса, исходящие от него, желают выместить на мне свою злобу...")
 
 /proc/tranquility_shroud_stress_for_mode(shroud_mode)
 	switch(shroud_mode)
@@ -45,17 +31,17 @@
 	return /datum/stressevent/tranquility_shroud/restless
 
 /datum/action/cooldown/spell/touch/shroud_of_tranquility
-	name = "Саван Умиротворения"
-	desc = "Накрывает живую душу могильным покоем, скрывая её от мёртвых, пока время, насилие или прикосновение нежити не разорвут саван."
+	name = "Саван Забвения"
+	desc = "Накладывает на цель защиту от нежити, скрывая её от взгляда. Маскировка держится до истечения времени; насилие и касание нежити не разорвут её."
 
 	background_icon = 'icons/mob/actions/genericmiracles.dmi'
-	button_icon = TRANQUILITY_SHROUD_ICON
-	button_icon_state = TRANQUILITY_SHROUD_ICON_SPELL
+	button_icon = 'modular_twilight_axis/code/modules/spells/pantheon/divine/necra/necra_shroud.dmi'
+	button_icon_state = "consecrateburial"
 
-	draw_message = span_notice("Бледный тихий свет собирается вокруг моей ладони. На кожу ложится могильная тишина.")
-	drop_message = span_notice("Тишина соскальзывает с моей ладони.")
+	draw_message = span_notice("Я собираю вокруг моей руки туман, что постепенно окутывает её леденящим холодом.<br>О чём я хочу попросить их?")
+	drop_message = span_notice("Я взмахиваю рукой, и дымка растворяется в воздухе.")
 
-	hand_path = /obj/item/melee/new_touch_attack/tranquility_shroud
+	hand_path = /obj/item/melee/new_touch_attack/shroud
 	can_cast_on_self = TRUE
 	ignore_armor_penalty = TRUE
 
@@ -75,7 +61,7 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 	cooldown_time = 30 SECONDS
 	attunement_school = null
-	sound = 'modular_twilight_axis/code/modules/spells/pantheon/divine/necra/necra_sight.ogg'
+	sound = 'sound/magic/necra_sight.ogg'
 
 /datum/action/cooldown/spell/touch/shroud_of_tranquility/on_hand_deleted(datum/source)
 	remove_hand(null, FALSE)
@@ -98,47 +84,46 @@
 	return applied_shroud_tier
 
 /datum/action/cooldown/spell/touch/shroud_of_tranquility/proc/choose_tranquility_shroud_mode(mob/living/carbon/caster, mob/living/living_target, applied_shroud_tier)
-	var/list/options = list(TRANQUILITY_SHROUD_CHOICE_RESTLESS)
-	var/list/descriptions = list(
-		TRANQUILITY_SHROUD_CHOICE_RESTLESS = "T0: скрывает цель от скелетов и неразумной нежити. С T1 добавляет одноразовую защиту от удара нежити.",
-	)
+	var/restless_choice = "Вуаль Забвения"
+	var/deadite_choice = "Облик зомби"
+	var/vampire_choice = "Личина вампира"
+	var/list/options = list(restless_choice)
+	var/list/descriptions = list()
+	var/list/shroud_modes_by_choice = list()
+	descriptions[restless_choice] = "T0: скрывает цель от взгляда нежити. T1: дарует к сокрытию одноразовое возмездие против атаки нежити."
+	shroud_modes_by_choice[restless_choice] = TRANQUILITY_SHROUD_MODE_RESTLESS
 
 	if(applied_shroud_tier >= CLERIC_T2)
-		options += TRANQUILITY_SHROUD_CHOICE_DEADITE
-		descriptions[TRANQUILITY_SHROUD_CHOICE_DEADITE] = "T2: придаёт цели облик зомби, запрещает бег, скрывает сердцебиение и защищает от зомби-инфекции."
+		options += deadite_choice
+		descriptions[deadite_choice] = "T2: тело приобретает зелёный оттенок, бег становится невозможен, сердцебиение не слышно, а плоть защищена от становления нежитью."
+		shroud_modes_by_choice[deadite_choice] = TRANQUILITY_SHROUD_MODE_DEADITE
 	if(applied_shroud_tier >= CLERIC_T3)
-		options += TRANQUILITY_SHROUD_CHOICE_VAMPIRE
-		descriptions[TRANQUILITY_SHROUD_CHOICE_VAMPIRE] = "T3: придаёт цели облик новообращённого вампира, включая клыки и уязвимость к солнцу."
+		options += vampire_choice
+		descriptions[vampire_choice] = "T3: тело приобретает бледный оттенок, а вампиры не чувствуют чужака; взамен свет Астаты жжёт плоть."
+		shroud_modes_by_choice[vampire_choice] = TRANQUILITY_SHROUD_MODE_VAMPIRE
 
-	var/choice = tgui_input_list(caster, "Каким саваном укрыть [living_target]?", "Саван Умиротворения", options, options[1], descriptions = descriptions)
-	switch(choice)
-		if(TRANQUILITY_SHROUD_CHOICE_RESTLESS)
-			return TRANQUILITY_SHROUD_MODE_RESTLESS
-		if(TRANQUILITY_SHROUD_CHOICE_DEADITE)
-			return TRANQUILITY_SHROUD_MODE_DEADITE
-		if(TRANQUILITY_SHROUD_CHOICE_VAMPIRE)
-			return TRANQUILITY_SHROUD_MODE_VAMPIRE
-	return null
+	var/choice = tgui_input_list(caster, "Какой туман перенести на [living_target]?", "Саван Забвения", options, options[1], descriptions = descriptions)
+	return shroud_modes_by_choice[choice]
 
 /datum/action/cooldown/spell/touch/shroud_of_tranquility/cast_on_hand_hit(obj/item/melee/new_touch_attack/hand, atom/victim, mob/living/carbon/caster, list/modifiers)
 	if(QDELETED(hand) || QDELETED(caster))
 		return FALSE
 	if(!isliving(victim))
-		to_chat(caster, span_warning("Тишина не находит живого имени, которое могла бы укрыть."))
+		to_chat(caster, span_warning("Туман не ложится на тех, кто ничего не осознаёт."))
 		return FALSE
 	if(get_dist(caster, victim) > 1)
-		to_chat(caster, span_warning("Мне нужно подойти к [victim] вплотную, чтобы накинуть саван."))
+		to_chat(caster, span_warning("Мне нужно подойти ближе к [victim], чтобы переместить туман на него."))
 		return FALSE
 
 	var/mob/living/living_target = victim
 	if(QDELETED(living_target) || living_target.stat != CONSCIOUS)
-		to_chat(caster, span_warning("Саван ложится только на живых и бодрствующих."))
+		to_chat(caster, span_warning("Туман не ложится на тех, кто ничего не осознаёт."))
 		return FALSE
 	if((living_target.mob_biotypes & MOB_UNDEAD) || living_target.mind?.has_antag_datum(/datum/antagonist/zombie))
-		to_chat(caster, span_warning("Саван отступает: у мёртвых нет живого дыхания, которое можно скрыть."))
+		to_chat(caster, span_warning("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 	if(living_target.has_tranquility_shroud())
-		to_chat(caster, span_notice("[living_target] уже удерживает торжественная тишина."))
+		to_chat(caster, span_notice("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 
 	var/applied_shroud_tier = get_available_shroud_tier(caster)
@@ -148,55 +133,55 @@
 	if(QDELETED(hand) || QDELETED(caster) || QDELETED(living_target))
 		return FALSE
 	if(get_dist(caster, living_target) > 1 || living_target.stat != CONSCIOUS)
-		to_chat(caster, span_warning("Саван рассеивается, не успев лечь."))
+		to_chat(caster, span_warning("Туман рассеивается, не успев лечь."))
 		return FALSE
 	if((living_target.mob_biotypes & MOB_UNDEAD) || living_target.mind?.has_antag_datum(/datum/antagonist/zombie))
-		to_chat(caster, span_warning("Саван отступает: у мёртвых нет живого дыхания, которое можно скрыть."))
+		to_chat(caster, span_warning("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 	if(living_target.has_tranquility_shroud())
-		to_chat(caster, span_notice("[living_target] уже удерживает торжественная тишина."))
+		to_chat(caster, span_notice("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 
-	caster.visible_message(span_notice("[caster] поднимает к [living_target] бледную тихую ладонь."), span_notice("Я начинаю опускать саван умиротворения на [living_target]."))
+	caster.visible_message(span_notice("[caster] подносит свою ладонь к [living_target]."), span_notice("Я подношу ладонь, заставляя туман перейти с моей руки на [living_target]."))
 	if(living_target != caster)
-		to_chat(living_target, span_notice("Бледный тихий свет собирается возле меня."))
+		to_chat(living_target, span_notice("Туман начинает кружить вокруг меня."))
 
 	if(!do_after(caster, TRANQUILITY_SHROUD_APPLY_TIME, target = living_target))
 		return FALSE
 	if(QDELETED(hand) || QDELETED(caster) || QDELETED(living_target))
 		return FALSE
 	if(get_dist(caster, living_target) > 1 || living_target.stat != CONSCIOUS)
-		to_chat(caster, span_warning("Саван рассеивается, не успев лечь."))
+		to_chat(caster, span_warning("Туман рассеивается, не успев лечь."))
 		return FALSE
 	if((living_target.mob_biotypes & MOB_UNDEAD) || living_target.mind?.has_antag_datum(/datum/antagonist/zombie))
-		to_chat(caster, span_warning("Саван отступает: у мёртвых нет живого дыхания, которое можно скрыть."))
+		to_chat(caster, span_warning("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 	if(living_target.has_tranquility_shroud())
-		to_chat(caster, span_notice("[living_target] уже удерживает торжественная тишина."))
+		to_chat(caster, span_notice("Туман отступает от [living_target] и возвращается назад."))
 		return FALSE
 
 	var/datum/status_effect/tranquility_shroud/shroud = living_target.apply_status_effect(/datum/status_effect/tranquility_shroud, caster, caster.get_skill_level(/datum/skill/magic/holy), applied_shroud_tier, selected_shroud_mode)
 	if(!shroud)
-		to_chat(caster, span_warning("Саван не ложится."))
+		to_chat(caster, span_warning("Туман рассеивается, не успев лечь."))
 		return FALSE
 
 	playsound(get_turf(living_target), sound, 50, TRUE)
-	caster.visible_message(span_notice("[caster] чертит над [living_target] безмолвный знак."), span_notice("Я укрываю [living_target] саваном умиротворения."))
-	to_chat(living_target, span_notice("На меня опускается торжественная тишина, будто мёртвые ненадолго забывают моё имя."))
+	caster.visible_message(span_notice("Туман покрывает [living_target] и начинает кружить вокруг него."), span_notice("Туман покрывает [living_target] и начинает кружить вокруг него."))
+	to_chat(living_target, span_notice("Туман покрывает меня и начинает кружить вокруг."))
 	hand.remove_hand_with_no_refund(caster)
 	return TRUE
 
-/obj/item/melee/new_touch_attack/tranquility_shroud
-	name = "саван умиротворения"
-	desc = "Тихая святая недвижность, собранная вокруг ладони."
+/obj/item/melee/new_touch_attack/shroud
+	name = "слабый туман"
+	desc = "Туман, состоящий из разных духов, образует полотно вокруг руки и может перейти на другого человека."
 	possible_item_intents = list(/datum/intent/use)
-	icon = TRANQUILITY_SHROUD_ICON
-	icon_state = TRANQUILITY_SHROUD_ICON_HAND
+	icon = 'icons/mob/roguehudgrabs.dmi'
+	icon_state = "grabbing_greyscale"
 	associated_skill = /datum/skill/magic/holy
 	experimental_inhand = FALSE
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/melee/new_touch_attack/tranquility_shroud/afterattack(atom/target, mob/living/carbon/user, proximity)
+/obj/item/melee/new_touch_attack/shroud/afterattack(atom/target, mob/living/carbon/user, proximity)
 	if(!proximity)
 		return
 	var/datum/action/cooldown/spell/touch/shroud_of_tranquility/spell = spell_which_made_us?.resolve()
@@ -205,7 +190,7 @@
 
 /datum/status_effect/tranquility_shroud
 	id = "tranquility_shroud"
-	alert_type = /atom/movable/screen/alert/status_effect/buff/tranquility_shroud
+	alert_type = /atom/movable/screen/alert/status_effect/buff/shroud
 	duration = TRANQUILITY_SHROUD_DURATION
 	status_type = STATUS_EFFECT_UNIQUE
 	on_remove_on_mob_delete = TRUE
@@ -256,50 +241,17 @@
 		remove_shroud_disguise()
 		owner.RemoveElement(/datum/element/tranquility_shroud)
 		if(!suppress_remove_message)
-			if(removal_reason == TRANQUILITY_SHROUD_REMOVAL_AGGRESSION || removal_reason == TRANQUILITY_SHROUD_REMOVAL_UNDEAD_ATTACK)
-				to_chat(owner, span_warning("Саван умиротворения рвётся. Мёртвые вспоминают моё имя."))
+			if(removal_reason)
+				to_chat(owner, span_warning("Туман рвётся и больше не может сокрыть от нежити."))
 			else
-				to_chat(owner, span_notice("Торжественная тишина вокруг меня рассеивается."))
+				to_chat(owner, span_notice("Туман рассеивается вокруг меня."))
 	return ..()
 
 /datum/status_effect/tranquility_shroud/proc/dispel(reason, mob/living/undead_source)
 	if(QDELETED(src))
 		return
 	removal_reason = reason
-	if(reason == TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
-		if(mask_active)
-			break_shroud_mask(reason)
-		if(!protection_active)
-			qdel(src)
-		return
-	if(reason == TRANQUILITY_SHROUD_REMOVAL_UNDEAD_ATTACK)
-		if(mask_active)
-			break_shroud_mask(reason)
-		if(protection_active)
-			consume_shroud_protection(undead_source)
-		else
-			qdel(src)
-		return
 	qdel(src)
-
-/datum/status_effect/tranquility_shroud/proc/break_shroud_mask(reason)
-	if(!mask_active)
-		return FALSE
-	mask_active = FALSE
-	remove_shroud_disguise()
-	if(protection_active)
-		to_chat(owner, span_warning("Мёртвые вспоминают моё имя, но белая защита ещё держится на мне."))
-		update_shroud_visuals()
-	return TRUE
-
-/datum/status_effect/tranquility_shroud/proc/consume_shroud_protection(mob/living/undead_source)
-	if(!protection_active)
-		return FALSE
-	protection_active = FALSE
-	on_shroud_broken_by_undead(undead_source)
-	suppress_remove_message = TRUE
-	qdel(src)
-	return TRUE
 
 /datum/status_effect/tranquility_shroud/proc/update_shroud_visuals()
 	if(!owner || QDELETED(owner))
@@ -307,23 +259,23 @@
 	update_shroud_alert()
 	examine_text = null
 	if(protection_active)
-		examine_text = "Вокруг тела держится бледная белая защита."
+		examine_text = "Туман всё ещё витает возле меня и готовится перейти на нежить."
 		return
 
 /datum/status_effect/tranquility_shroud/proc/get_shroud_alert_icon_state()
 	if(protection_active)
-		return TRANQUILITY_SHROUD_ICON_DEFENCE
+		return "shroud_defence"
 	switch(shroud_mode)
 		if(TRANQUILITY_SHROUD_MODE_DEADITE)
-			return TRANQUILITY_SHROUD_ICON_T2
+			return "shroud_t2"
 		if(TRANQUILITY_SHROUD_MODE_VAMPIRE)
-			return TRANQUILITY_SHROUD_ICON_T3
-	return TRANQUILITY_SHROUD_ICON_T0
+			return "shroud_t3"
+	return "shroud_t0"
 
 /datum/status_effect/tranquility_shroud/proc/update_shroud_alert()
 	if(!linked_alert)
 		return
-	linked_alert.icon = TRANQUILITY_SHROUD_ICON
+	linked_alert.icon = 'modular_twilight_axis/code/modules/spells/pantheon/divine/necra/necra_shroud.dmi'
 	linked_alert.icon_state = get_shroud_alert_icon_state()
 
 /datum/status_effect/tranquility_shroud/proc/apply_shroud_stress()
@@ -334,14 +286,13 @@
 	if(stress_event_type && owner)
 		owner.remove_stress(stress_event_type)
 
-/atom/movable/screen/alert/status_effect/buff/tranquility_shroud
-	name = "Саван Умиротворения"
-	desc = "Торжественная тишина держится вокруг меня. Мёртвые могут ненадолго забыть моё имя.<br>"\
-		+ span_info("ПКМ по иконке снимает саван.")
-	icon = TRANQUILITY_SHROUD_ICON
-	icon_state = TRANQUILITY_SHROUD_ICON_T0
+/atom/movable/screen/alert/status_effect/buff/shroud
+	name = "Холодный туман"
+	desc = "Туман держится вокруг меня. Мёртвые не нападут на меня, пока он на мне."
+	icon = 'modular_twilight_axis/code/modules/spells/pantheon/divine/necra/necra_shroud.dmi'
+	icon_state = "shroud_t0"
 
-/atom/movable/screen/alert/status_effect/buff/tranquility_shroud/Click(location, control, params)
+/atom/movable/screen/alert/status_effect/buff/shroud/Click(location, control, params)
 	if(!usr || !usr.client)
 		return FALSE
 	var/list/paramslist = params2list(params)
@@ -362,9 +313,6 @@
 		return ELEMENT_INCOMPATIBLE
 
 	var/mob/living/owner = target
-	RegisterSignal(owner, COMSIG_MOB_ITEM_ATTACK, PROC_REF(on_owner_item_attack))
-	RegisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_owner_unarmed_attack))
-	RegisterSignal(owner, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_owner_ranged_attack))
 	RegisterSignal(owner, COMSIG_ATOM_ATTACKBY, PROC_REF(on_owner_attackby))
 	RegisterSignals(owner, list(COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_ATTACK_PAW), PROC_REF(on_owner_attack_generic))
 	RegisterSignal(owner, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(on_owner_attack_npc))
@@ -372,15 +320,11 @@
 	RegisterSignal(owner, COMSIG_ATOM_HITBY, PROC_REF(on_owner_hitby))
 	RegisterSignal(owner, COMSIG_HUMAN_LIFE, PROC_REF(on_owner_life))
 	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, PROC_REF(on_owner_examine))
-	RegisterSignal(owner, COMSIG_MOB_BEFORE_SPELL_CAST, PROC_REF(on_owner_cast_spell))
 	RegisterSignal(owner, "mob_ai_target_check", PROC_REF(on_owner_ai_target_check))
 	owner.tranquility_shroud_hide_from_nearby_undead()
 
 /datum/element/tranquility_shroud/Detach(datum/source, ...)
 	UnregisterSignal(source, list(
-		COMSIG_MOB_ITEM_ATTACK,
-		COMSIG_HUMAN_EARLY_UNARMED_ATTACK,
-		COMSIG_MOB_ATTACK_RANGED,
 		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_ATTACK_HAND,
 		COMSIG_ATOM_ATTACK_PAW,
@@ -389,21 +333,9 @@
 		COMSIG_ATOM_HITBY,
 		COMSIG_HUMAN_LIFE,
 		COMSIG_PARENT_EXAMINE,
-		COMSIG_MOB_BEFORE_SPELL_CAST,
 		"mob_ai_target_check",
 	))
 	return ..()
-
-/datum/element/tranquility_shroud/proc/is_undead_interaction_target(atom/target)
-	if(!isliving(target))
-		return FALSE
-	var/mob/living/living_target = target
-	return living_target.tranquility_shroud_is_real_undead()
-
-/datum/element/tranquility_shroud/proc/should_break_from_outgoing_undead_contact(mob/living/source, atom/target)
-	if(QDELETED(source) || target == source)
-		return FALSE
-	return is_undead_interaction_target(target)
 
 /datum/element/tranquility_shroud/proc/break_from_incoming_attack(atom/target, atom/attacker)
 	if(!isliving(target) || !isliving(attacker))
@@ -411,33 +343,9 @@
 	var/mob/living/living_target = target
 	var/mob/living/living_attacker = attacker
 	if(living_attacker.tranquility_shroud_is_real_undead())
-		living_target.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_UNDEAD_ATTACK, living_attacker)
-
-/datum/element/tranquility_shroud/proc/on_owner_item_attack(mob/living/source, mob/living/target, mob/living/user, obj/item/weapon)
-	SIGNAL_HANDLER
-	if(should_break_from_outgoing_undead_contact(source, target))
-		source.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
-
-/datum/element/tranquility_shroud/proc/on_owner_unarmed_attack(mob/living/source, atom/target, proximity)
-	SIGNAL_HANDLER
-	if(!proximity)
-		return
-	if(should_break_from_outgoing_undead_contact(source, target))
-		source.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
-
-/datum/element/tranquility_shroud/proc/on_owner_ranged_attack(mob/living/source, atom/target, params)
-	SIGNAL_HANDLER
-	if(should_break_from_outgoing_undead_contact(source, target))
-		source.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
-
-/datum/element/tranquility_shroud/proc/on_owner_cast_spell(mob/living/source, datum/action/cooldown/spell/spell, atom/cast_on)
-	SIGNAL_HANDLER
-	if(QDELETED(source))
-		return
-	if(istype(spell, /datum/action/cooldown/spell/touch/shroud_of_tranquility))
-		return
-	if(should_break_from_outgoing_undead_contact(source, cast_on))
-		source.remove_tranquility_shroud(TRANQUILITY_SHROUD_REMOVAL_AGGRESSION)
+		var/datum/status_effect/tranquility_shroud/shroud = living_target.has_status_effect(/datum/status_effect/tranquility_shroud)
+		if(istype(shroud))
+			shroud.trigger_shroud_retaliation(living_attacker)
 
 /datum/element/tranquility_shroud/proc/on_owner_ai_target_check(mob/living/source, mob/living/checker)
 	SIGNAL_HANDLER
@@ -493,7 +401,7 @@
 		return
 	if(H.is_face_concealed_for_shroud())
 		return
-	examine_list += span_redtext("В глазах [H] мерцает странный свет, а за губами видны клыки!")
+	examine_list += span_redtext("В глазах [H] мерцает чужой свет, а за губами видны клыки!")
 
 /mob/living/proc/has_tranquility_shroud()
 	return !!has_status_effect(/datum/status_effect/tranquility_shroud)
@@ -576,7 +484,7 @@
 		return null
 	var/mob/living/living_examiner = examiner
 	if(shroud.uses_vampire_mask() && living_examiner.mind?.has_antag_datum(/datum/antagonist/vampire))
-		return span_boldnotice("Младший вампир слабой крови, недавно обращённый.")
+		return span_boldnotice("Бледная плоть не кажется чуждой моей крови.")
 	if(shroud.uses_deadite_mask() && living_examiner.tranquility_shroud_is_real_undead())
 		return span_boldnotice("Ещё один зомби.")
 	return null
