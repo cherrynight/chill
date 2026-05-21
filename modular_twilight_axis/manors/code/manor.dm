@@ -293,11 +293,12 @@
 		budget2change(coin_income, null, null, FALSE, delivery)
 	delivery.note = P
 
-	var/datum/component/storage/STR = SSroguemachine.hermailermaster.GetComponent(/datum/component/storage)
+	var/obj/item/roguemachine/mastermail/M = SSroguemachine.hermailermaster
+	var/datum/component/storage/STR = M.GetComponent(/datum/component/storage)
 	if(STR)
 		STR.handle_item_insertion(delivery, prevent_warning = TRUE)
-		SSroguemachine.hermailermaster.new_mail = TRUE
-		SSroguemachine.hermailermaster.update_icon()
+		M.new_mail = TRUE
+		M.update_icon()
 	else
 		qdel(delivery)
 
@@ -362,7 +363,8 @@
 				stockpile_entry.stockpile_amount += units
 			else
 				var/list/region_info = SSeconomy.get_best_import_region(stockpile_entry.trade_good_id)
-				var/unit_price = region_info ? region_info["unit_price"] : (GLOB.trade_goods[stockpile_entry.trade_good_id] ? GLOB.trade_goods[stockpile_entry.trade_good_id].base_price : 1)
+				var/datum/trade_good/tg = GLOB.trade_goods[stockpile_entry.trade_good_id]
+				var/unit_price = region_info ? region_info["unit_price"] : (tg ? tg.base_price : 1)
 				this_workstation_money += unit_price * units
 
 			produced_summary[selected_good] = produced_summary[selected_good] ? produced_summary[selected_good] + units : units
@@ -399,6 +401,7 @@
 			estate_levy = SStreasury.apply_tax(foreign_estate_fund, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Foreign estate production income")
 			import_tariff = SStreasury.apply_tax(foreign_estate_fund, foreign_estate_fund.balance, TAX_CATEGORY_IMPORT_TARIFF, "Foreign estate import tariff")
 			coin_income = foreign_estate_fund.balance
+			qdel(foreign_estate_fund)
 			send_foreign_estate_income_mail(owner, coin_income, estate_levy, import_tariff)
 	else if(coin_income > 0)
 		var/datum/fund/owner_account = SStreasury.get_account(owner)
@@ -412,22 +415,16 @@
 		message += "[produced_summary[good]]x [get_readable_good_name(good)]; "
 
 	if(coin_income)
+		message += "чистая прибыль составила [coin_income] маммон"
+		if(estate_levy)
+			message += ", за вычетом крестьянского оброка в размере [estate_levy] маммон"
+		if(import_tariff)
+			message += (estate_levy ? " и " : ", за вычетом ") + "импортного тарифа в размере [import_tariff] маммон"
 		if(is_foreign)
-			message += "чистая прибыль составила [coin_income] маммон"
-			if(estate_levy)
-				message += ", за вычетом крестьянского оброка в размере [estate_levy] маммон"
-			if(import_tariff)
-				message += (estate_levy ? " и " : ", за вычетом ") + "импортного тарифа в размере [import_tariff] маммон"
-			message += ". Средства отправлены вам по почте HERMES."
-		else if(estate_levy)
-			message += "чистая прибыль составила [coin_income] маммон, за вычетом крестьянского оброка в размере [estate_levy] маммон."
-		else
-			message += "чистая прибыль составила [coin_income] маммон."
+			message += ". Средства отправлены вам по почте HERMES"
+		message += "."
 	else
-		if(is_foreign)
-			message += "чистая прибыль от иностранного поместья отсутствует."
-		else
-			message += "чистая прибыль от поместья отсутствует."
+		message += "чистая прибыль от поместья отсутствует."
 	if(owner.client)
 		to_chat(owner, span_notice(message))
 

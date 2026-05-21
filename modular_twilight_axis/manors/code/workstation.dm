@@ -150,10 +150,11 @@
 	workstation_theme = "mining"
 	produce = list(
 		/datum/roguestock/stockpile/iron,
+		/datum/roguestock/stockpile/iron,
+		/datum/roguestock/stockpile/copper,
 		/datum/roguestock/stockpile/copper,
 		/datum/roguestock/stockpile/tin,
-		/datum/roguestock/stockpile/gold,
-		/datum/roguestock/stockpile/silver,
+		/datum/roguestock/stockpile/tin,
 		/datum/roguestock/stockpile/coal,
 		/datum/roguestock/stockpile/stone,
 		/datum/roguestock/stockpile/clay,
