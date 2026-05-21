@@ -12,7 +12,7 @@
 	var/manor_name = "Неизвестное имение"
 	var/manor_size = "big"
 	var/manor_type = "manor"
-	var/datum/virtue/virtue_origin = new /datum/virtue/none
+	var/datum/virtue/virtue_origin
 	var/min_workers = 5
 	var/total_workers = 5
 	var/patron = /datum/patron/divine/astrata
@@ -29,18 +29,22 @@
 	if(owner?.client?.prefs?.manor_type && length(owner.client.prefs.manor_type))
 		return owner.client.prefs.manor_type
 	return manor_type
-
+/*
 /datum/manor/proc/is_foreign_estate(mob/living/carbon/human/owner)
 	if(!owner)
 		return FALSE
 	if(owner.mind?.has_antag_datum(/datum/antagonist))
 		return FALSE
-	return HAS_TRAIT(owner, TRAIT_NOBLE) && HAS_TRAIT(owner, TRAIT_OUTLANDER)
+	return HAS_TRAIT(owner, TRAIT_NOBLE) && HAS_TRAIT(owner, TRAIT_OUTLANDER)*/
 
 /datum/manor/proc/get_manor_size(mob/living/carbon/human/owner)
 	if(owner)
-		if(is_foreign_estate(owner))
-			return "small"
+		/*if(is_foreign_estate(owner))
+			if(owner?.client?.prefs?.virtue_origin && istype(owner.client.prefs.virtue_origin, /datum/virtue/origin))
+				virtue_origin = owner.client.prefs.virtue_origin
+			else
+				virtue_origin = new /datum/virtue/none
+			return "small"*/
 		if(owner.advjob == "Knight Banneret" || (owner.mind?.assigned_role in list("Marshal", "Steward", "Hand")))
 			return "big"
 		if(owner.mind?.assigned_role in list("Councillor", "Knight"))
@@ -218,10 +222,6 @@
 
 	manor_name = get_owner_display_name(owner)
 	manor_type = get_owner_manor_type(owner)
-	if(owner?.client?.prefs?.virtue_origin && istype(owner.client.prefs.virtue_origin, /datum/virtue/origin))
-		virtue_origin = owner.client.prefs.virtue_origin
-	else
-		virtue_origin = new /datum/virtue/none
 	manor_size = get_manor_size(owner)
 	update_workstation_types(manor_type, manor_size)
 
@@ -328,7 +328,7 @@
 	var/total_profit_money = 0
 	var/total_foreign_income = 0
 
-	var/is_foreign = is_foreign_estate(owner)
+	var/is_foreign = virtue_origin ? TRUE : FALSE
 	for(var/datum/workstation/workstation in workstations)
 		if(workstation.workers_employed <= 0 || !length(workstation.produce))
 			continue

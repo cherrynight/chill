@@ -97,8 +97,8 @@
 		if((J.department_flag & COURTIERS) && is_noble)
 			return TRUE
 
-	if(is_noble && HAS_TRAIT(user, TRAIT_OUTLANDER) && !user.mind?.has_antag_datum(/datum/antagonist))
-		return TRUE
+	//if(is_noble && HAS_TRAIT(user, TRAIT_OUTLANDER) && !user.mind?.has_antag_datum(/datum/antagonist)) //Postponed for now
+		//return TRUE
 
 	if(is_noble  && is_resident) 
 		return TRUE
