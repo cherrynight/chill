@@ -149,7 +149,7 @@
 
 //T0 that tells the user the person's vice.
 /obj/effect/proc_holder/spell/invoked/TAbaothavice
-	name = "Get info"
+	name = "Show desires"
 	desc = "Tells you the targets vice and arousal."
 	action_icon = 'modular_twilight_axis/icons/mob/actions/baothamiracles.dmi'
 	overlay_icon = 'modular_twilight_axis/icons/mob/actions/baothamiracles.dmi'
