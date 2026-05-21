@@ -86,12 +86,12 @@
 	return lowertext("[user.mind.assigned_role]")
 
 /datum/manor_panel/proc/is_allowed_manor_role(mob/user)
-	var/is_noble = (TRAIT_NOBLE in J.job_traits) //For now, no nobility for virtue nobles
-	var/is_resident = HAS_TRAIT(user, TRAIT_RESIDENT)
 	var/datum/job/J = SSjob.GetJob(user.job)
+	var/is_noble = HAS_TRAIT_FROM(user, TRAIT_NOBLE, JOB_TRAIT) || HAS_TRAIT_FROM(user, TRAIT_NOBLE, ADVENTURER_TRAIT) //For now, no nobility for virtue nobles
+	var/is_resident = HAS_TRAIT(user, TRAIT_RESIDENT)
 
 	if(J)
-		if((J.department_flag & RETINUE) && (TRAIT_NOBLE in J.job_traits))
+		if((J.department_flag & RETINUE) && is_noble)
 			return TRUE
 
 		if((J.department_flag & COURTIERS) && is_noble)
