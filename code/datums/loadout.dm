@@ -799,13 +799,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/velvetdress
 	name = "Velvet Dress"
 	category = list("Одежда", "Донат")
-	path = /obj/item/clothing/suit/roguetown/shirt/velvetdress
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/velvetdress
 	donatitem = TRUE
 
 /datum/loadout_item/nobledress
 	name = "Noble's Pinafore"
 	category = list("Одежда", "Донат")
-	path = /obj/item/clothing/suit/roguetown/shirt/nobledress
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/nobledress
 	donatitem = TRUE
 
 /datum/loadout_item/formalshirt
@@ -1789,6 +1789,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Одежда", "Донат")
 	donatitem = TRUE
 
+/datum/loadout_item/donator/willmbrink/padded_dress
+	name = "Donator Item - Padded Dress"
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/willmbrink
+	category = list("Одежда", "Донат")
+	donatitem = TRUE
+
 /datum/loadout_item/donator_dasfox
 	name = "Donator Kit - Archaic Ceremonial Valkyrhelm - Required: Armet"
 	path = /obj/item/enchantingkit/dasfox_helm
@@ -1860,6 +1866,27 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Оружие", "Донат")
 	path = /obj/item/enchantingkit/weapon/noire_flsword
 	donatitem = TRUE
+
+/datum/loadout_item/donator/nero_sword
+	name = "Donator Kit - Sylvan Longsword - Required: Longsword"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/nero_lsword
+	donatitem = TRUE
+	donat_tier = 2
+
+/datum/loadout_item/donator/nero_dagger
+	name = "Donator Kit - Sylvan Dagger - Required: Dagger"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/nero_dagger
+	donatitem = TRUE
+	donat_tier = 2
+	
+/datum/loadout_item/donator/nero_sabre
+	name = "Donator Kit - Sylvan Sabre - Required: Sabre"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/weapon/nero_sabre
+	donatitem = TRUE
+	donat_tier = 2
 
 /datum/loadout_item/donator_dasfox/periapt
 	name = "Donator Item - Defiled Astratan Periapt"
