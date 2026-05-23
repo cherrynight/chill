@@ -259,7 +259,10 @@
 
 	if(workers_limit < min_workers)
 		workers_limit = min_workers
-	total_workers = rand(min_workers, workers_limit)
+	if(patron == /datum/patron/inhumen/graggar)
+		total_workers = min_workers
+	else
+		total_workers = rand(min_workers, workers_limit)	
 
 /datum/manor/proc/ensure_initialized(mob/living/carbon/human/owner)
 	if(!length(workstations))
@@ -344,6 +347,12 @@
 		return fallback
 	return uppertext(copytext(as_text, 1, 2)) + copytext(as_text, 2)
 
+/datum/manor/proc/process_goods_sold_to_market(datum/roguestock/stockpile_entry, units_sold)
+	var/list/region_info = SSeconomy.get_best_import_region(stockpile_entry.trade_good_id)
+	var/datum/trade_good/tg = GLOB.trade_goods[stockpile_entry.trade_good_id]
+	var/unit_price = region_info ? region_info["unit_price"] : (tg ? tg.base_price : 1)
+	return unit_price * units_sold
+
 /datum/manor/proc/produce_resources(mob/living/carbon/human/owner, is_dawn = FALSE, is_dusk = FALSE)
 	if(!owner || !owner.mind || owner.mind.get_owned_manor() != src)
 		return null
@@ -387,13 +396,18 @@
 			if(!stockpile_entry)
 				continue
 
+			if(patron == /datum/patron/inhumen/matthios)
+				var/unsold_units = ceil(units * 0.3)
+				units = units - unsold_units
+				if(unsold_units > 0)
+					total_profit_money += process_goods_sold_to_market(stockpile_entry, unsold_units)
+			else if(patron == /datum/patron/inhumen/baotha)
+				var/resources_multiplier = pick(0.5, 1.0, 1.5)
+				units = ceil(units * resources_multiplier)
 			if(!is_foreign)
 				stockpile_entry.stockpile_amount += units
 			else
-				var/list/region_info = SSeconomy.get_best_import_region(stockpile_entry.trade_good_id)
-				var/datum/trade_good/tg = GLOB.trade_goods[stockpile_entry.trade_good_id]
-				var/unit_price = region_info ? region_info["unit_price"] : (tg ? tg.base_price : 1)
-				this_workstation_money += unit_price * units
+				this_workstation_money += process_goods_sold_to_market(stockpile_entry, units)
 
 			produced_summary[selected_good] = produced_summary[selected_good] ? produced_summary[selected_good] + units : units
 			this_workstation_units += units
@@ -409,6 +423,12 @@
 
 	last_cycle_productivity = max(total_units, 0)
 
+	if(patron == /datum/patron/inhumen/graggar && total_workers <= workers_limit)
+		var/new_slaves = rand(2, 5)
+		total_workers = min(total_workers + new_slaves, workers_limit)
+		if(owner.client)
+			to_chat(owner, span_notice("Ваши рейдеры захватили [new_slaves] рабов. Всего рабочих: [total_workers]."))
+
 	if(!total_units && !total_profit_money)
 		return null
 
@@ -422,19 +442,30 @@
 			coin_income = ceil(total_units / 5)
 		if(total_profit_money)
 			coin_income += total_profit_money
-	if(is_foreign)
-		if(coin_income > 0)
+
+		if(patron == /datum/patron/inhumen/matthios && coin_income > 0)
+			var/voluntary_multiplier = rand(50, 150) / 100
+			coin_income *= voluntary_multiplier
+
+		if(patron == /datum/patron/inhumen/baotha)
+			if(prob(30))
+				coin_income = 0
+			if(prob(30))
+				coin_income *= 2
+	if(coin_income > 0)
+		if(is_foreign)
 			var/datum/fund/foreign_estate_fund = new("Foreign Estate Income for [owner.real_name]", owner, coin_income, CURRENCY_MAMMON)
 			estate_levy = SStreasury.apply_tax(foreign_estate_fund, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Foreign estate production income")
 			import_tariff = SStreasury.apply_tax(foreign_estate_fund, foreign_estate_fund.balance, TAX_CATEGORY_IMPORT_TARIFF, "Foreign estate import tariff")
 			coin_income = foreign_estate_fund.balance
 			qdel(foreign_estate_fund)
 			send_foreign_estate_income_mail(owner, coin_income, estate_levy, import_tariff)
-	else if(coin_income > 0)
+	else
 		var/datum/fund/owner_account = SStreasury.get_account(owner)
 		if(owner_account)
-			estate_levy = SStreasury.apply_tax(owner_account, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Estate production income")
-			coin_income -= estate_levy
+			if(patron != /datum/patron/inhumen/matthios) //FREEDOM OF TRANSACTION
+				estate_levy = SStreasury.apply_tax(owner_account, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Estate production income")
+				coin_income -= estate_levy
 			SStreasury.generate_money_account(coin_income, owner)
 
 	var/message = "За этот дае ваше имение поставило Короне: "
@@ -442,7 +473,10 @@
 		message += "[produced_summary[good]]x [get_readable_good_name(good)]; "
 
 	if(coin_income)
-		message += "чистая прибыль составила [coin_income] маммон"
+		if(patron == /datum/patron/inhumen/matthios)
+			message += "ваши товарищи добровольно выслали вам [coin_income] маммон"
+		else
+			message += "чистая прибыль составила [coin_income] маммон"
 		if(estate_levy)
 			message += ", за вычетом крестьянского оброка в размере [estate_levy] маммон"
 		if(import_tariff)
@@ -451,7 +485,12 @@
 			message += ". Средства отправлены вам по почте HERMES"
 		message += "."
 	else
-		message += "чистая прибыль от поместья отсутствует."
+		if(patron == /datum/patron/inhumen/baotha)
+			message += "ваш казначей, по-видимому, слишком увлечён праздным весельем, и прибыль от поместья не поступила."
+		else if(patron == /datum/patron/inhumen/matthios)
+			message += "ваши товарищи решили не высылать вам маммон в этот раз."
+		else
+			message += "чистая прибыль от поместья отсутствует."
 	if(owner.client)
 		to_chat(owner, span_notice(message))
 
