@@ -70,6 +70,17 @@
 				var/datum/workstation/trade/new_trade = new /datum/workstation/trade()
 				workstations += new_trade
 				workers_limit += new_trade.workstation_size
+		if(/datum/patron/divine/dendor)
+			var/has_hunt_district = FALSE
+			for(var/datum/workstation/ws in workstations)
+				if(istype(ws, /datum/workstation/hunt))
+					ws.workstation_size += 5
+					workers_limit += 5
+					has_hunt_district = TRUE
+			if(!has_hunt_district)
+				var/datum/workstation/hunt/new_hunt = new /datum/workstation/hunt()
+				workstations += new_hunt
+				workers_limit += new_hunt.workstation_size
 		if(/datum/patron/divine/noc)
 			for(var/datum/workstation/ws in workstations)
 				ws.production_modifier = 1.1
@@ -357,8 +368,8 @@
 		var/list/selected_produce = list()
 		while(length(selected_produce) < selected_count)
 			var/choice = pick(available_produce)
-			available_produce -= choice
 			selected_produce += choice
+			available_produce -= choice
 
 		var/this_workstation_units = 0
 		var/this_workstation_money = 0
@@ -369,7 +380,7 @@
 			var/units = rand(min_units, max_units)
 			if(units <= 0)
 				continue
-			
+
 			units = ceil(units * workstation.production_modifier)
 
 			var/datum/roguestock/stockpile_entry = get_stockpile_entry_for_good(selected_good)
