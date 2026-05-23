@@ -15,6 +15,7 @@
 	var/datum/virtue/virtue_origin
 	var/min_workers = 5
 	var/total_workers = 5
+	var/workers_limit = 5
 	var/patron = /datum/patron/divine/astrata
 	var/last_cycle_productivity = 0
 	var/list/workstations = list()
@@ -53,34 +54,34 @@
 			return "small"
 	return manor_size
 
-/datum/manor/proc/set_up_patron_bonuses(workers_limit)
+/datum/manor/proc/set_up_patron_bonuses(max_workers)
 	switch(patron)
 		if(/datum/patron/old_god)
 			var/datum/workstation/cathedral/new_cathedral = new /datum/workstation/cathedral()
 			workstations += new_cathedral
-			workers_limit += new_cathedral.workstation_size
+			max_workers += new_cathedral.workstation_size
 		if(/datum/patron/divine/xylix)
 			var/has_trade_district = FALSE
 			for(var/datum/workstation/ws in workstations)
 				if(istype(ws, /datum/workstation/trade))
 					ws.workstation_size += 5
-					workers_limit += 5
+					max_workers += 5
 					has_trade_district = TRUE
 			if(!has_trade_district)
 				var/datum/workstation/trade/new_trade = new /datum/workstation/trade()
 				workstations += new_trade
-				workers_limit += new_trade.workstation_size
+				max_workers += new_trade.workstation_size
 		if(/datum/patron/divine/dendor)
 			var/has_hunt_district = FALSE
 			for(var/datum/workstation/ws in workstations)
 				if(istype(ws, /datum/workstation/hunt))
 					ws.workstation_size += 5
-					workers_limit += 5
+					max_workers += 5
 					has_hunt_district = TRUE
 			if(!has_hunt_district)
 				var/datum/workstation/hunt/new_hunt = new /datum/workstation/hunt()
 				workstations += new_hunt
-				workers_limit += new_hunt.workstation_size
+				max_workers += new_hunt.workstation_size
 		if(/datum/patron/divine/noc)
 			for(var/datum/workstation/ws in workstations)
 				ws.production_modifier = 1.1
@@ -90,36 +91,36 @@
 					ws.production_modifier = 1.3
 			//var/datum/workstation/mage_tower/new_mage_tower = new /datum/workstation/mage_tower()
 			//workstations += new_mage_tower
-			//workers_limit += new_mage_tower.workstation_size
+			//max_workers += new_mage_tower.workstation_size
 		if(/datum/patron/inhumen/zizo)
 			for(var/datum/workstation/ws in workstations)
 				if(istype(ws, /datum/workstation/trade))
 					ws.production_modifier = 0.5
 			//var/datum/workstation/mage_tower/new_mage_tower = new /datum/workstation/mage_tower()
 			//workstations += new_mage_tower
-			//workers_limit += new_mage_tower.workstation_size
+			//max_workers += new_mage_tower.workstation_size
 		if(/datum/patron/divine/malum)
 			var/has_mine_district = FALSE
 			for(var/datum/workstation/ws in workstations)
 				if(istype(ws, /datum/workstation/mining))
 					ws.workstation_size += 5
-					workers_limit += 5
+					max_workers += 5
 					has_mine_district = TRUE
 			if(!has_mine_district)
 				var/datum/workstation/mining/new_mining = new /datum/workstation/mining()
 				workstations += new_mining
-				workers_limit += new_mining.workstation_size
+				max_workers += new_mining.workstation_size
 		if(/datum/patron/divine/abyssor)
 			var/has_fish_district = FALSE
 			for(var/datum/workstation/ws in workstations)
 				if(istype(ws, /datum/workstation/fish))
 					ws.workstation_size += 5
-					workers_limit += 5
+					max_workers += 5
 					has_fish_district = TRUE
 			if(!has_fish_district)
 				var/datum/workstation/fish/new_fish = new /datum/workstation/fish()
 				workstations += new_fish
-				workers_limit += new_fish.workstation_size
+				max_workers += new_fish.workstation_size
 		if(/datum/patron/divine/astrata, /datum/patron/divine/ravox)
 			var/has_outpost = FALSE
 			for(var/datum/workstation/ws in workstations)
@@ -128,8 +129,8 @@
 			if(!has_outpost)
 				var/datum/workstation/outpost/new_outpost = new /datum/workstation/outpost()
 				workstations += new_outpost
-				workers_limit += new_outpost.workstation_size
-	return workers_limit
+				max_workers += new_outpost.workstation_size
+	return max_workers
 
 /datum/manor/proc/update_workstation_types(type = "manor", manor_size = "big")
 	if(!type)
@@ -238,7 +239,7 @@
 	return null
 
 /datum/manor/proc/on_creation(mob/living/carbon/human/owner)
-	var/workers_limit = 0
+	workers_limit = 0
 
 	manor_name = get_owner_display_name(owner)
 	manor_type = get_owner_manor_type(owner)
