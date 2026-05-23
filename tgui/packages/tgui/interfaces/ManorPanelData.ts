@@ -5,7 +5,7 @@ export type WorkstationData = {
   workers_max: number;
   produce: string[];
   kind: string;
-  generate_profit: boolean;
+  type_of_produce: string;
   production_bonus: number;
 };
 

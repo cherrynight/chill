@@ -198,7 +198,7 @@
 		"workers_max" = workstation.workstation_size,
 		"produce" = produce_names,
 		"kind" = workstation.get_theme_key(),
-		"generate_profit" = workstation.generate_profit,
+		"type_of_produce" = workstation.type_of_produce,
 		"production_bonus" = workstation.production_modifier
 	)
 

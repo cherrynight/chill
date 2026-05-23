@@ -166,6 +166,19 @@ const getManorType = (type: string) => {
   }
 };
 
+const getProduceType = (type: string) => {
+  switch (type) {
+    case 'Goods':
+      return 'Производит сырьё';
+    case 'Profit':
+      return 'Приносит прибыль';
+    case 'Boost':
+      return 'Повышает продуктивность';
+    default:
+      return 'Производит сырье';
+  }
+};
+
 const panelBackground: React.CSSProperties = {
   background:
     'radial-gradient(circle at top, rgba(154,108,49,0.18), transparent 26%),' +
@@ -415,7 +428,7 @@ const WorkstationCard = ({ ws, act }: { ws: WorkstationData; act: (action: strin
           </div>
           <div style={{ textAlign: 'right', fontSize: '15px' }}>
             <div>Продуктивность: {Math.round(ws.production_bonus * 100)}%</div>
-            <div>{ws.generate_profit ? 'Даёт прибыль' : 'Даёт сырьё'}</div>
+            <div>{getProduceType(ws.type_of_produce)}</div>
           </div>
         </div>
       </div>

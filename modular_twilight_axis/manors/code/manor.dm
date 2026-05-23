@@ -326,7 +326,6 @@
 	var/list/produced_summary = list()
 	var/total_units = 0
 	var/total_profit_money = 0
-	var/total_foreign_income = 0
 
 	var/is_foreign = virtue_origin ? TRUE : FALSE
 	for(var/datum/workstation/workstation in workstations)
@@ -373,9 +372,9 @@
 			this_workstation_units += units
 
 		if(is_foreign)
-			total_foreign_income += ceil(this_workstation_money * workstation.production_modifier)
+			total_profit_money += ceil(this_workstation_money * workstation.production_modifier)
 		total_units += this_workstation_units
-		if(!is_foreign && workstation.generate_profit)
+		if(workstation.type_of_produce == "Profit")
 			if(patron == /datum/patron/inhumen/zizo)
 				total_profit_money += workstation.workers_employed
 			else
@@ -383,14 +382,14 @@
 
 	last_cycle_productivity = max(total_units, 0)
 
-	if(!total_units && !total_profit_money && !total_foreign_income)
+	if(!total_units && !total_profit_money)
 		return null
 
 	var/coin_income = 0
 	var/estate_levy = 0
 	var/import_tariff = 0
 	if(is_foreign)
-		coin_income = total_foreign_income
+		coin_income = total_profit_money
 	else if(SStreasury.has_account(owner))
 		if(total_units)
 			coin_income = ceil(total_units / 5)

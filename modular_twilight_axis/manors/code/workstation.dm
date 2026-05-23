@@ -3,7 +3,7 @@
 	var/list/produce = list()
 	var/workstation_size = 5
 	var/workers_employed = 0
-	var/generate_profit = FALSE
+	var/type_of_produce = "Goods"
 	var/production_increase_per_job = 0
 	var/production_modifier = 1
 	var/workstation_theme = "field"
@@ -111,7 +111,7 @@
 		/datum/roguestock/stockpile/rocknut,
 		/datum/roguestock/stockpile/silk,
 	)
-	generate_profit = TRUE
+	type_of_produce = "Profit"
 
 /datum/workstation/trade/medium
 	workstation_size = 10
@@ -193,8 +193,6 @@
 		/datum/roguestock/stockpile/calendula,
 		/datum/roguestock/stockpile/viscera,
 		/datum/roguestock/stockpile/dendor_essence,
-		/datum/roguestock/stockpile/gem_toper,
-		/datum/roguestock/stockpile/gem_gemerald,
 	)
 
 /datum/workstation/cathedral
@@ -202,3 +200,4 @@
 	workstation_theme = "cathedral"
 	produce = list()
 	production_increase_per_job = 0.05
+	type_of_produce = "Boost"
