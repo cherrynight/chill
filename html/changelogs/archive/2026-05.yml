@@ -1695,6 +1695,12 @@
   - rscadd: Added a new rclick functionality to shovels -- they can now select what
       they'll be digging for (solids like clay or stone, or bait like worms and leeches)
       without actually digging a hole.
+  G9ose:
+  - rscadd: "\u0440\u0435\u0432\u043E\u0440\u043A \u0433\u0430\u0440\u0440\u043E\u0442\
+      \u044B"
+  - rscadd: "\u043D\u043E\u0432\u044B\u0439 \u043F\u0441\u0430\u0439\u043F\u043E\u0440\
+      \u043E\u0445"
+  - balance: QoL Volfs
   KatTheFox:
   - bugfix: Hags and lich skeletons can no longer take hunted
   - balance: Hunted now makes you a target for assassins if you're a heavily-protected
