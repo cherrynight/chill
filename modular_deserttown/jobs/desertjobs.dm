@@ -129,26 +129,6 @@
 	if(SSmapping.config.map_name == "Desert Town")
 		cmode_music = 'sound/music/combat_desert2.ogg'
 	..()
-
-/datum/job/roguetown/prince/after_spawn(mob/living/L, mob/M, latejoin = TRUE)//
-	if(SSmapping.config.map_name == "Desert Town")
-		cmode_music = 'sound/music/combat_desert2.ogg'
-	..()
-
-/datum/job/roguetown/magician/after_spawn(mob/living/L, mob/M, latejoin = TRUE)//
-	if(SSmapping.config.map_name == "Desert Town")
-		cmode_music = 'sound/music/combat_desert2.ogg'
-	..()
-
-/datum/job/roguetown/prince/after_spawn(mob/living/L, mob/M, latejoin = TRUE)//
-	if(SSmapping.config.map_name == "Desert Town")
-		cmode_music = 'sound/music/combat_desert2.ogg'
-	..()
-	
-/datum/job/roguetown/prince/after_spawn(mob/living/L, mob/M, latejoin = TRUE)//
-	if(SSmapping.config.map_name == "Desert Town")
-		cmode_music = 'sound/music/combat_desert2.ogg'
-	..()
 	
 /datum/job/roguetown/councillor/after_spawn(mob/living/L, mob/M, latejoin = TRUE)//
 	if(SSmapping.config.map_name == "Desert Town")

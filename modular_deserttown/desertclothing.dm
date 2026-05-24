@@ -24,7 +24,6 @@
 	icon = 'modular_deserttown/icons/clothing/armor.dmi'
 	mob_overlay_icon = 'modular_deserttown/icons/clothing/onmob/armor.dmi'
 	icon_state = "cataphract"
-	icon_state = "cataphract"
 	body_parts_covered = COVERAGE_FULL
 	sleeved = null
 	sleevetype = null
