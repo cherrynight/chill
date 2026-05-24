@@ -10,7 +10,7 @@
 	var/max_idle_ticks = 5
 	
 /obj/machinery/auto_stonecutter/update_icon()
-	icon_state = active ? "autochisel" : "autochiseloff"
+	icon_state = active ? "autochisel" : "autochisel"
 
 /obj/machinery/auto_stonecutter/attack_hand(mob/user)
 	active = !active
