@@ -54,8 +54,10 @@
 /turf/open/floor/rogue/darkpath,
 /area/rogue/outdoors/banditcamp/desert)
 "bC" = (
-/turf/closed/mineral/rogue/bedrock/sandstone,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/obj/item/roguecoin/gold/pile,
+/obj/item/roguegem/random,
+/turf/open/floor/rogue/tile/harem2,
+/area/rogue/indoors/banditcamp/desert)
 "bD" = (
 /obj/structure/bed/rogue/shit,
 /turf/open/floor/rogue/sandbrick,
@@ -79,7 +81,7 @@
 	pixel_y = 20
 	},
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "bK" = (
 /obj/structure/fluff/nest,
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame,
@@ -111,8 +113,8 @@
 "cG" = (
 /obj/item/roguecoin/gold/pile,
 /obj/item/roguegem/random,
-/turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/turf/closed/wall/mineral/rogue/sandbrick,
+/area/rogue/indoors/banditcamp/desert)
 "cI" = (
 /obj/structure/stairs/stone{
 	dir = 1;
@@ -171,11 +173,11 @@
 	pixel_y = -4
 	},
 /turf/open/floor/rogue/naturalstone,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "eq" = (
 /obj/structure/closet/crate/chest/gold,
-/turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/turf/closed/wall/mineral/rogue/sandbrick,
+/area/rogue/indoors/banditcamp/desert)
 "eB" = (
 /obj/structure/fluff/railing/border{
 	dir = 10
@@ -225,9 +227,6 @@
 /obj/item/clothing/mask/rogue/ragmask/black,
 /obj/item/clothing/cloak/raincloak/purple,
 /obj/item/clothing/cloak/raincloak/purple,
-/obj/item/clothing/cloak/raincloak/drab,
-/obj/item/clothing/cloak/raincloak/drab,
-/obj/item/clothing/cloak/raincloak/drab,
 /turf/open/floor/rogue/tile/brownbrick,
 /area/rogue/indoors/banditcamp/desert)
 "ge" = (
@@ -278,7 +277,7 @@
 /obj/item/roguecoin/gold/pile,
 /obj/item/roguegem/random,
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "gN" = (
 /obj/structure/well,
 /turf/open/floor/rogue/dirt/road/desert,
@@ -344,9 +343,6 @@
 /area/rogue/indoors/banditcamp/desert)
 "iN" = (
 /obj/structure/rack/rogue,
-/obj/item/clothing/head/roguetown/turban/red,
-/obj/item/clothing/head/roguetown/turban/red,
-/obj/item/clothing/head/roguetown/turban/red,
 /turf/open/floor/rogue/tile/brownbrick,
 /area/rogue/indoors/banditcamp/desert)
 "iS" = (
@@ -580,8 +576,6 @@
 /obj/item/rope/chain,
 /obj/item/rope/chain,
 /obj/item/rope/chain,
-/obj/item/clothing/neck/roguetown/cursed_collar,
-/obj/item/clothing/neck/roguetown/cursed_collar,
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors/banditcamp/desert)
 "pZ" = (
@@ -613,8 +607,8 @@
 	pixel_x = 12;
 	pixel_y = -12
 	},
-/turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/turf/closed/wall/mineral/rogue/sandbrick,
+/area/rogue/indoors/banditcamp/desert)
 "qw" = (
 /obj/structure/stairs/desert{
 	dir = 1
@@ -669,8 +663,8 @@
 /obj/item/roguecoin/silver/pile,
 /obj/item/roguecoin/gold/pile,
 /obj/item/roguecoin/gold/pile,
-/turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/turf/closed/wall/mineral/rogue/sandbrick,
+/area/rogue/indoors/banditcamp/desert)
 "rU" = (
 /turf/open/floor/rogue/sandbrick,
 /area/rogue/outdoors/banditcamp/desert)
@@ -712,7 +706,7 @@
 "ui" = (
 /obj/item/roguecoin/gold/pile,
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "uI" = (
 /obj/item/natural/rock/desert,
 /turf/open/floor/rogue/dunes,
@@ -918,7 +912,7 @@
 /area/rogue/outdoors/banditcamp/desert)
 "BQ" = (
 /turf/open/floor/rogue/naturalstone,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "BU" = (
 /turf/open/floor/carpet/purple,
 /area/rogue/indoors/banditcamp/desert)
@@ -1088,7 +1082,7 @@
 	pixel_y = 4
 	},
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "HA" = (
 /obj/item/grown/log/tree/small,
 /turf/open/floor/rogue/darkpath,
@@ -1129,7 +1123,7 @@
 /obj/item/roguecoin/gold/pile,
 /obj/item/roguegem/random,
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "In" = (
 /turf/open/floor/rogue/dunes,
 /area/rogue/outdoors/desertdeep/safe)
@@ -1261,7 +1255,7 @@
 "Ne" = (
 /obj/item/roguegem,
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "Ng" = (
 /turf/closed,
 /area/rogue)
@@ -1291,8 +1285,9 @@
 /turf/open/floor/rogue/carpet,
 /area/rogue/indoors/banditcamp/desert)
 "NO" = (
-/turf/closed/wall/mineral/rogue/sandstone,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/obj/structure/closet/crate/chest/gold,
+/turf/open/floor/rogue/tile/harem2,
+/area/rogue/indoors/banditcamp/desert)
 "NY" = (
 /obj/item/cushion/zybantine,
 /turf/open/floor/carpet/purple,
@@ -1371,7 +1366,7 @@
 	},
 /obj/item/roguegem/amethyst,
 /turf/open/floor/rogue/tile/harem2,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "Rg" = (
 /turf/closed,
 /area/rogue/outdoors/banditcamp/desert)
@@ -1493,8 +1488,6 @@
 "Vb" = (
 /obj/structure/rack/rogue,
 /obj/item/clothing/head/roguetown/roguehood/shalal,
-/obj/item/clothing/head/roguetown/roguehood/shalal/nomad,
-/obj/item/clothing/head/roguetown/roguehood/shalal/nomad,
 /obj/item/clothing/head/roguetown/roguehood/shalal,
 /turf/open/floor/rogue/tile/brownbrick,
 /area/rogue/indoors/banditcamp/desert)
@@ -1526,7 +1519,7 @@
 /area/rogue/outdoors/banditcamp/desert)
 "Yu" = (
 /turf/open/water/pond,
-/area/rogue/indoors/banditcamp/hoardmaster)
+/area/rogue/indoors/banditcamp/desert)
 "Yz" = (
 /obj/structure/mineral_door/wood/deadbolt{
 	dir = 1
@@ -7293,7 +7286,7 @@ pl
 pl
 Yu
 pl
-Yu
+gk
 Yu
 BQ
 BQ
@@ -7360,8 +7353,8 @@ pl
 pl
 Yu
 Yu
-bC
-BQ
+gk
+gk
 BQ
 BQ
 BQ
@@ -7429,10 +7422,10 @@ Yu
 Yu
 BQ
 BQ
-NO
+gk
 en
 BQ
-NO
+eX
 gk
 gk
 gk
@@ -7559,13 +7552,13 @@ Gg
 pl
 pl
 Yu
-bC
+pl
 BQ
 BQ
-NO
+eX
 Qu
 rO
-cG
+bC
 vn
 TZ
 NN
@@ -7626,7 +7619,7 @@ Gg
 pl
 pl
 Yu
-bC
+pl
 BQ
 BQ
 BQ
@@ -7696,7 +7689,7 @@ Yu
 Yu
 BQ
 BQ
-NO
+eX
 Ij
 gE
 ui
@@ -7764,7 +7757,7 @@ Yu
 BQ
 BQ
 BQ
-eq
+NO
 Hz
 ui
 eX
@@ -7831,9 +7824,9 @@ Yu
 Yu
 BQ
 BQ
-NO
+eX
 BQ
-bC
+pl
 eX
 eX
 eX
