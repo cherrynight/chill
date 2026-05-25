@@ -7,7 +7,9 @@
 #define CTAG_SLAVEMASTER	"CAT_SLAVEMASTER"
 #define CTAG_PSLAVE			"CAT_PSLAVE"
 #define CTAG_HEADSLAVE		"CAT_HEADSLAVE"		// Seneschal's aesthetic choices.
-
+#define CTAG_SULTAN		"CAT_SULTAN"
+#define CTAG_VIZIER		"CAT_VIZIER"
+#define CTAG_SHEIKH		"CAT_SHEIKH"
 
 
 
@@ -18,7 +20,10 @@
 // #define LADY		(1<<1)
 // #define HAND		(1<<2)
 // #define STEWARD		(1<<3)
-#define CATAPHRACT		(1<<4)
+#define SULTAN	(1<<0)
+#define VIZIER	(1<<0)
+#define SHEIKH	(1<<0)
+#define CATAPHRACT	(1<<4)
 #define JANISSARYSERGEANT	(1<<6)
 // #define GUARD_CAPTAIN		(1<<5)
 // #define MARSHAL		(1<<6)

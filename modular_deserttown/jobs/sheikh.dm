@@ -6,7 +6,7 @@
 	total_positions = 3//more slots since they manage the steward/clerk roles for now as well - scratch that bringing the steward back
 	spawn_positions = 3
 	allowed_ages = ALL_AGES_LIST
-	allowed_races = RACES_TOLERATED_UP
+	allowed_races = list(RACES_RESPECTED)
 	allowed_sexes = list(MALE, FEMALE)
 	display_order = JDO_COUNCILLOR
 	tutorial = "You may have inherited this role, bought your way into it, or were appointed by the Royal Family themselves; \
@@ -22,8 +22,7 @@
 	min_pq = 1 //Probably a bad idea to have a complete newbie advising the monarch
 	max_pq = null
 	round_contrib_points = 2
-	cmode_music = 'sound/music/combat_desert2.ogg'
-	social_rank = SOCIAL_RANK_NOBLE
+//	cmode_music = 'sound/music/combat_desert2.ogg'
 	job_traits = list(TRAIT_NOBLE, TRAIT_SEEPRICES_SHITTY)
 	job_subclasses = list(
 		/datum/advclass/sheikh
@@ -80,7 +79,7 @@
 	..()
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich
 	armor = /obj/item/clothing/suit/roguetown/shirt/robe/hierophant
-	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/councillor
+//	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/councillor
 	pants = /obj/item/clothing/under/roguetown/tights/random
 	shoes = /obj/item/clothing/shoes/roguetown/shalal
 	backl = /obj/item/storage/backpack/rogue/satchel

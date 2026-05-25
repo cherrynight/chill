@@ -3997,9 +3997,10 @@
 #include "modular_deserttown\jobs\courtslave.dm"
 #include "modular_deserttown\jobs\desertjobs.dm"
 #include "modular_deserttown\jobs\dtslave.dm"
-/*#include "modular_deserttown\jobs\headslave.dm"
+#include "modular_deserttown\jobs\headslave.dm"
 #include "modular_deserttown\jobs\sheikh.dm"
-#include "modular_deserttown\jobs\vizier.dm"*/
+#include "modular_deserttown\jobs\vizier.dm"
+#include "modular_deserttown\jobs\sultan.dm"
 #include "modular_deserttown\jobs\garrison\azeb.dm"
 #include "modular_deserttown\jobs\garrison\azebagha.dm"
 #include "modular_deserttown\jobs\garrison\cataphract.dm"
