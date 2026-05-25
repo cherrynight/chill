@@ -298,7 +298,7 @@
 		return null
 	return SSeconomy.find_stockpile_by_trade_good(trade_good_id)
 
-/datum/manor/proc/send_foreign_estate_income_mail(mob/living/carbon/human/owner, coin_income, estate_levy, import_tariff)
+/datum/manor/proc/send_foreign_estate_income_mail(mob/living/carbon/human/owner, total_profit_money, estate_levy, import_tariff)
 	if(!owner)
 		return
 	if(!SSroguemachine.hermailermaster)
@@ -312,15 +312,15 @@
 	var/title_greeting = (owner.titles_pref == TITLES_F) ? "Миледи" : "Милорд"
 	P.info = "[title_greeting],\n"
 	P.info += "Направляем Вам средства, полученные от реализации товаров, произведённых Вашими крестьянами и рабочими за прошедший дае."
-	P.info += "\nЧистая прибыль: [coin_income] маммон."
+	P.info += "\nЧистая прибыль: [total_profit_money] маммон."
 	if(estate_levy)
 		P.info += "\nКрестьянский оброк: [estate_levy] маммон."
 	if(import_tariff)
 		P.info += "\nИмпортный тариф: [import_tariff] маммон."
 	P.update_icon()
 	var/obj/item/smallDelivery/delivery = new()
-	if(coin_income > 0)
-		budget2change(coin_income, null, null, FALSE, delivery)
+	if(total_profit_money > 0)
+		budget2change(total_profit_money, null, null, FALSE, delivery)
 	delivery.note = P
 
 	var/obj/item/roguemachine/mastermail/M = SSroguemachine.hermailermaster
@@ -430,49 +430,42 @@
 	if(!total_units && !total_profit_money)
 		return null
 
-	var/coin_income = 0
 	var/estate_levy = 0
 	var/import_tariff = 0
-	if(is_foreign)
-		coin_income = total_profit_money
-	else if(SStreasury.has_account(owner))
-		if(total_profit_money)
-			coin_income += total_profit_money
+	if(patron == /datum/patron/inhumen/matthios && total_profit_money > 0)
+		var/voluntary_multiplier = rand(50, 150) / 100
+		total_profit_money *= voluntary_multiplier
 
-		if(patron == /datum/patron/inhumen/matthios && coin_income > 0)
-			var/voluntary_multiplier = rand(50, 150) / 100
-			coin_income *= voluntary_multiplier
-
-		if(patron == /datum/patron/inhumen/baotha)
-			if(prob(30))
-				coin_income = 0
-			if(prob(30))
-				coin_income *= 2
-	if(coin_income > 0)
+	if(patron == /datum/patron/inhumen/baotha)
+		if(prob(30))
+			total_profit_money = 0
+		if(prob(30))
+			total_profit_money *= 2
+	if(total_profit_money > 0)
 		if(is_foreign)
-			var/datum/fund/foreign_estate_fund = new("Foreign Estate Income for [owner.real_name]", owner, coin_income, CURRENCY_MAMMON)
-			estate_levy = SStreasury.apply_tax(foreign_estate_fund, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Foreign estate levy income")
+			var/datum/fund/foreign_estate_fund = new("Foreign Estate Income for [owner.real_name]", owner, total_profit_money, CURRENCY_MAMMON)
+			estate_levy = SStreasury.apply_tax(foreign_estate_fund, total_profit_money, TAX_CATEGORY_ESTATE_LEVY, "Foreign estate levy income")
 			import_tariff = SStreasury.apply_tax(foreign_estate_fund, foreign_estate_fund.balance, TAX_CATEGORY_IMPORT_TARIFF, "Foreign estate import tariff")
-			coin_income = foreign_estate_fund.balance
+			total_profit_money = foreign_estate_fund.balance
 			qdel(foreign_estate_fund)
-			send_foreign_estate_income_mail(owner, coin_income, estate_levy, import_tariff)
+			send_foreign_estate_income_mail(owner, total_profit_money, estate_levy, import_tariff)
 		else
 			var/datum/fund/owner_account = SStreasury.get_account(owner)
 			if(owner_account)
 				if(patron != /datum/patron/inhumen/matthios) //FREEDOM OF TRANSACTION
-					estate_levy = SStreasury.apply_tax(owner_account, coin_income, TAX_CATEGORY_ESTATE_LEVY, "Estate levy income")
-					coin_income -= estate_levy
-				SStreasury.generate_money_account(coin_income, owner)
+					estate_levy = SStreasury.apply_tax(owner_account, total_profit_money, TAX_CATEGORY_ESTATE_LEVY, "Estate levy income")
+					total_profit_money -= estate_levy
+				SStreasury.generate_money_account(total_profit_money, owner)
 
 	var/message = "За этот дае ваше имение поставило Короне: "
 	for(var/good in produced_summary)
 		message += "[produced_summary[good]]x [get_readable_good_name(good)]; "
 
-	if(coin_income)
+	if(total_profit_money)
 		if(patron == /datum/patron/inhumen/matthios)
-			message += "ваши товарищи добровольно выслали вам [coin_income] маммон"
+			message += "ваши товарищи добровольно выслали вам [total_profit_money] маммон"
 		else
-			message += "чистая прибыль составила [coin_income] маммон"
+			message += "чистая прибыль составила [total_profit_money] маммон"
 		if(estate_levy)
 			message += ", за вычетом крестьянского оброка в размере [estate_levy] маммон"
 		if(import_tariff)
@@ -492,8 +485,7 @@
 
 	return list(
 		"products" = produced_summary,
-		"money" = coin_income,
-		"profit_money" = total_profit_money
+		"money" = total_profit_money
 	)
 
 /obj/structure/roguemachine/mail/proc/can_open_manor_panel(mob/living/carbon/human/user)
