@@ -48,7 +48,7 @@
 			return "small"*/
 		if(owner.advjob == "Knight Banneret" || (owner.mind?.assigned_role in list("Marshal", "Steward", "Hand")))
 			return "big"
-		if(owner.mind?.assigned_role in list("Councillor", "Knight"))
+		if(owner.mind?.assigned_role in list("Councillor", "Knight", "Royal Knight"))
 			return "medium"
 		if(HAS_TRAIT(owner, TRAIT_NOBLE) && HAS_TRAIT(owner, TRAIT_RESIDENT))
 			return "small"
