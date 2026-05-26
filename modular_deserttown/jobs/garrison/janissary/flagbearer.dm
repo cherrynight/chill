@@ -28,7 +28,7 @@
 	neck = /obj/item/clothing/neck/roguetown/chaincoif/chainmantle
 	gloves = /obj/item/clothing/gloves/roguetown/chain/iron
 	armor = /obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/janissary
-	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/zyb
+	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
 	wrists = /obj/item/clothing/wrists/roguetown/splintarms
 	pants = /obj/item/clothing/under/roguetown/splintlegs
 	backl = /obj/item/rogueweapon/scabbard/gwstrap

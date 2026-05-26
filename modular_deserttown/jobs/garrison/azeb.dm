@@ -19,7 +19,7 @@
 	min_pq = 0
 	max_pq = null
 	round_contrib_points = 2
-//	cmode_music = 'sound/music/combat_desert1.ogg'
+	cmode_music = 'sound/music/combat_desert1.ogg'
 	job_traits = list(TRAIT_OUTDOORSMAN, TRAIT_WOODSMAN, TRAIT_SURVIVAL_EXPERT)
 	job_subclasses = list(
 		// /datum/advclass/azeb/ranger,
@@ -86,7 +86,7 @@
 	..()
 	/* head = /obj/item/clothing/head/roguetown/helmet/sallet/zyb
 	mask = /obj/item/clothing/head/roguetown/roguehood/shalal/nomad
-	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/zyb
+	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
 	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/zyb
 	armor = /obj/item/clothing/suit/roguetown/armor/leather/heavy/coat/zyb
 	cloak = /obj/item/clothing/cloak/dunestalker
@@ -152,7 +152,7 @@
 	..()
 	/* head = /obj/item/clothing/head/roguetown/helmet/sallet/zyb
 	mask = /obj/item/clothing/head/roguetown/roguehood/shalal/nomad
-	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/zyb
+	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
 	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/zyb
 	armor = /obj/item/clothing/suit/roguetown/armor/plate/half/iron
 	cloak = /obj/item/clothing/cloak/dunestalker

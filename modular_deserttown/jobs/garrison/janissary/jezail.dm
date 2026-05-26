@@ -42,7 +42,7 @@
 	// wrists = /obj/item/clothing/wrists/roguetown/splintarms
 	gloves = /obj/item/clothing/gloves/roguetown/fingerless_leather
 	armor = /obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/janissary
-	// shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/zyb
+	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
 	head = /obj/item/clothing/head/roguetown/helmet/janissaryhelm
 	// beltr = /obj/item/quiver/bullet/lead//nice to have variety but blunderbus might not fit the vibe
 	// r_hand = /obj/item/gun/ballistic/firearm/arquebus

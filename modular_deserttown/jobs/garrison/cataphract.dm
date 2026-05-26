@@ -22,7 +22,7 @@
 	max_pq = null
 	round_contrib_points = 2
 
-//	cmode_music = 'sound/music/combat_desert2.ogg'
+	cmode_music = 'sound/music/combat_desert2.ogg'
 	job_subclasses = list(
 		/datum/advclass/cataphract/greatweapon,
 		/datum/advclass/cataphract/shieldmaster,

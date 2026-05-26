@@ -22,7 +22,7 @@
 	min_pq = 1 //Probably a bad idea to have a complete newbie advising the monarch
 	max_pq = null
 	round_contrib_points = 2
-//	cmode_music = 'sound/music/combat_desert2.ogg'
+	cmode_music = 'sound/music/combat_desert2.ogg'
 	job_traits = list(TRAIT_NOBLE, TRAIT_SEEPRICES_SHITTY)
 	job_subclasses = list(
 		/datum/advclass/sheikh

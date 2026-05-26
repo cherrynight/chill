@@ -20,7 +20,7 @@
 	min_pq = 9 //The second most powerful person in the realm...
 	max_pq = null
 	round_contrib_points = 3
-//	cmode_music = 'sound/music/combat_desert2.ogg'
+	cmode_music = 'sound/music/combat_desert2.ogg'
 	job_traits = list(TRAIT_NOBLE)
 	job_subclasses = list(
 		/datum/advclass/vizier/dtblademaster,
