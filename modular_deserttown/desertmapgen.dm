@@ -7,7 +7,7 @@
 
 
 /datum/mapGenerator/desert
-	modules = list(/datum/mapGeneratorModule/desertsand, /datum/mapGeneratorModule/desertgrass,/datum/mapGeneratorModule/desertroad, /datum/mapGeneratorModule/desertwater)
+	modules = list(/datum/mapGeneratorModule/desertsand, /datum/mapGeneratorModule/desertgrass, /datum/mapGeneratorModule/deserttrees, /datum/mapGeneratorModule/desertroad, /datum/mapGeneratorModule/desertwater)
 
 
 /datum/mapGeneratorModule/desertsand
@@ -36,8 +36,8 @@
 	allowed_turfs = list(/turf/open/floor/rogue/dirt, /turf/open/floor/rogue/desert_grass)
 	excluded_turfs = list(/turf/open/floor/rogue/dirt/road)
 	spawnableAtoms = list(/obj/structure/flora/roguetree/palm = 7,
-							/obj/structure/flora/tree/jungle = 5,
 							/obj/structure/flora/roguegrass/bush/desertshrub = 6,
+							/obj/structure/flora/roguegrass/bush = 4,
 							/obj/structure/flora/junglebush = 4,
 							/obj/structure/flora/newtree = 7,
 							/obj/structure/flora/roguetree = 6,
@@ -64,6 +64,39 @@
 							/obj/effect/landmark/desert_track_spawner = 4) // Added for modular hunting
 	// spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=2,
 	// 					/turf/open/water/swamp=2,)
+	allowed_areas = list(/area/rogue/outdoors/desert, /area/rogue/outdoors/desertdeep)
+
+/datum/mapGeneratorModule/deserttrees
+	clusterCheckFlags = CLUSTER_CHECK_ALL
+	allowed_turfs = list(/turf/open/floor/rogue/dirt/desert)
+	excluded_turfs = list(/turf/open/floor/rogue/dirt/road)
+	spawnableAtoms = list(/obj/structure/flora/newtree = 20,
+							/obj/structure/flora/roguetree/palm = 7,
+							/obj/structure/flora/roguegrass/bush/desertshrub = 6,
+							/obj/structure/flora/roguegrass/bush = 4,
+							/obj/structure/flora/junglebush = 4,
+							/obj/structure/flora/roguetree = 6,
+							/obj/structure/flora/roguegrass = 10,
+							/obj/structure/flora/grass/jungle = 25,
+							/obj/structure/flora/roguetree/stump/log = 0.5,
+							/obj/structure/flora/ausbushes/ppflowers = 0.5,
+							/obj/structure/flora/ausbushes/ywflowers = 0.5,
+							/obj/structure/flora/roguegrass/maneater = 0.5,
+							/obj/structure/flora/roguegrass/maneater/real/juvenile = 0.5,
+							/obj/item/natural/stone = 1,
+							/obj/item/natural/rock = 1,
+							/obj/item/magic/artifact = 0.2,
+							/obj/structure/leyline = 0.1,
+							/obj/structure/voidstoneobelisk = 0.1,
+							/obj/structure/flora/roguegrass/herb/manabloom = 1,
+							/obj/item/magic/manacrystal = 0.1,
+							/obj/structure/closet/dirthole/closed/loot = 0.5,
+							/obj/structure/flora/roguegrass/swampweed = 0.5,
+							/obj/structure/flora/roguegrass/herb/random = 7,
+							/obj/effect/decal/remains/bear = 0.5,
+							/obj/effect/decal/remains/human = 0.3,
+							/obj/structure/zizo_bane = 0.5,
+							/obj/effect/landmark/desert_track_spawner = 4) // Added for modular hunting
 	allowed_areas = list(/area/rogue/outdoors/desert, /area/rogue/outdoors/desertdeep)
 
 /datum/mapGeneratorModule/desertroad
@@ -103,4 +136,3 @@
 
 	// In all cases, we delete the proxy spawner after checking
 	return INITIALIZE_HINT_QDEL
-
