@@ -1,5 +1,6 @@
 /datum/job/roguetown/headslave
 	title = "Head Slave"
+	tutorial = "Вернейший раб, вернейший слуга, хранитель тайн и надёжный негласный советник - вы стоите безумно дорого, вы являетесь украшением своего Султана, вы являетесь украшением его дворца. В ваших руках находится ответственность за всех остальных рабов дворца, не посмейте подвести Султана."
 	flag = HEADSLAVE
 	department_flag = COURTIERS
 	faction = "Station"
@@ -89,7 +90,7 @@
 
 /datum/advclass/headslave/headmaid
 	name = "Head Maid"
-	tutorial = "Whether you were promoted from one or just like the frills, you stylize yourself as a head maid. Your duties and talents remain the same, though."
+	tutorial = "Со временем вы стали подрожать домохозяйкам по западному образцу, Султан оценил это... И теперь вы домохозяйка. Старшая домохозяйка."
 	outfit = /datum/outfit/job/roguetown/headslave/headmaid
 	category_tags = list(CTAG_HEADSLAVE)
 	subclass_stats = list(
@@ -124,7 +125,7 @@
 
 /datum/advclass/headslave/chiefbutler
 	name = "Chief Butler"
-	tutorial = "You are the ruling class of butler and your ability to clear your throat and murmur 'I say' is without peer. Your duties and talents as headslave remain the same, though."
+	tutorial = "Со временем вы всё больше и больше посвящали себе чему-то более возвышенному чем простое обслуживание Господина. Искусство быть дворецким, котором вы в совершенстве овладели, было встречено весьма отзывчиво со стороны вашего Господина."
 	outfit = /datum/outfit/job/roguetown/headslave/chiefbutler
 	category_tags = list(CTAG_HEADSLAVE)
 	subclass_stats = list(

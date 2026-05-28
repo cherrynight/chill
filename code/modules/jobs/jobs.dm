@@ -233,6 +233,8 @@ GLOBAL_LIST_INIT(wanderer_positions, list( //Homeless
 GLOBAL_LIST_INIT(antagonist_positions, list( //Mostly lesser antagonists
 	"Assassin",
 	"Bandit",
+	"Freeman", // TA EDIT
+	"Lost Grenzel", // TA EDIT
 	"Wretch",
 	"Gnoll",
 	"Hag",

@@ -25,7 +25,7 @@
 
 	wanderer_examine = TRUE
 	advjob_examine = TRUE
-	always_show_on_latechoices = TRUE
+	always_show_on_latechoices = FALSE
 	job_reopens_slots_on_death = FALSE
 	job_traits = list(TRAIT_SELF_SUSTENANCE, TRAIT_STEELHEARTED)
 	vice_restrictions = list(/datum/charflaw/noeyer, /datum/charflaw/noeyel, /datum/charflaw/mute, /datum/charflaw/limbloss/arm_r, /datum/charflaw/limbloss/arm_l)
@@ -70,34 +70,41 @@
 			if("I am a nobody") //Nothing ever happens
 				return
 
-/proc/update_lost_grenzel_slots()
-	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
-	if(!lg_job)
-		return
-	
-	lg_job.total_positions = 0
-	lg_job.spawn_positions = 0
-	lg_job.always_show_on_latechoices = FALSE
+/datum/round_event_control/antagonist/migrant_wave/lost_grenzel
+	name = "Lost Grenzel Migration"
+	typepath = /datum/round_event/migrant_wave/lost_grenzel
+	wave_type = /datum/migrant_wave/bandit
+	max_occurrences = 2
+	weight = 0
+	earliest_start = 5 MINUTES
+	min_players = 30
+	tags = list(
+		TAG_COMBAT,
+		TAG_VILLIAN,
+	)
 
+/datum/round_event_control/antagonist/migrant_wave/lost_grenzel/canSpawnEvent(players_amt, gamemode, fake_check)
 	if(SSmapping.config.map_name != "Desert Town")
-		return
-
+		return FALSE
 	if(!istype(SSgamemode.current_storyteller, /datum/storyteller/astrata))
-		return
+		return FALSE
+	return ..()
 
+/datum/round_event_control/antagonist/migrant_wave/lost_grenzel/preRunEvent()
 	if(is_storyteller_soft_antag_blocked())
-		return
+		return EVENT_CANT_RUN
+	return ..()
 
-	lg_job.always_show_on_latechoices = TRUE
-
-	var/player_count = length(GLOB.joined_player_list)
-	var/ready_player_count = length(GLOB.ready_player_list)
-	var/current_players = (SSticker.current_state == GAME_STATE_PREGAME) ? ready_player_count : player_count
-
-	var/slots = 0
-
-	if(current_players > 60)
-		slots = 5
-
-	lg_job.total_positions = slots
-	lg_job.spawn_positions = slots
+/datum/round_event/migrant_wave/lost_grenzel/start()
+	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
+	var/lg_maxcap = max(SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit), lg_job.total_positions)
+	lg_job.total_positions = min(lg_job.total_positions + 4, lg_maxcap)
+	lg_job.spawn_positions = min(lg_job.spawn_positions + 4, lg_maxcap)
+	if(lg_job.total_positions < lg_maxcap)
+		SSmapping.retainer.bandit_goal += 1 * rand(200, 400)
+		SSrole_class_handler.bandits_in_round = TRUE
+		lg_job.always_show_on_latechoices = TRUE
+		for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+			if(!player.client)
+				continue
+			to_chat(player, span_danger("Astrata calls for justice! The degenerates who dared to deny her right to rule the Pantheon must be subdued!"))

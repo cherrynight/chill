@@ -25,7 +25,7 @@
 
 	wanderer_examine = TRUE
 	advjob_examine = TRUE
-	always_show_on_latechoices = TRUE
+	always_show_on_latechoices = FALSE
 	job_reopens_slots_on_death = FALSE //no endless stream of freemans, unless the migration waves deem it so
 	job_traits = list(TRAIT_SELF_SUSTENANCE, TRAIT_STEELHEARTED)//Bandits and knaves truly though
 	vice_restrictions = list(/datum/charflaw/noeyer, /datum/charflaw/noeyel, /datum/charflaw/mute, /datum/charflaw/limbloss/arm_r, /datum/charflaw/limbloss/arm_l)
@@ -65,34 +65,41 @@
 			if("I am a nobody") //Nothing ever happens
 				return
 
-/proc/update_freemans_slots()
-	var/datum/job/freeman_job = SSjob.GetJob("Freeman")
-	if(!freeman_job)
-		return
-	
-	freeman_job.total_positions = 0
-	freeman_job.spawn_positions = 0
-	freeman_job.always_show_on_latechoices = FALSE
+/datum/round_event_control/antagonist/migrant_wave/freeman
+	name = "Freeman Migration"
+	typepath = /datum/round_event/migrant_wave/freeman
+	wave_type = /datum/migrant_wave/bandit
+	max_occurrences = 2
+	weight = 0
+	earliest_start = 5 MINUTES
+	min_players = 30
+	tags = list(
+		TAG_COMBAT,
+		TAG_VILLIAN,
+	)
 
+/datum/round_event_control/antagonist/migrant_wave/freeman/canSpawnEvent(players_amt, gamemode, fake_check)
 	if(SSmapping.config.map_name != "Desert Town")
-		return
-
+		return FALSE
 	if(!istype(SSgamemode.current_storyteller, /datum/storyteller/matthios))
-		return
+		return FALSE
+	return ..()
 
+/datum/round_event_control/antagonist/migrant_wave/freeman/preRunEvent()
 	if(is_storyteller_soft_antag_blocked())
-		return
+		return EVENT_CANT_RUN
+	return ..()
 
-	freeman_job.always_show_on_latechoices = TRUE
-
-	var/player_count = length(GLOB.joined_player_list)
-	var/ready_player_count = length(GLOB.ready_player_list)
-	var/current_players = (SSticker.current_state == GAME_STATE_PREGAME) ? ready_player_count : player_count
-
-	var/slots = 0
-
-	if(current_players > 60)
-		slots = 5
-
-	freeman_job.total_positions = slots
-	freeman_job.spawn_positions = slots
+/datum/round_event/migrant_wave/freeman/start()
+	var/datum/job/freeman_job = SSjob.GetJob("Freeman")
+	var/freeman_maxcap = max(SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit), freeman_job.total_positions)
+	freeman_job.total_positions = min(freeman_job.total_positions + 6, freeman_maxcap)
+	freeman_job.spawn_positions = min(freeman_job.spawn_positions + 6, freeman_maxcap)
+	if(freeman_job.total_positions < freeman_maxcap)
+		SSmapping.retainer.bandit_goal += 1 * rand(200, 400)
+		SSrole_class_handler.bandits_in_round = TRUE
+		freeman_job.always_show_on_latechoices = TRUE
+		for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+			if(!player.client)
+				continue
+			to_chat(player, span_danger("Al-Matthios calls for jihad! The infidels who took our lands will be killed in the most brutal manner!"))
