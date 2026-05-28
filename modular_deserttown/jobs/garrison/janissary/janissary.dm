@@ -26,7 +26,7 @@
 		/datum/advclass/janissary/footman,
 		/datum/advclass/janissary/zephyr,
 		/datum/advclass/janissary/jezail,
-//		/datum/advclass/janissary/flagbearer,
+		/datum/advclass/janissary/flagbearer
 	)
 
 /datum/outfit/job/roguetown/janissary

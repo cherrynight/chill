@@ -29,7 +29,7 @@
 	gloves = /obj/item/clothing/gloves/roguetown/chain/iron
 	armor = /obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/janissary
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
-	wrists = /obj/item/clothing/wrists/roguetown/splintarms
+	wrists = /obj/item/clothing/wrists/roguetown/bracers/brigandine
 	pants = /obj/item/clothing/under/roguetown/splintlegs
 	backl = /obj/item/rogueweapon/scabbard/gwstrap
 	backpack_contents = list(
@@ -42,11 +42,5 @@
 	H.verbs |= /mob/proc/haltyell
 
 	if(H.mind)
-		var/weapons = list("Pike","Poleaxe")
-		var/weapon_choice = input(H, "Choose your weapon.", "TAKE UP ARMS") as anything in weapons
 		H.set_blindness(0)
-		switch(weapon_choice)
-			if("Pike")
-				r_hand = /obj/item/rogueweapon/spear/keep_standard
-			if("Poleaxe")
-				r_hand = /obj/item/rogueweapon/spear/keep_standard/poleaxe
+		r_hand = /obj/item/rogueweapon/spear/keep_standard

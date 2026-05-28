@@ -22,26 +22,23 @@
 	cmode_music = 'sound/music/combat_desert1.ogg'
 	job_traits = list(TRAIT_OUTDOORSMAN, TRAIT_WOODSMAN, TRAIT_SURVIVAL_EXPERT)
 	job_subclasses = list(
-		// /datum/advclass/azeb/ranger,
+		/datum/advclass/azeb/ranger,
 		/datum/advclass/azeb/footman
 	)
 
 	
-/*/datum/job/roguetown/azeb/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
+/datum/job/roguetown/azeb/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	. = ..()
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		if(ishuman(L))
-			if(istype(H.cloak, /obj/item/clothing/cloak/dunestalker))
-				var/obj/item/clothing/S = H.cloak
 		if(istype(H.cloak, /obj/item/clothing/cloak/dunestalker))
 			var/obj/item/clothing/S = H.cloak
-				var/index = findtext(H.real_name, " ")
-				if(index)
-					index = copytext(H.real_name, 1,index)
-				if(!index)
-					index = H.real_name
-				S.name = "Azeb Cloak ([index])"*/
+			var/index = findtext(H.real_name, " ")
+			if(index)
+				index = copytext(H.real_name, 1,index)
+			if(!index)
+				index = H.real_name
+			S.name = "Azeb Cloak ([index])"
 
 /datum/outfit/job/roguetown/azeb
 	backr = /obj/item/storage/backpack/rogue/satchel
@@ -86,11 +83,11 @@
 
 /datum/outfit/job/roguetown/azeb/ranger/pre_equip(mob/living/carbon/human/H)
 	..()
-	/* head = /obj/item/clothing/head/roguetown/helmet/sallet/zyb
-	mask = /obj/item/clothing/head/roguetown/roguehood/shalal/nomad
+	head = /obj/item/clothing/head/roguetown/helmet/sallet/raneshen
+	mask = /obj/item/clothing/head/roguetown/roguehood/shalal/hijab/raneshen
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
-	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/zyb
-	armor = /obj/item/clothing/suit/roguetown/armor/leather/heavy/coat/zyb
+	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/raneshen
+	armor = /obj/item/clothing/suit/roguetown/armor/leather/heavy/coat/raneshen
 	cloak = /obj/item/clothing/cloak/dunestalker
 	shoes = /obj/item/clothing/shoes/roguetown/shalal
 	gloves = /obj/item/clothing/gloves/roguetown/leather
@@ -99,12 +96,11 @@
 	neck = /obj/item/clothing/neck/roguetown/coif/padded
 	backl = /obj/item/gun/ballistic/revolver/grenadelauncher/bow/recurve/warden
 	beltr = /obj/item/quiver/arrows
-	beltl = /obj/item/rogueweapon/huntingknife/idagger/steel */
+	beltl = /obj/item/rogueweapon/huntingknife/idagger/steel
 	backpack_contents = list(
 		/obj/item/storage/keyring/manatarms = 1,
 		/obj/item/flashlight/flare/torch/lantern = 1,
 		/obj/item/rogueweapon/scabbard/sheath = 1,
-		// /obj/item/reagent_containers/glass/bottle/rogue/healthpot = 1,
 		/obj/item/signal_horn = 1
 		)
 	H.verbs |= /mob/proc/haltyell
@@ -152,11 +148,11 @@
 
 /datum/outfit/job/roguetown/azeb/footman/pre_equip(mob/living/carbon/human/H)
 	..()
-	/* head = /obj/item/clothing/head/roguetown/helmet/sallet/zyb
-	mask = /obj/item/clothing/head/roguetown/roguehood/shalal/nomad
+	head = head = /obj/item/clothing/head/roguetown/helmet/sallet/raneshen
+	mask = mask = /obj/item/clothing/head/roguetown/roguehood/shalal/hijab/raneshen
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/raneshen
-	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/zyb
-	armor = /obj/item/clothing/suit/roguetown/armor/plate/half/iron
+	pants = /obj/item/clothing/under/roguetown/trou/leather/pontifex/raneshen
+	armor = /obj/item/clothing/suit/roguetown/armor/plate/cuirass
 	cloak = /obj/item/clothing/cloak/dunestalker
 	shoes = /obj/item/clothing/shoes/roguetown/shalal
 	gloves = /obj/item/clothing/gloves/roguetown/leather
@@ -165,9 +161,9 @@
 	neck = /obj/item/clothing/neck/roguetown/coif/padded
 	pants = /obj/item/clothing/under/roguetown/chainlegs/iron
 	backl = /obj/item/rogueweapon/scabbard/gwstrap
-	beltr = /obj/item/rogueweapon/sword/sabre/iron
+	beltr = /obj/item/rogueweapon/sword/sabre
 	beltl = /obj/item/rogueweapon/huntingknife
-	r_hand = /obj/item/rogueweapon/halberd/bardiche */
+	r_hand = /obj/item/rogueweapon/halberd/bardiche
 	backpack_contents = list(
 		/obj/item/storage/keyring/manatarms = 1,
 		/obj/item/flashlight/flare/torch/lantern = 1,
