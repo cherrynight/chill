@@ -20,7 +20,7 @@
 	max_pq = null
 	round_contrib_points = null
 
-	advclass_cat_rolls = list(CAT_LOSTGRENZEL = 20)
+	advclass_cat_rolls = list(CTAG_LOSTGRENZEL = 20)
 	PQ_boost_divider = 10
 
 	wanderer_examine = TRUE
@@ -32,7 +32,9 @@
 	same_job_respawn_delay = 30 MINUTES
 	cmode_music = 'sound/music/combat_lost_grenzel.ogg'
 	job_subclasses = list(
-	
+		/datum/advclass/lost_grenzel/lost_halberdier,
+		/datum/advclass/lost_grenzel/lost_mage,
+		/datum/advclass/lost_grenzel/lost_jager,
 	)
 
 /datum/job/roguetown/lost_grenzel/after_spawn(mob/living/L, mob/M, latejoin = TRUE)

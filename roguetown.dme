@@ -4092,4 +4092,7 @@
 #include "modular_deserttown\jobs\bandits_replace\freeman-advclasses\faris_sarid.dm"
 #include "modular_deserttown\jobs\bandits_replace\freeman-advclasses\rih_al_sahra.dm"
 #include "modular_deserttown\jobs\bandits_replace\freeman-advclasses\mujizat-musaid.dm"
+#include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_halberdier.dm"
+#include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_mage.dm"
+#include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_jager.dm"
 // END_INCLUDE
