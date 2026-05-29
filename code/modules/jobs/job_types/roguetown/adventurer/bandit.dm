@@ -121,10 +121,12 @@
 
 	add_bounty(H.real_name, race, gender, descriptor_height, descriptor_body, descriptor_voice, bounty_total, FALSE, my_crime, bounty_poster)
 
+
 /proc/update_bandits_slots()
 	var/datum/job/bandit_job = SSjob.GetJob("Bandit")
 	if(!bandit_job)
 		return
+
 // TA EDIT - DESERT TOWN
 	if(SSmapping.config.map_name == "Desert Town")
 		bandit_job.always_show_on_latechoices = FALSE
@@ -132,7 +134,6 @@
 		bandit_job.spawn_positions = 0
 		return
 // TA EDIT - DESERT TOWN
-	if(is_storyteller_soft_antag_blocked())
 
 	var/slots = 0
 
@@ -177,4 +178,3 @@
 
 	bandit_job.total_positions = slots
 	bandit_job.spawn_positions = slots
-
