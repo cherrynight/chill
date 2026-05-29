@@ -12,7 +12,7 @@
 	
 	outfit = /datum/outfit/job/roguetown/slave
 	advclass_cat_rolls = list(CTAG_PSLAVE = 20)
-	job_traits = list(TRAIT_HOMESTEAD_EXPERT)
+	job_traits = list(TRAIT_HOMESTEAD_EXPERT, TRAIT_SLAVE)
 	display_order = JDO_SERVANT
 	give_bank_account = TRUE
 	min_pq = -10

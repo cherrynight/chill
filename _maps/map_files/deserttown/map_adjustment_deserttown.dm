@@ -21,6 +21,7 @@
 		/datum/job/roguetown/gnoll = 3,//hyenas just belong here!
 	)
 	title_adjust = list(
+		/datum/job/roguetown/adventurer/courtagent = list (display_title = "Enslaved kafir", f_title = "Enslaved kafir"),
 		/datum/job/roguetown/marshal = list(display_title = "Mushir", f_title = "Mushira"),
 		/datum/job/roguetown/prince = list(display_title = "Amir", f_title = "Amira"),
 		/datum/job/roguetown/priest =  list(display_title = "High Priest", f_title = "High Priestess"),
@@ -32,6 +33,7 @@
 		/datum/job/roguetown/pilgrim = list(display_title = "Nomad"),
 	)
 	tutorial_adjust = list(
+		/datum/job/roguetown/adventurer/courtagent = "Волею судеб вы стали рабом. Но вы были слишком полезны - ваши связи, ваши умения, ваши способности приглянулись ВИЗИРЮ. Теперь Вы обязаны ему не только своей жизнью - но и отсутствием какого-либо клейма. Вам дано поручение - шпионаж. Слушайтесь своего Господина и быть может, однажды, вас сделают свободным.",
 		/datum/job/roguetown/marshal = "Зибантия никогда не была спокойным местом, всегда находились пустынники что решили развязать войну за торговые маршруты. Однако ситуация значительно ухудшилась после сумеречной войны. Вы - Мушир, главнокомандующий воинства Султана. В вашем распоряжении находятся катафракты, янычары и азебы - к последним вы всегда относились настороженно, какой верности можно ожидать от рабов?",
 		/datum/job/roguetown/physician = "Вы личный лекарь Султана, который лично избрал вас для такого ответственного занятия. В вашем распоряжении значительные интеллектуальные труды всего востока - не посмейте же посрамить право называться лекарем самого Султана!",
 		/datum/job/roguetown/magician = "Твой путь это священный обет, посвященный покорению искусства арканы и неутолимой жажды познания. \
@@ -52,7 +54,6 @@
 	)
 	/// Jobs that this map won't use
 	blacklist = list(
-		/datum/job/roguetown/adventurer/courtagent,
 		// /datum/job/roguetown/adventurer//Adventurers (Could rename which are 'foreigners but who cares)'
 		// /datum/job/roguetown/wretch,
 		/datum/job/roguetown/bandit,

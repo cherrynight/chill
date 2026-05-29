@@ -143,7 +143,6 @@
 
 	var/player_count = SSgamemode.get_correct_popcount()
 
-	var/slots = 0
 	bandit_job.always_show_on_latechoices = TRUE
 	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit, player_count))
 		bandit_job.total_positions = 0

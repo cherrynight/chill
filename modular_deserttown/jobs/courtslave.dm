@@ -1,3 +1,4 @@
+/* 
 /datum/job/roguetown/adventurer/courtslave
 	title = "Enslaved Adventurer"
 	flag = ADVENTURER
@@ -24,3 +25,4 @@
 // 			if(H.mind)
 // 				H.mind.special_role = "Court Agent" //For obfuscating them in the Actors list: _job.dm L:216
 // 			..()
+*/
