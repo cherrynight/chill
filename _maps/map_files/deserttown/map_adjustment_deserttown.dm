@@ -10,9 +10,8 @@
 	// BEGIN DESERT TOWN CONTRACTS (Rollback by removing this list)
 	threat_regions = list(
 		THREAT_REGION_DESERT_NEAR,
-		THREAT_REGION_DESERT_DEEP
+		THREAT_REGION_DESERT_DEEP,
 	)
-	// END DESERT TOWN CONTRACTS
 	realm_type = "Sultanate"
 	realm_type_short = "Sultanate"
 	slot_adjust = list(
@@ -157,3 +156,7 @@
 		/datum/job/roguetown/azebagha,
 		/datum/job/roguetown/slavemaster,
 		/datum/job/roguetown/dtslave, */
+
+/datum/map_adjustment/template/deserttown/on_mapping_init()
+	. = ..()
+	setup_deserttown_economy()
