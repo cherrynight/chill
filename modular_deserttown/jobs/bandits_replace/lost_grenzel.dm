@@ -7,7 +7,7 @@
 	spawn_positions = 0
 	antag_job = TRUE
 	
-	tutorial = "Вы ненавидите пески - они ненавидят вас в ответ. Сумеречная Война стала для вас переломным моментом жизни: так или иначе вы были участником фронтов, вы видели ужасы войны в пустыне, вы видели как умирают неподготовленные к ней, вы видели как жестоки эти животные, что называют себя местными жителями, вы ненавидите их - они ненавидят вас. Ваш батальон несколько лет назад разбили в коротком сражении далеко отсюда, выжившие подались кто-куда, но вы с несколькими товарищами стали грабить и убивать местное население - совершать самые мерзкие поступки, лишь бы накопить денег и вернуться домой..."
+	tutorial = "Оставшись в одиночестве посреди окровавленных песков вас сплотила ненависть. Вас сплотила жажда мести. Вот уже несколько лет вы передвигаетесь от города к городу и мстите, за вами следует выжженная земля, кровь и кости, шок и трепет. Вас не пощадят - вас никогда не помилуют. Зибантийские свиньи не удосужатся вас даже похоронить с миром - и будут издеваться над телом. Вы умрёте, умрёте бесславно, но заберёте с собой десяток-другой швайхундов."
 
 	outfit = null
 	outfit_female = null
@@ -19,6 +19,7 @@
 	min_pq = 25
 	max_pq = null
 	round_contrib_points = null
+	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
 
 	advclass_cat_rolls = list(CTAG_LOSTGRENZEL = 20)
 	PQ_boost_divider = 10
@@ -35,6 +36,7 @@
 		/datum/advclass/lost_grenzel/lost_halberdier,
 		/datum/advclass/lost_grenzel/lost_mage,
 		/datum/advclass/lost_grenzel/lost_jager,
+		/datum/advclass/lost_grenzel/lost_doppelsoldner,
 	)
 
 /datum/job/roguetown/lost_grenzel/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
@@ -95,8 +97,8 @@
 	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
 	var/lg_maxcap = max(SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit), lg_job.total_positions)
 	var/old_positions = lg_job.total_positions
-	lg_job.total_positions = min(lg_job.total_positions + 4, lg_maxcap)
-	lg_job.spawn_positions = min(lg_job.spawn_positions + 4, lg_maxcap)
+	lg_job.total_positions = min(lg_job.total_positions + 5, lg_maxcap)
+	lg_job.spawn_positions = min(lg_job.spawn_positions + 5, lg_maxcap)
 	if(lg_job.total_positions > old_positions)
 		SSmapping.retainer.bandit_goal += 1 * rand(200, 400)
 		SSrole_class_handler.bandits_in_round = TRUE

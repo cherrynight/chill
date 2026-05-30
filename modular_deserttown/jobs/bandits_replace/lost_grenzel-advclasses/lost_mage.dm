@@ -8,7 +8,7 @@
 	category_tags = list(CTAG_LOSTGRENZEL)
 	subclass_languages = list(/datum/language/grenzelhoftian)
 	traits_applied = list(TRAIT_INTELLECTUAL, TRAIT_STEELHEARTED, TRAIT_ALCHEMY_EXPERT)
-	subclass_mage_aspects = list("mastery" = FALSE, "major" = 1, "minor" = 2, "utilities" = 6, "variants" = list(/datum/magic_aspect/pyromancy = "grenzelhoftian"), "post_aspect_spells" = list(/datum/action/cooldown/spell/message, /datum/action/cooldown/spell/magicians_brick), "ward" = TRUE)
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 2, "minor" = 2, "utilities" = 6, "variants" = list(/datum/magic_aspect/pyromancy = "grenzelhoftian"), "post_aspect_spells" = list(/datum/action/cooldown/spell/message, /datum/action/cooldown/spell/magicians_brick), "ward" = TRUE)
 	subclass_stats = list(
 		STATKEY_INT = 4,
 		STATKEY_WIL = 4,
@@ -38,17 +38,19 @@
 	to_chat(H, span_warning("You are a Gefechtgelehrter - \"Combat Scholar\" - A proud magos from the Celestial Academy of Magos, who's skills in Siege Magic and Arcyne Physics are unmatched."))
 	belt = /obj/item/storage/belt/rogue/leather/battleskirt
 	backl = /obj/item/rogueweapon/woodstaff/implement/greater/blacksteel
+	mask = /obj/item/clothing/mask/rogue/ragmask
 	cloak = /obj/item/clothing/cloak/tabard/stabard/grenzelmage
 	armor = /obj/item/clothing/suit/roguetown/armor/brigandine/light
 	wrists = /obj/item/clothing/wrists/roguetown/bracers
-	neck = /obj/item/clothing/neck/roguetown/gorget
+	neck = /obj/item/clothing/neck/roguetown/gorget/steel
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/grenzelhoft
-	head = /obj/item/clothing/head/roguetown/grenzelhofthat
+	head = /obj/item/clothing/head/roguetown/turban
 	pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/grenzelpants
-	shoes = /obj/item/clothing/shoes/roguetown/grenzelhoft
-	gloves = /obj/item/clothing/gloves/roguetown/angle/grenzelgloves
+	shoes = /obj/item/clothing/shoes/roguetown/shalal/reinforced
+	gloves = /obj/item/clothing/gloves/roguetown/fingerless_leather
 	backr = /obj/item/storage/backpack/rogue/satchel/black
 	backpack_contents = list(
+		/obj/item/clothing/head/roguetown/grenzelhofthat = 1,
 		/obj/item/storage/belt/rogue/pouch/coins/poor = 1,
 		/obj/item/flashlight/flare/torch = 1,
 		/obj/item/rogueweapon/huntingknife = 1,

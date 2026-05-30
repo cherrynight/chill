@@ -195,7 +195,17 @@
 
 		if((HAS_TRAIT(src, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_OUTLANDER)) || (HAS_TRAIT(user, TRAIT_BLACKOAK) && !(src.dna.species.name == "Elf" || src.dna.species.name == "Dark Elf" || src.dna.species.name == "Half Elf"))) //TA EDIT
 			. += span_phobia("A foreigner...") //TA EDIT
-
+		
+		// TA EDIT BEGIN, в случае мёржконфликта просто переместите этот блок куда-нибудь в другое место.
+		if(SSmapping.config.map_name == "Desert Town")
+			if(src.dna?.species?.origin == "Grenzelhoft" && !HAS_TRAIT(user, TRAIT_OUTLANDER))
+				. += span_userdanger("ИМПЕРСКИЙ КАФИР!")
+			if(ishuman(user))
+				var/mob/living/carbon/human/H_user = user
+				if(H_user.dna?.species?.origin == "Grenzelhoft" && (src.dna?.species?.origin in list("Raneshan", "Naledi", "Zybantu")))
+					. += span_userdanger("ЗИБАНТИЙСКИЙ ШВАЙХУНД!")
+		// TA EDIT END
+		
 		// Knotted effect message
 		if(has_status_effect(/datum/status_effect/knot_tied))
 			. += span_warning("A knot is locked inside them. They're being pulled around like a pet.")

@@ -4095,4 +4095,5 @@
 #include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_halberdier.dm"
 #include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_mage.dm"
 #include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_jager.dm"
+#include "modular_deserttown\jobs\bandits_replace\lost_grenzel-advclasses\lost_doppelsoldner.dm"
 // END_INCLUDE
