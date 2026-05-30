@@ -2666,6 +2666,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/duelcape
 	donatitem = TRUE
 
+/datum/loadout_item/donat/cloak_jinbaori
+	name = "Jinbaori"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/kazengun
+	donatitem = TRUE
+	donat_tier = 2
+
 // Маски
 
 /datum/loadout_item/naledimask
