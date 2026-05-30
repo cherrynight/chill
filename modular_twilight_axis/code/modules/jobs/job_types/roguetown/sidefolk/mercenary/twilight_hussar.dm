@@ -55,6 +55,7 @@
 		/obj/item/rogueweapon/huntingknife/idagger/steel/special = 1,
 		/obj/item/rogueweapon/scabbard/sheath/noble = 1,
 		/obj/item/storage/belt/rogue/pouch/coins/poor = 1,
+		/obj/item/roguekey/mercenary = 1,
 	)
 	H.dna.species.soundpack_m = new /datum/voicepack/male/knight()
 	if(H.mind)
