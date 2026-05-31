@@ -2023,3 +2023,15 @@
       events based on real historical festivals and events.
   kiwedespars:
   - bugfix: pants
+2026-05-31:
+  MaesuneLux:
+  - rscadd: Add donor items for Arra and Vyx
+  SpadesNeil:
+  - refactor: Moved some defines in mask.dm
+  borneblood:
+  - rscadd: Added 'Daggers' loadout for Heretic Spy.
+  - code_imp: Turned Raze into action/cooldown and added a few fluff interactions
+      to it.
+  saltprjak:
+  - balance: Mistwalkers have received a small buff, alongside an for regenerating
+      skin armor.
