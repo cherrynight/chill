@@ -420,7 +420,7 @@
 	if(SSmapping.config.map_name == "Desert Town")
 		ADD_TRAIT(L, TRAIT_SLAVE, TRAIT_GENERIC)
 
-/datum/job/roguetown/bathmaid/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
+/datum/job/roguetown/bathworker/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	..()
 	if(SSmapping.config.map_name == "Desert Town")
 		ADD_TRAIT(L, TRAIT_SLAVE, TRAIT_GENERIC)

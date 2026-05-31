@@ -88,3 +88,27 @@
 	if(H.mind)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/massage)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/takeapprentice)
+
+// TA DESERT TOWN EDIT BEGIN
+/datum/job/roguetown/bathmaster/after_spawn(mob/living/H, mob/M, latejoin)
+	..()
+	var/client/player = H?.client
+	if(!player && M)
+		player = M.client
+	if(player?.prefs)
+		if(SSmapping.config.map_name == "Desert Town")
+			if(!istype(player.prefs.virtue_origin, /datum/virtue/origin/raneshen) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/naledi) && !istype(player.prefs.virtue_origin, /datum/virtue/origin/zybantian))
+				var/list/new_origins = list("Raneshen" = /datum/virtue/origin/raneshen, 
+				"Naledi" = /datum/virtue/origin/naledi,
+				"Zybantu" = /datum/virtue/origin/zybantian)
+				var/new_origin
+				var/choice = input(player, "Your origins are not compatible with the Sultanat. Where do you hail from?", "ANCESTRY") as anything in new_origins
+				if(choice)
+					new_origin = new_origins[choice]
+				else
+					to_chat(player, span_notice("No choice detected. Picking a random compatible origin."))
+					new_origin = pick(/datum/virtue/origin/raneshen, /datum/virtue/origin/naledi, /datum/virtue/origin/zybantian)
+				var/datum/virtue/origin/applied_origin = new new_origin()
+				player.prefs.virtue_origin = applied_origin
+				apply_virtue(H, applied_origin)
+// TA DESERT TOWN EDIT END
