@@ -30,7 +30,10 @@
 		/datum/advclass/vizier/dtadvisor
 	)
 	spells = list(/obj/effect/proc_holder/spell/self/convertrole/agent)//Hiring court agents
-
+	peopleiknow = list("Court Agent")
+	peopleknowme = list("Court Agent")
+	peopleiknow = list("Enslaved kafir")
+	peopleknowme = list("Enslaved kafir")
 
 /datum/outfit/job/roguetown/vizier
 	backr = /obj/item/storage/backpack/rogue/satchel/short
@@ -54,6 +57,7 @@
 			honorary = "Wazira"
 		H.real_name = "[honorary] [prev_real_name]"
 		H.name = "[honorary] [prev_name]"
+		GLOB.court_spymaster += H.real_name
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
