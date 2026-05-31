@@ -4093,6 +4093,7 @@
 #include "modular_deserttown\jobs\garrison\janissary\jezail.dm"
 #include "modular_deserttown\jobs\garrison\janissary\zephyr.dm"
 #include "modular_deserttown\desert_hunting.dm"
+#include "modular_deserttown\desert_weather.dm"
 #include "modular_deserttown\jobs\bandits_replace\freeman.dm"
 #include "modular_deserttown\jobs\bandits_replace\lost_grenzel.dm"
 #include "modular_deserttown\jobs\bandits_replace\freeman-advclasses\sahir-maradun.dm"
