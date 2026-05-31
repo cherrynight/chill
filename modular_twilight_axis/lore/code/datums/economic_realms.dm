@@ -79,7 +79,7 @@
 		"I bring silks, incense and the finest glass. Pay in gold, or in goods - everything has a price.",
 		"Salted meat and preserved bread for crew, silver for merchants. Keep your wits and your purse closed.",
 		"I will not tarry while the tide turns; I have cargo to sell and debts to collect at Dvergeil.",
-		"Basileus's envoys travel with my manifest. Show papers or be turned away at the gangplank."
+		"You see shackles and think only of iron. I see labour contracts, temple fines, and war reparations. Call it what you like; the Basileus calls it revenue and I am not paid to disagree."
 	)
 
 /datum/foreign_realm/valoria
@@ -158,7 +158,8 @@
 		"The Five Republics' ships sail true. Ask for papers, take your coin, and be gone before sunset.",
 		"My hold carries plate and broadswords — ask the steward before you insult the mast.",
 		"We favour merchants with taste: fine cloth, fine drink, and the right pedigree of coin.",
-		"Eterna's agents travel with my manifest. Show papers or be turned away at the gangplank.",
+		"Greetings from the Valorian Trade League, factor. My papers bear the seals of three councils and two very bored notaries. If that does not satisfy your harbour, nothing short of annexation will.",
+		"I am a licensed factor of the League — audited, insured, and annoyingly well‑educated. Do not try to bury a clause in the small script; I hire scribes whose only vice is finding those."
 	)
 
 /datum/foreign_realm/hammerhold_ta
