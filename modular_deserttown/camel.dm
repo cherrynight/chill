@@ -23,13 +23,7 @@
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/tamed()
 	..()
 	deaggroprob = 30
-	if(can_buckle)
-		var/datum/component/riding/D = LoadComponent(/datum/component/riding)
-		D.set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0, 10), TEXT_SOUTH = list(0, 10), TEXT_EAST = list(-6, 10), TEXT_WEST = list(6, 10)))
-		D.set_vehicle_dir_layer(SOUTH, OBJ_LAYER)
-		D.set_vehicle_dir_layer(NORTH, OBJ_LAYER)
-		D.set_vehicle_dir_layer(EAST, OBJ_LAYER)
-		D.set_vehicle_dir_layer(WEST, OBJ_LAYER)
+	setup_mount(list(TEXT_NORTH = list(0, 10), TEXT_SOUTH = list(0, 10), TEXT_EAST = list(-6, 10), TEXT_WEST = list(6, 10)), OBJ_LAYER, OBJ_LAYER, OBJ_LAYER, OBJ_LAYER)
 
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/death()
 	unbuckle_all_mobs()
