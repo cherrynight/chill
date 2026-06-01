@@ -107,3 +107,8 @@
 	var/obj/item/natural/saddle/S = new(src)
 	ssaddle = S
 	update_icon()
+
+/datum/controller/subsystem/mobs/Initialize(timeofday)
+	. = ..()
+	if(!(/mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled in GLOB.virtue_mount_choices))
+		GLOB.virtue_mount_choices += /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled
