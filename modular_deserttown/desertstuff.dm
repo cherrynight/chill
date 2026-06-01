@@ -93,6 +93,18 @@
 	desc = "Decorative and Practical!"
 	icon = 'modular_deserttown/icons/pots.dmi'
 	icon_state = "fancypot1"
+	open_icon_state = null
+	tapped_icon_state = null
+
+/obj/structure/fermentation_keg/fancypot/start_brew()
+	var/old_icon = icon_state
+	..()
+	icon_state = old_icon
+
+/obj/structure/fermentation_keg/fancypot/end_brew()
+	var/old_icon = icon_state
+	..()
+	icon_state = old_icon
 
 /datum/crafting_recipe/roguetown/structure/fancypot
 	name = "sand pot (fancy)"
