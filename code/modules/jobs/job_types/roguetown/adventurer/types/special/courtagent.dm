@@ -16,10 +16,8 @@
 	townie_contract_gate_exempt = TRUE
 	class_setup_examine = FALSE
 	// TA EDIT BEGIN
-	peopleiknow = list("Hand")
-	peopleknowme = list("Hand")
-	peopleiknow = list("Vizier") // Для дезерттауна
-	peopleknowme = list("Vizier") // Для дезерттауна
+	peopleiknow = list("Hand", "Vizier") // TA edit
+	peopleknowme = list("Hand", "Vizier") // TA edit
 	// TA EDIT END
 	same_job_respawn_delay = 30 MINUTES
 

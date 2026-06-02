@@ -29,11 +29,6 @@
 
 /datum/advclass/slave/servant
 	traits_applied = list(TRAIT_CICERONE, TRAIT_ROYALSERVANT, TRAIT_FOOD_STIPEND)
-
-/datum/advclass/slave/servant
-	traits_applied = list(TRAIT_CICERONE)
-
-/datum/advclass/slave/servant
 	name = "Servant"
 	tutorial = "You are a humdrum servant, dressed the part; lowly and best out of sight. It's practical, however."
 	outfit = /datum/outfit/job/roguetown/slave/servant

@@ -57,7 +57,7 @@
 	gloves = /obj/item/clothing/gloves/roguetown/fingerless_leather
 	id = /obj/item/mattcoin
 	var/classes = list("Jannisary Deserter", "Desert Raider")
-	var/classchoice = input("Choose your archetypes", "Available archetypes") as anything in classes
+	var/classchoice = input(H, "Choose your archetypes", "Available archetypes") as anything in classes
 	switch(classchoice)
 		if("Jannisary Deserter")
 			ADD_TRAIT(H, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)        

@@ -348,4 +348,4 @@
 	)
 	
 	if (H.mind)
-		H.AddSpell(new /obj/effect/proc_holder/spell/self/choose_riding_virtue_mount)
+		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/choose_riding_virtue_mount)

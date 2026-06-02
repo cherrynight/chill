@@ -202,7 +202,8 @@
 				. += span_userdanger("ИМПЕРСКИЙ КАФИР!")
 			if(ishuman(user))
 				var/mob/living/carbon/human/H_user = user
-				if(H_user.dna?.species?.origin == "Grenzelhoft" && (src.dna?.species?.origin in list("Raneshan", "Naledi", "Zybantu")))
+				var/origin = src.dna?.species?.origin
+				if(H_user.dna?.species?.origin == "Grenzelhoft" && (origin == "Raneshan" || origin == "Naledi" || origin == "Zybantu"))
 					. += span_userdanger("ЗИБАНТИЙСКИЙ ШВАЙХУНД!")
 		// TA EDIT END
 		

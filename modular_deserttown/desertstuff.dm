@@ -584,7 +584,7 @@
 				if(B)
 					var/double_output = (HAS_TRAIT(user, TRAIT_ALCHEMY_EXPERT) && user.get_skill_level(/datum/skill/craft/alchemy) >= SKILL_LEVEL_JOURNEYMAN)
 					if(double_output)
-						var/obj/item/C = new B.type(user.loc)
+						var/obj/item/C = new B(user.loc)
 						user.put_in_hands(C)
 					B = new B(user.loc)
 					user.put_in_hands(B)

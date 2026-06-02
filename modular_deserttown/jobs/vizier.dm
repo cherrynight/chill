@@ -30,10 +30,8 @@
 		/datum/advclass/vizier/dtadvisor
 	)
 	spells = list(/obj/effect/proc_holder/spell/self/convertrole/agent)//Hiring court agents
-	peopleiknow = list("Court Agent")
-	peopleknowme = list("Court Agent")
-	peopleiknow = list("Enslaved kafir")
-	peopleknowme = list("Enslaved kafir")
+	peopleiknow = list("Court Agent", "Enslaved kafir")
+	peopleknowme = list("Court Agent", "Enslaved kafir")
 
 /datum/outfit/job/roguetown/vizier
 	backr = /obj/item/storage/backpack/rogue/satchel/short
