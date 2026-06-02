@@ -110,5 +110,6 @@
 
 /datum/controller/subsystem/mobs/Initialize(timeofday)
 	. = ..()
-	if(!(/mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled in GLOB.virtue_mount_choices))
-		GLOB.virtue_mount_choices += /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled
+	if(SSmapping && SSmapping.config && SSmapping.config.map_name == "Desert Town")
+		if(!(/mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled in GLOB.virtue_mount_choices))
+			GLOB.virtue_mount_choices += /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled
