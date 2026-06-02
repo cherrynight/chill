@@ -646,4 +646,9 @@
 		return 0
 	return 1
 
+// Effects
+/obj/effect/decal/edge/desert_gray
+	color = "#655653"
 
+/obj/effect/decal/edge_corner/desert_gray
+	color = "#655653"

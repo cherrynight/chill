@@ -224,6 +224,14 @@
 	first_time_text = "Al-Ashur Palace"
 	keep_area = TRUE
 
+/area/rogue/indoors/town/manor/desert/toilet
+	name = "Sultan Shithole"
+	droning_sound = 'sound/music/area/desert/Iberia1.ogg'
+	droning_sound_dusk = null
+	droning_sound_night = 'sound/music/area/desert/Iberia2.ogg'
+	first_time_text = "Sultan Shithole"
+	keep_area = TRUE
+
 /area/rogue/indoors/town/magician/desert
 	name = "Wizard's Tower"
 	spookysounds = SPOOKY_MYSTICAL
