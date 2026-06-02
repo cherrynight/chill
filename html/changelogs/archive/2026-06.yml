@@ -54,3 +54,24 @@
   - rscadd: singleclap emote
   - rscadd: slowclap emote
   - bugfix: briar's curse now works on onehanded/unwieldable weapons
+2026-06-02:
+  Antoonij:
+  - bugfix: "\u043B\u0438\u0448\u043D\u0438\u0435 \u0437\u0430\u043F\u0440\u0435\u0449\
+      \u0435\u043D\u043D\u044B\u0435 \u0440\u0430\u0441\u044B \u0432 \u0440\u043E\u043B\
+      \u044F\u0445 \u043D\u0430 \u0440\u043E\u043A\u0445\u0438\u043B\u043B\u0435"
+  FeniaFox:
+  - bugfix: Fixed various helmets not respecting trait locks properly.
+  - balance: Squire Errants now spawn with brush and polishing cream instead of tongs.
+  FreeStylaLT:
+  - rscadd: Added an animation for friendly waves.
+  WeNeedMorePhoron:
+  - rscadd: Improved UX of the Talkstatue
+  - rscadd: Allows you to dodge taxes at the ship fulfillment crate
+  - bugfix: Also fixed a critical bug where fulfillment crate were apparently charging
+      the treasury (??)
+  - rscadd: Ledger no longer magically reveal all transfer and transactions and only
+      those that directly concern the Crown's purse to make tax dodging audit requires
+      slightly more efforts.
+  - rscadd: Restore and rework arcyne barrage to fire piercing projectiles and less
+      of them for the same effect but hopefully way less lag.
+  - rscdel: Removed arcane aspect granting scrolls.
