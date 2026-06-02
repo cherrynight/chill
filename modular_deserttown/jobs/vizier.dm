@@ -19,8 +19,6 @@
 	noble_income = 22
 	min_pq = 9 //The second most powerful person in the realm...
 	max_pq = null
-	peopleiknow = list("Enslaved kafir")
-	peopleknowme = list("Enslaved kafir")
 	round_contrib_points = 3
 	cmode_music = 'sound/music/combat_desert2.ogg'
 	job_traits = list(TRAIT_NOBLE, TRAIT_SEEPRICES)
@@ -176,7 +174,7 @@
 	)
 	if(H.dna.species.type in NON_DWARVEN_RACE_TYPES)
 		shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/shadowrobe
-//		cloak = /obj/item/clothing/cloak/shadowcloak
+		cloak = /obj/item/clothing/cloak/half/shadowcloak
 		gloves = /obj/item/clothing/gloves/roguetown/fingerless/shadowgloves
 		mask = /obj/item/clothing/mask/rogue/shepherd/shadowmask
 		pants = /obj/item/clothing/under/roguetown/trou/shadowpants
@@ -198,14 +196,14 @@
 	outfit = /datum/outfit/job/roguetown/vizier/advisor
 
 	category_tags = list(CTAG_VIZIER)
-	traits_applied = list(TRAIT_ALCHEMY_EXPERT, TRAIT_MAGEARMOR/*, TRAIT_ARCYNE_T2 -------> АДАПТИРОВАТЬ ПОД НАШУ МАГИЮ*/)
+	traits_applied = list(TRAIT_ALCHEMY_EXPERT, TRAIT_MAGEARMOR)
 	subclass_stats = list(
 		STATKEY_INT = 4,
 		STATKEY_PER = 3,
 		STATKEY_WIL = 2,
 		STATKEY_LCK = 2,
 	)
-//	subclass_spellpoints = 15 -------> АДАПТИРОВАТЬ ПОД НАШУ МАГИЮ
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 1, "minor" = 2, "utilities" = 6, "ward" = TRUE)
 	subclass_skills = list(
 		/datum/skill/combat/crossbows = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/knives = SKILL_LEVEL_APPRENTICE,
@@ -247,12 +245,12 @@
 		H.change_stat(STATKEY_STR, -1)
 		H.change_stat(STATKEY_INT, 1)
 		H.change_stat(STATKEY_PER, 1) 
-//		H.mind?.adjust_spellpoints(3) ----> АДАПТИРОВАТЬ ПОД НАШУ МАГИЮ
+		H.mind?.adjust_spellpoints(3)
 	//He gets far less spellpoints than any other equivalent caster. Give him a T4.
 	//Message, too. You'll be taking it anyways.
-/*	if(H.mind)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/recall)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/message) -----> АДАПТИРОВАТЬ ПОД НАШУ МАГИЮ*/
+	if(H.mind)
+		//H.mind.AddSpell(new /datum/action/cooldown/spell/recall) // TODO: Заменить на нормальный реколл, когда появится в новой магии
+		H.mind.AddSpell(new /datum/action/cooldown/spell/message)
 
 
 ////////////////////
