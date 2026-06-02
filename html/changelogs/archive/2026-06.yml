@@ -75,3 +75,5 @@
   - rscadd: Restore and rework arcyne barrage to fire piercing projectiles and less
       of them for the same effect but hopefully way less lag.
   - rscdel: Removed arcane aspect granting scrolls.
+  borneblood:
+  - bugfix: fixed an oversight on hellfyre wave, and they cannot be ignited now
