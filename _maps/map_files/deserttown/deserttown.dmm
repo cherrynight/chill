@@ -15417,7 +15417,10 @@
 /turf/closed/wall/mineral/rogue/wooddark,
 /area/rogue/indoors/town/dwarfin/desert)
 "fpp" = (
-/obj/item/paper,
+/obj/item/paper{
+	info = "Они убили мою жену, я потратил жизнь на то, чтобы прокопать путь - завершите моё дело";
+	icon_state = "paperwrite"
+	},
 /turf/open/floor/rogue/twig{
 	icon = 'modular_deserttown/icons/alt/roguefloor.dmi'
 	},
