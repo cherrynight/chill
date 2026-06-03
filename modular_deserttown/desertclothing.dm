@@ -701,7 +701,7 @@ name = "Janissaries Helm"
 	result = list(/obj/item/clothing/suit/roguetown/shirt/exoticsilkbra/green)
 	reqs = list(
 		/obj/item/natural/silk = 2,
-		/obj/item/natural/cloth = 1
+		/obj/item/natural/cloth = 2
 	)
 	craftdiff = 4
 
@@ -717,7 +717,7 @@ name = "Janissaries Helm"
 	result = list(/obj/item/clothing/suit/roguetown/shirt/exoticsilkbra/red)
 	reqs = list(
 		/obj/item/natural/silk = 2,
-		/obj/item/natural/cloth = 1
+		/obj/item/natural/cloth = 2
 	)
 	craftdiff = 4
 
