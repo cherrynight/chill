@@ -19,7 +19,7 @@
 	announce_latejoin = FALSE
 	outfit = /datum/outfit/job/roguetown/slavemaster
 	give_bank_account = 25
-	min_pq = 5
+	min_pq = 10
 	max_pq = null
 	round_contrib_points = 2
 	cmode_music = 'sound/music/combat_zybantine.ogg'
