@@ -27,7 +27,6 @@
 		/datum/job/roguetown/janissarysergeant,
 		/datum/job/roguetown/azeb,
 		/datum/job/roguetown/azebagha,
-		/datum/job/roguetown/sultan,
 		/datum/job/roguetown/slavemaster,
 		/datum/job/roguetown/sultan,
 		/datum/job/roguetown/slave,
