@@ -5562,7 +5562,7 @@
 "bTy" = (
 /obj/structure/bars,
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "bTD" = (
 /obj/structure/closet/crate/roguecloset/dark,
 /turf/open/floor/rogue/tile/brownbrick{
@@ -6672,7 +6672,7 @@
 /obj/item/rogueweapon/thresher,
 /obj/item/natural/cloth,
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "cmN" = (
 /obj/effect/landmark/start/dt/janissary,
 /obj/structure/rack/rogue/shelf,
@@ -8135,7 +8135,7 @@
 	dir = 4
 	},
 /turf/open/floor/rogue/dirt/road,
-/area/rogue)
+/area/rogue/under/cave)
 "cNe" = (
 /obj/structure/roguewindow/openclose/reinforced{
 	dir = 4
@@ -18833,7 +18833,7 @@
 	locked = 1
 	},
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "gDd" = (
 /obj/structure/stairs,
 /turf/open/floor/rogue/hexstone,
@@ -22285,9 +22285,6 @@
 	},
 /turf/open/floor/carpet/royalblack,
 /area/rogue/indoors/town/church)
-"hPm" = (
-/turf/open/transparent/openspace,
-/area/rogue)
 "hPo" = (
 /obj/machinery/light/rogue/candle/off,
 /turf/open/floor/rogue/tile/brownbrick{
@@ -24166,7 +24163,7 @@
 "izA" = (
 /mob/living/carbon/human/species/goblin/npc/moon,
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "izB" = (
 /obj/structure/bars{
 	max_integrity = 2000;
@@ -26955,9 +26952,6 @@
 /obj/structure/roguewindow/harem3,
 /turf/open/floor/rogue/wood/nosmooth,
 /area/rogue/indoors/town/desert/warden)
-"jAK" = (
-/turf/open/floor/rogue/naturalstone/sandstone,
-/area/rogue)
 "jAS" = (
 /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow,
 /obj/structure/rack/rogue/shelf,
@@ -29236,7 +29230,7 @@
 "kqr" = (
 /obj/structure/bars,
 /turf/open/floor/rogue/dirt/road,
-/area/rogue)
+/area/rogue/under/cave)
 "kqD" = (
 /obj/structure/stairs/stone,
 /obj/structure/fluff/railing/border{
@@ -30260,7 +30254,7 @@
 "kKc" = (
 /obj/item/reagent_containers/glass/bowl,
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "kKt" = (
 /obj/structure/fluff/psycross,
 /turf/open/floor/rogue/naturalstone/sandstone,
@@ -31986,7 +31980,7 @@
 /obj/item/rope,
 /obj/structure/rack/rogue,
 /turf/open/floor/rogue/dirt/road,
-/area/rogue)
+/area/rogue/under/cave)
 "lsm" = (
 /obj/structure/fluff/railing/border{
 	dir = 5
@@ -40971,9 +40965,6 @@
 	icon = 'modular_deserttown/icons/alt/roguefloor.dmi'
 	},
 /area/rogue/indoors/town/garrison/desert)
-"oBY" = (
-/turf/open/floor/rogue/dirt,
-/area/rogue)
 "oBZ" = (
 /obj/structure/mineral_door/wood/violet{
 	locked = 1;
@@ -53943,12 +53934,6 @@
 /obj/item/natural/bundle/bone/full,
 /turf/open/floor/rogue/citybrick/citybrick1,
 /area/rogue/under/town/basement/desert)
-"sZh" = (
-/obj/structure/stairs/stone{
-	dir = 4
-	},
-/turf/open/floor/rogue/naturalstone/sandstone,
-/area/rogue)
 "sZs" = (
 /turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/indoors/town/church/basement)
@@ -64979,9 +64964,6 @@
 /obj/machinery/light/rogue/candle/l,
 /turf/open/floor/rogue/tile/harem2,
 /area/rogue/indoors/town/bath/desert)
-"wOx" = (
-/turf/closed/wall/mineral/rogue/stone/moss,
-/area/rogue)
 "wOy" = (
 /turf/closed/mineral/rogue/sandstone,
 /area/rogue/indoors/town/grove)
@@ -65680,7 +65662,7 @@
 "xbn" = (
 /obj/effect/decal/remains/human,
 /turf/open/floor/rogue/dirt,
-/area/rogue)
+/area/rogue/under/cave)
 "xbD" = (
 /obj/machinery/light/roguestreet/walllamp{
 	dir = 8
@@ -66104,7 +66086,7 @@
 /area/rogue/indoors/town/manor/desert/toilet)
 "xid" = (
 /turf/open/floor/rogue/twig,
-/area/rogue)
+/area/rogue/under/cave)
 "xif" = (
 /obj/structure/chair/wood/zybantine{
 	dir = 1
@@ -66172,7 +66154,7 @@
 /area/rogue/indoors/town/desert)
 "xiH" = (
 /turf/open/floor/rogue/dirt/road,
-/area/rogue)
+/area/rogue/under/cave)
 "xiM" = (
 /obj/structure/fluff/railing/wood{
 	dir = 8;
@@ -204578,18 +204560,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
 lbf
 lbf
 kvr
@@ -204890,18 +204872,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
 lbf
 lbf
 kvr
@@ -205202,18 +205184,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
+lbf
+lbf
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -205514,18 +205496,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
-oar
-oBY
-oBY
-oar
-oar
-oar
-oar
-oar
+lbf
+lbf
+kvr
+kvr
+kvr
+uQT
+uQT
+kvr
+kvr
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -205826,18 +205808,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
-oBY
+lbf
+lbf
+kvr
+kvr
+uQT
 xbn
 kKc
-oBY
-oar
-oar
-oar
-oar
+uQT
+kvr
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -206138,18 +206120,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
-oBY
+lbf
+lbf
+kvr
+kvr
+uQT
 xiH
 xiH
 kqr
-hPm
-oar
-oar
-oar
+fMl
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -206450,18 +206432,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
+lbf
+lbf
+kvr
+kvr
 bTy
-wOx
+acS
 cNa
 kqr
-jAK
-oar
-oar
-oar
+uBv
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -206762,18 +206744,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oBY
-oBY
+lbf
+lbf
+kvr
+uQT
+uQT
 gCV
 xiH
 xiH
 xid
-oar
-oar
-oar
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -207074,18 +207056,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
+lbf
+lbf
+kvr
 izA
 kKc
 bTy
 xiH
 xiH
-sZh
-oar
-oar
-oar
+woQ
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -207386,18 +207368,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
+lbf
+lbf
+kvr
+kvr
 izA
 bTy
 cmy
 lsi
-oar
-oar
-oar
-oar
+kvr
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -207698,18 +207680,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
-oar
+lbf
+lbf
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
+kvr
 kvr
 kvr
 kvr
@@ -208010,18 +207992,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
 lbf
 lbf
 kvr
@@ -208322,18 +208304,18 @@ nFL
 nFL
 nFL
 nFL
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
-tEt
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
+lbf
 lbf
 lbf
 kvr
