@@ -11,7 +11,7 @@
 	outfit = /datum/outfit/job/roguetown/slave
 	advclass_cat_rolls = list(CTAG_PSLAVE = 20)
 	forbidden_races = list(RACES_DESPISED)
-	job_traits = list(TRAIT_HOMESTEAD_EXPERT, TRAIT_SLAVE)
+	job_traits = list(TRAIT_HOMESTEAD_EXPERT, TRAIT_SLAVE, TRAIT_FOOD_STIPEND, TRAIT_ROYALSERVANT)
 	display_order = JDO_SERVANT
 	give_bank_account = TRUE
 	min_pq = -10
