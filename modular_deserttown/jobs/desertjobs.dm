@@ -166,6 +166,13 @@
 	refuse_message = "НЕТ!"
 	recharge_time = 100
 
+/obj/effect/proc_holder/spell/self/convertrole/slave/can_convert(mob/living/carbon/human/recruit)
+	if(QDELETED(recruit))
+		return FALSE
+	if(!recruit.mind)
+		return FALSE
+	return TRUE
+
 /obj/effect/proc_holder/spell/self/convertrole/slave/convert(mob/living/carbon/human/recruit, mob/living/carbon/human/recruiter)
 	if(QDELETED(recruit) || QDELETED(recruiter))
 		return FALSE
