@@ -11139,6 +11139,12 @@
 	},
 /turf/open/floor/rogue/wood,
 /area/rogue/indoors/town/dwarfin/desert)
+"dMY" = (
+/obj/machinery/light/rogue/torchholder/l{
+	dir = 8
+	},
+/turf/open/floor/rogue/wood,
+/area/rogue/indoors/town/church)
 "dMZ" = (
 /obj/structure/drape/zybantine{
 	opacity = 1
@@ -11564,7 +11570,10 @@
 /obj/structure/curtain/magenta{
 	layer = 4.05
 	},
-/obj/structure/fluff/walldeco/rpainting,
+/obj/structure/fluff/walldeco/rpainting/forest,
+/obj/structure/roguewindow/harem2{
+	density = 0
+	},
 /turf/open/floor/rogue/concrete,
 /area/rogue/indoors/town/bath/desert)
 "dUP" = (
@@ -24964,6 +24973,9 @@
 	pixel_y = 4
 	},
 /obj/machinery/light/roguestreet/walllamp,
+/obj/structure/floordoor{
+	redstone_id = "frankenstein"
+	},
 /turf/open/transparent/openspace,
 /area/rogue/indoors/town/physician/desert)
 "iQJ" = (
@@ -33418,6 +33430,43 @@
 	icon_state = "carpet_l"
 	},
 /area/rogue/under/cave/licharena/bossroom)
+"lSJ" = (
+/obj/structure/table/wood/poor,
+/obj/item/roguekey/bathworker{
+	lockid = "lux1";
+	name = "room I key";
+	pixel_x = 12;
+	pixel_y = 9
+	},
+/obj/item/roguekey/bathworker{
+	lockid = "lux3";
+	name = "room III key";
+	pixel_y = 0;
+	pixel_x = 12
+	},
+/obj/item/roguekey/bathworker{
+	lockid = "lux2";
+	name = "room II key";
+	pixel_x = 12;
+	pixel_y = 5
+	},
+/obj/item/roguekey/bathworker{
+	lockid = "lux5";
+	name = "room V key";
+	pixel_y = -7;
+	pixel_x = 3
+	},
+/obj/item/roguekey/bathworker{
+	lockid = "lux4";
+	name = "room IV key";
+	pixel_y = -7;
+	pixel_x = 3
+	},
+/obj/item/roguekey/bathworker{
+	name = "pleasure room"
+	},
+/turf/open/floor/rogue/blocks/stonered/tiny,
+/area/rogue/indoors/town/bath/desert)
 "lSK" = (
 /turf/open/floor/rogue/dunes{
 	color = "#e3edff"
@@ -43917,7 +43966,7 @@
 /obj/structure/toilet,
 /obj/item/reagent_containers/food/snacks/smallrat,
 /obj/machinery/light/rogue/candle/blue/l,
-/obj/structure/bars/grille,
+/obj/structure/floordoor,
 /turf/open/transparent/openspace,
 /area/rogue/indoors/town/bath/desert)
 "pCJ" = (
@@ -62329,7 +62378,10 @@
 /area/rogue/under/underdark)
 "vSf" = (
 /obj/effect/decal/desertgrassedge{
-	dir = 1
+	dir = 8
+	},
+/obj/effect/decal/desertgrassedge{
+	dir = 4
 	},
 /turf/open/floor/rogue/sandbrick,
 /area/rogue/outdoors/town/desert)
@@ -66489,8 +66541,8 @@
 	pixel_y = -5
 	},
 /obj/machinery/light/rogue/candle/blue/l,
-/obj/structure/bars/grille,
-/turf/open/water/sewer,
+/obj/structure/floordoor,
+/turf/open/transparent/openspace,
 /area/rogue/indoors/town/bath/desert)
 "xpa" = (
 /mob/living/carbon/human/species/npc/deadite{
@@ -175503,7 +175555,7 @@ iVN
 pbN
 pbN
 cGq
-cGq
+pbN
 pbN
 pbN
 pbN
@@ -175815,8 +175867,8 @@ iVN
 iVN
 pbN
 cGq
-cGq
 pbN
+rzc
 rzc
 rzc
 rzc
@@ -176128,10 +176180,10 @@ iVN
 pbN
 pbN
 pbN
-pbN
-pbN
-pbN
-pbN
+rzc
+rzc
+rzc
+rzc
 pbN
 waW
 waW
@@ -176423,7 +176475,7 @@ eBY
 iVN
 xio
 qQQ
-iLt
+lSJ
 kuq
 dKv
 iVN
@@ -387925,7 +387977,7 @@ wkN
 fzq
 pdn
 wkN
-gkA
+dMY
 dAX
 rTn
 gOJ
@@ -415107,8 +415159,8 @@ nhG
 tpG
 qOh
 wCZ
+wCZ
 vSf
-jZa
 tuH
 djv
 gpg
