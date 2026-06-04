@@ -12,6 +12,7 @@
 #define CTAG_SHEIKH		"CAT_SHEIKH"
 #define CTAG_FREEMAN		"CAT_FREEMAN"
 #define CTAG_LOSTGRENZEL	"CAT_LOSTGRENZEL"
+#define CTAG_HAREM			"CAT_HAREM"	
 
 
 
@@ -25,6 +26,7 @@
 #define SULTAN	(1<<0)
 #define VIZIER	(1<<0)
 #define SHEIKH	(1<<0)
+#define HAREM	(1<<0)
 #define CATAPHRACT	(1<<4)
 #define JANISSARYSERGEANT	(1<<6)
 // #define GUARD_CAPTAIN		(1<<5)

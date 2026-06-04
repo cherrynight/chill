@@ -15,3 +15,6 @@
 
 /obj/item/storage/keyring/slave
 	keys = list(/obj/item/roguekey/manor, /obj/item/roguekey/dungeon)
+
+/obj/item/storage/keyring/harem
+	keys = list(/obj/item/roguekey/royal, /obj/item/roguekey/manor, /obj/item/roguekey/heir)
