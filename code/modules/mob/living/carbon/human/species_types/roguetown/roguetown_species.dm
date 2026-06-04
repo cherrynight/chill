@@ -10,7 +10,7 @@
 		"East Elven accent" = "korean_replacement.json",
 		"Old Empire Accent" = "empire_replacement.json",
 		"Grenzel accent" = "german_replacement.json",
-		"Zybantian accent" = "arabic_replacement.json",
+		"Zybantine (Traditional) accent" = "arabic_replacement.json",
 		"Otavian accent" = "russian_replacement.json",
 		"Hammerhold accent" = "Anglish.json",
 		"Assimari accent" = "proper_replacement.json",
