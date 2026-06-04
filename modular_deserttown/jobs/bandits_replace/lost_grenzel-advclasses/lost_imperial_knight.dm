@@ -16,7 +16,7 @@
 		STATKEY_INT = 3,
 	)
 	subclass_skills = list(
-		/datum/skill/combat/swords = SKILL_LEVEL_LEGENDARY,
+		/datum/skill/combat/swords = SKILL_LEVEL_MASTER,
 		/datum/skill/misc/tracking = SKILL_LEVEL_MASTER,		
 		/datum/skill/combat/maces = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/axes = SKILL_LEVEL_JOURNEYMAN,
