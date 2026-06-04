@@ -20,7 +20,7 @@
 	max_pq = null
 	round_contrib_points = null
 	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
-
+	forbidden_races = list(RACES_CONSTRUCT RACES_DESPISED RACES_OOZE)
 	advclass_cat_rolls = list(CTAG_LOSTGRENZEL = 20)
 	PQ_boost_divider = 10
 
@@ -107,3 +107,26 @@
 			if(!player.client)
 				continue
 			to_chat(player, span_danger("Astrata calls for justice! The degenerates who dared to deny her right to rule the Pantheon must be subdued!"))
+
+/proc/update_lost_grenzel_slots()
+	var/datum/job/lost_grenzel_job = SSjob.GetJob("Lost Grenzel")
+	if(!lost_grenzel_job)
+		return
+
+	lost_grenzel_job.always_show_on_latechoices = FALSE
+	lost_grenzel_job.total_positions = 0
+	lost_grenzel_job.spawn_positions = 0
+
+	if(!SSgamemode)
+		return
+
+	if(SSmapping.config.map_name != "Desert Town")
+		return
+
+	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
+	if(storyteller_type != /datum/storyteller/astrata)
+		return
+
+	lost_grenzel_job.always_show_on_latechoices = TRUE
+	lost_grenzel_job.total_positions = 4
+	lost_grenzel_job.spawn_positions = 4

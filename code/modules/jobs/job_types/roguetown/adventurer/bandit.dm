@@ -123,6 +123,8 @@
 
 
 /proc/update_bandits_slots()
+	update_lost_grenzel_slots()
+
 	var/datum/job/bandit_job = SSjob.GetJob("Bandit")
 	if(!bandit_job)
 		return

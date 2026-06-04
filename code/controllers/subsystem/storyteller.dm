@@ -905,6 +905,8 @@ SUBSYSTEM_DEF(gamemode)
 		misc += "Лимит оборотней на старте раунда установлен на 1"
 	if(storyteller_type == /datum/storyteller/astrata)
 		misc += "Маскарад может появиться с 2 слотами на старте раунда"
+		if(SSmapping?.config?.map_name == "Desert Town")
+			misc += "Открывает 5 слотов потерянных грензельхофтцев"
 	if(storyteller_type == /datum/storyteller/graggar)
 		misc += "Гноллы и ассасины открываются на 3 слота"
 	if(story_hardequal(storyteller_type))
