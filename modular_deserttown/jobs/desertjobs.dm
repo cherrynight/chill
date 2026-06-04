@@ -456,3 +456,8 @@
 			if(!H.equip_to_appropriate_slot(keys))
 				if(!H.put_in_hands(keys))
 					keys.forceMove(H.drop_location())
+
+/datum/outfit/job/roguetown/physician/basic/pre_equip(mob/living/carbon/human/H)
+	. = ..()
+	if(SSmapping.config.map_name == "Desert Town")
+		wrists = /obj/item/storage/keyring/courtphysician
