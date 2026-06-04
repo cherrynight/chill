@@ -446,6 +446,8 @@
 	if(SSmapping && SSmapping.config && SSmapping.config.map_name == "Desert Town")
 		GLOB.bounty_posters["AZURIA"] = "The Sultanate of Al-Ashur"
 		GLOB.bounty_posters["GRENZELHOFT"] = "The Exalted Church of Zybantia"
+		if(!(/mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled in GLOB.virtue_mount_choices))
+			GLOB.virtue_mount_choices += /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled
 
 /datum/job/roguetown/veteran/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	..()

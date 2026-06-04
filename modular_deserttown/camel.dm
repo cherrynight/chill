@@ -1,5 +1,3 @@
-
-
 // /mob/living/simple_animal/hostile/retaliate/rogue/camel/find_food()
 // 	..()
 // 	var/obj/structure/spacevine/SV = locate(/obj/structure/spacevine) in loc
@@ -27,7 +25,7 @@
 
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/death()
 	unbuckle_all_mobs()
-	.=..()
+	. = ..()
 
 /mob/living/simple_animal/hostile/retaliate/rogue/camel
 	icon = 'modular_deserttown/icons/camel.dmi'
@@ -59,12 +57,12 @@
 	base_intents = list(/datum/intent/simple/headbutt)
 	health = 156
 	maxHealth = 156
-	food_type = list(/obj/item/reagent_containers/food/snacks/grown/wheat,/obj/item/reagent_containers/food/snacks/grown/oat,/obj/item/reagent_containers/food/snacks/grown/apple)
+	food_type = list(/obj/item/reagent_containers/food/snacks/grown/wheat, /obj/item/reagent_containers/food/snacks/grown/oat, /obj/item/reagent_containers/food/snacks/grown/apple)
 	tame_chance = 25
 	bonus_tame_chance = 15
 	footstep_type = FOOTSTEP_MOB_SHOE
 	pooptype = /obj/item/natural/poo/horse
-	faction = list("saiga")
+	faction = list(FACTION_SAIGA)
 	attack_verb_continuous = "headbutts"
 	attack_verb_simple = "headbutt"
 	melee_damage_lower = 10
@@ -74,42 +72,37 @@
 	STASPD = 15
 	STACON = 8
 	STASTR = 12
-	childtype = list(/mob/living/simple_animal/hostile/retaliate/rogue/saiga/saigakid = 70, /mob/living/simple_animal/hostile/retaliate/rogue/saiga/saigaboy = 30)
-	attack_sound = list('sound/vo/mobs/saiga/attack (1).ogg','sound/vo/mobs/saiga/attack (2).ogg')
+	childtype = null
+	attack_sound = list('sound/vo/mobs/saiga/attack (1).ogg', 'sound/vo/mobs/saiga/attack (2).ogg')
 	can_buckle = TRUE
 	buckle_lying = 0
 	can_saddle = TRUE
 	aggressive = 1
-	remains_type = /obj/effect/decal/remains/saiga
-	
-/obj/effect/decal/remains/saiga
-	name = "remains"
-	gender = PLURAL
-	icon_state = "skele"
-	icon = 'icons/roguetown/mob/monster/saiga.dmi'
+	remains_type = /obj/effect/decal/remains/camel
 
-/mob/living/simple_animal/hostile/retaliate/rogue/saiga/get_sound(input)
+/obj/effect/decal/remains/camel
+	name = "camel remains"
+	gender = PLURAL
+	icon_state = "camel_dead"
+	icon = 'modular_deserttown/icons/camel.dmi'
+
+/mob/living/simple_animal/hostile/retaliate/rogue/camel/get_sound(input)
 	switch(input)
 		if("aggro")
-			return pick('sound/vo/mobs/saiga/attack (1).ogg','sound/vo/mobs/saiga/attack (2).ogg')
+			return pick('sound/vo/mobs/saiga/attack (1).ogg', 'sound/vo/mobs/saiga/attack (2).ogg')
 		if("pain")
-			return pick('sound/vo/mobs/saiga/pain (1).ogg','sound/vo/mobs/saiga/pain (2).ogg','sound/vo/mobs/saiga/pain (3).ogg')
+			return pick('sound/vo/mobs/saiga/pain (1).ogg', 'sound/vo/mobs/saiga/pain (2).ogg', 'sound/vo/mobs/saiga/pain (3).ogg')
 		if("death")
-			return pick('sound/vo/mobs/saiga/death (1).ogg','sound/vo/mobs/saiga/death (2).ogg')
+			return pick('sound/vo/mobs/saiga/death (1).ogg', 'sound/vo/mobs/saiga/death (2).ogg')
 		if("idle")
-			return pick('sound/vo/mobs/saiga/idle (1).ogg','sound/vo/mobs/saiga/idle (2).ogg','sound/vo/mobs/saiga/idle (3).ogg','sound/vo/mobs/saiga/idle (4).ogg','sound/vo/mobs/saiga/idle (5).ogg','sound/vo/mobs/saiga/idle (6).ogg','sound/vo/mobs/saiga/idle (7).ogg')
+			return pick('sound/vo/mobs/saiga/idle (1).ogg', 'sound/vo/mobs/saiga/idle (2).ogg', 'sound/vo/mobs/saiga/idle (3).ogg', 'sound/vo/mobs/saiga/idle (4).ogg', 'sound/vo/mobs/saiga/idle (5).ogg', 'sound/vo/mobs/saiga/idle (6).ogg', 'sound/vo/mobs/saiga/idle (7).ogg')
 
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame
 	tame = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled/Initialize()
 	. = ..()
+	setup_mount(list(TEXT_NORTH = list(0, 10), TEXT_SOUTH = list(0, 10), TEXT_EAST = list(-6, 10), TEXT_WEST = list(6, 10)))
 	var/obj/item/natural/saddle/S = new(src)
 	ssaddle = S
 	update_icon()
-
-/datum/controller/subsystem/mobs/Initialize(timeofday)
-	. = ..()
-	if(SSmapping && SSmapping.config && SSmapping.config.map_name == "Desert Town")
-		if(!(/mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled in GLOB.virtue_mount_choices))
-			GLOB.virtue_mount_choices += /mob/living/simple_animal/hostile/retaliate/rogue/camel/tame/saddled
