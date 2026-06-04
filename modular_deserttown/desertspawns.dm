@@ -22,11 +22,11 @@
 /obj/effect/landmark/start/dt/vizier
  	name = "Vizier"
 /obj/effect/landmark/start/dt/prince
- 	name = "Amir"
+ 	name = "Prince"
 /obj/effect/landmark/start/dt/sultan
 	name = "Sultan"
 /obj/effect/landmark/start/dt/dtmagician
-	name = "Palace Magician"
+	name = "Court Magician"
 /obj/effect/landmark/start/dt/slave
 	name = "Palace Slave"
 /obj/effect/landmark/start/dt/headslave
@@ -34,7 +34,7 @@
 /obj/effect/landmark/start/dt/dttowner
 	name = "Villager"
 /obj/effect/landmark/start/dt/courtslave
-	name = "Enslaved Adventurer"
+	name = "Court Agent"
 
 // /obj/effect/landmark/start/
 // 	name = ""
