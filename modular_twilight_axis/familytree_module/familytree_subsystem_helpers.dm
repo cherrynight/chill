@@ -480,7 +480,7 @@ GLOBAL_LIST_INIT(familytree_title_prefixes, list(
 	return istype(job, /datum/job/roguetown/lord) || istype(job, /datum/job/roguetown/sultan)
 
 /datum/controller/subsystem/familytree/proc/is_royal_consort_job(datum/job/job)
-	return istype(job, /datum/job/roguetown/lady)
+	return istype(job, /datum/job/roguetown/lady) || is_royal_harem_job(job)
 
 /datum/controller/subsystem/familytree/proc/is_royal_suitor_job(datum/job/job)
 	return istype(job, /datum/job/roguetown/suitor)

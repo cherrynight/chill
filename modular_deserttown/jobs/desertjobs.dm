@@ -12,6 +12,7 @@
 #define CTAG_SHEIKH		"CAT_SHEIKH"
 #define CTAG_FREEMAN		"CAT_FREEMAN"
 #define CTAG_LOSTGRENZEL	"CAT_LOSTGRENZEL"
+#define CTAG_HAREM			"CAT_HAREM"	
 
 
 
@@ -25,6 +26,7 @@
 #define SULTAN	(1<<0)
 #define VIZIER	(1<<0)
 #define SHEIKH	(1<<0)
+#define HAREM	(1<<0)
 #define CATAPHRACT	(1<<4)
 #define JANISSARYSERGEANT	(1<<6)
 // #define GUARD_CAPTAIN		(1<<5)
@@ -457,7 +459,14 @@
 				if(!H.put_in_hands(keys))
 					keys.forceMove(H.drop_location())
 
-/datum/outfit/job/roguetown/physician/basic/pre_equip(mob/living/carbon/human/H)
-	. = ..()
+/datum/job/roguetown/physician/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
+	..()
 	if(SSmapping.config.map_name == "Desert Town")
-		wrists = /obj/item/storage/keyring/courtphysician
+		if(ishuman(L))
+			var/mob/living/carbon/human/H = L
+			for(var/obj/item/storage/keyring/physician/old_key in H.get_all_contents())
+				qdel(old_key)
+			var/obj/item/storage/keyring/courtphysician/keys = new(H)
+			if(!H.equip_to_appropriate_slot(keys))
+				if(!H.put_in_hands(keys))
+					keys.forceMove(H.drop_location())

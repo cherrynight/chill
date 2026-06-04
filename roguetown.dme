@@ -4106,6 +4106,7 @@
 #include "modular_deserttown\desert_keys.dm"
 #include "modular_deserttown\jobs\desertjobs.dm"
 #include "modular_deserttown\jobs\dtslave.dm"
+#include "modular_deserttown\jobs\harem.dm"
 #include "modular_deserttown\jobs\headslave.dm"
 #include "modular_deserttown\jobs\sheikh.dm"
 #include "modular_deserttown\jobs\vizier.dm"

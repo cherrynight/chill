@@ -97,6 +97,7 @@ GLOBAL_LIST_INIT(noble_positions, list( //Royal family only
 	"Grand Duke",
 	"Sultan", // Desert Town
 	"Consort",
+	"Harem Favorite", // Desert Town
 	"Prince",
 ))
 
