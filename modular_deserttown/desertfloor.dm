@@ -30,6 +30,7 @@
 						/turf/open/floor/rogue/snowrough,)
 	// slowdown = 1
 	// neighborlay = "duneedge"
+	track_prob = 10
 
 /turf/open/floor/rogue/dunes/cardinal_smooth(adjacencies)
 	roguesmooth(adjacencies)
@@ -60,6 +61,7 @@
 	max_integrity = 1000
 	break_sound = 'sound/combat/hits/onstone/stonedeath.ogg'
 	attacked_sound = list('sound/combat/hits/onstone/wallhit.ogg', 'sound/combat/hits/onstone/wallhit2.ogg', 'sound/combat/hits/onstone/wallhit3.ogg')
+	track_prob = 5
 
 /turf/open/floor/rogue/sandbrick/cardinal_smooth(adjacencies)
 	roguesmooth(adjacencies)
@@ -93,6 +95,7 @@
 	break_sound = 'sound/combat/hits/onstone/stonedeath.ogg'
 	attacked_sound = list('sound/combat/hits/onstone/wallhit.ogg', 'sound/combat/hits/onstone/wallhit2.ogg', 'sound/combat/hits/onstone/wallhit3.ogg')
 	abstract_type = /turf/open/floor/rogue/citybrick
+	track_prob = 3
 
 /turf/open/floor/rogue/citybrick/Initialize(mapload)
 	dir = pick(GLOB.cardinals)
@@ -153,6 +156,7 @@
 	//clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	smooth = SMOOTH_TRUE
+	track_prob = 10
 
 /turf/open/floor/rogue/lightpath/cardinal_smooth(adjacencies)
 	roguesmooth(adjacencies)
@@ -173,6 +177,7 @@
 	//clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	smooth = SMOOTH_TRUE
+	track_prob = 10
 
 /turf/open/floor/rogue/darkpath/cardinal_smooth(adjacencies)
 	roguesmooth(adjacencies)
@@ -233,6 +238,7 @@
 	neighborlay = "desertgrassedge"
 	spread_chance = 15
 	burn_power = 6
+	track_prob = 15
 
 /turf/open/floor/rogue/desert_grass/Initialize(mapload)
 	dir = pick(GLOB.cardinals)
@@ -250,14 +256,17 @@
 
 /turf/open/floor/rogue/dirt/desert
 	icon = 'modular_deserttown/icons/desertfloor.dmi'
+	track_prob = 15
 	
 /turf/open/floor/rogue/dirt/desert/nospawn
 
 /turf/open/floor/rogue/dirt/road/desert
 	icon = 'modular_deserttown/icons/desertfloor.dmi'
+	track_prob = 15
 
 /turf/open/floor/rogue/grass/desert
 	icon = 'modular_deserttown/icons/desertfloor.dmi'
+	track_prob = 15
 
 ///.
 
@@ -276,6 +285,7 @@
 	break_sound = 'sound/combat/hits/onstone/stonedeath.ogg'
 	attacked_sound = list('sound/combat/hits/onstone/wallhit.ogg', 'sound/combat/hits/onstone/wallhit2.ogg', 'sound/combat/hits/onstone/wallhit3.ogg')
 	abstract_type = /turf/open/floor/rogue/deserttile
+	track_prob = 3
 
 // FIX: Added explicit 'cardinal_smooth' override so SMOOTH_MORE logic does not break the icon
 /turf/open/floor/rogue/deserttile/cardinal_smooth(adjacencies)
@@ -289,3 +299,4 @@
 	canSmoothWith = list(/turf/open/floor/rogue,
 						/turf/closed/mineral,
 						/turf/closed/wall/mineral)
+	track_prob = 5
