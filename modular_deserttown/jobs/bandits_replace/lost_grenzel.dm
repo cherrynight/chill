@@ -41,7 +41,7 @@
 	max_pq = null
 	round_contrib_points = null
 	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
-	forbidden_races = list(RACES_CONSTRUCT, RACES_DESPISED, RACES_OOZE)
+	forbidden_races = list(RACES_CONSTRUCT RACES_DESPISED RACES_OOZE)
 	advclass_cat_rolls = list(CTAG_LOSTGRENZEL = 20)
 	PQ_boost_divider = 10
 
@@ -95,7 +95,7 @@
 	outfit = /datum/outfit/job/roguetown/lost_grenzel
 	antag_datum = /datum/antagonist/bandit/lost_grenzel
 	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
-	forbidden_races = list(RACES_CONSTRUCT, RACES_DESPISED, RACES_OOZE)
+	forbidden_races = list(RACES_CONSTRUCT RACES_DESPISED RACES_OOZE)
 	advclass_cat_rolls = list(CTAG_LOSTGRENZEL = 20)
 
 /datum/migrant_role/lost_grenzel/after_spawn(mob/living/carbon/human/character)
@@ -108,6 +108,7 @@
 	roles = list(
 		/datum/migrant_role/lost_grenzel = 4,
 	)
+	min_pop = 80
 	spawn_landmark = "LostGrenzel"
 	greet_text = "Из залитых кровью песков выходят потерянные грензельхофтцы. Город запомнит их в крови и пепле."
 
@@ -116,7 +117,7 @@
 	typepath = /datum/round_event/migrant_wave/lost_grenzel
 	wave_type = /datum/migrant_wave/lost_grenzel
 	track = EVENT_TRACK_INTERVENTION
-	max_occurrences = 2
+	max_occurrences = 1
 	weight = 8
 	earliest_start = 5 MINUTES
 	min_players = 80
