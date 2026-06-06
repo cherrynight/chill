@@ -56,7 +56,13 @@
 		GLOB.court_spymaster += H.real_name
 		if(H.mind)
 			H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/convertrole/agent)
+			H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/appraise/secular)
 		H.verbs |= /datum/job/roguetown/vizier/proc/remember_agents
+		H.verbs |= /mob/living/carbon/human/proc/adjust_taxes_vizier
+		
+		var/obj/item/recipe_book/treasury_primer/primer = new(H)
+		H.equip_to_slot_or_del(primer, ITEM_SLOT_BACKPACK)
+		SStreasury.grant_savings(ECONOMIC_RICH, H)
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
@@ -296,18 +302,19 @@
 //
 //
 //Could do a version of this for Vizier
-// GLOBAL_VAR_INIT(steward_tax_cooldown, -50000) // Antispam
-// /mob/living/carbon/human/proc/adjust_taxes_vizier()
-// 	set name = "Adjust Taxes"
-// 	set category = "Stewardry"
-// 	if(stat)
-// 		return
-// 	var/lord = find_lord()
-// 	if(lord)
-// 		to_chat(src, span_warning("You cannot adjust taxes while the [SSticker.rulertype] is present in the realm. Ask your sultan."))
-// 		return
-// 	if(world.time < GLOB.steward_tax_cooldown + 600 SECONDS)
-// 		to_chat(src, span_warning("You must wait [round((GLOB.steward_tax_cooldown + 600 SECONDS - world.time)/600, 0.1)] minutes before adjusting taxes again! Think of the realm."))
-// 		return FALSE
-// 	var/datum/taxsetter/taxsetter = new("The Diligent Vizier Intervenes", "The Greedy Vizier Imposes")
-// 	taxsetter.ui_interact(src)
+GLOBAL_VAR_INIT(vizier_tax_cooldown, -50000) // Antispam
+/mob/living/carbon/human/proc/adjust_taxes_vizier()
+	set name = "Adjust Taxes"
+	set category = "Stewardry"
+	if(stat)
+		return
+	var/lord = find_lord()
+	if(lord)
+		to_chat(src, span_warning("You cannot adjust taxes while the [SSticker.rulertype] is present in the realm. Ask your sultan."))
+		return
+	if(world.time < GLOB.vizier_tax_cooldown + 600 SECONDS)
+		to_chat(src, span_warning("You must wait [round((GLOB.vizier_tax_cooldown + 600 SECONDS - world.time)/600, 0.1)] minutes before adjusting taxes again! Think of the realm."))
+		return FALSE
+	GLOB.vizier_tax_cooldown = world.time
+	var/datum/taxsetter/taxsetter = new("The Diligent Vizier Intervenes", "The Greedy Vizier Imposes")
+	taxsetter.ui_interact(src)

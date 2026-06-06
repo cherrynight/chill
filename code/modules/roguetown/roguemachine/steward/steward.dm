@@ -63,6 +63,23 @@
 		daily_payments["Apothecary"] = 10
 		daily_payments["Mayor"] = 40
 		daily_payments["Bailiff"] = 10
+	else if(SSmapping.config.map_name == "Desert Town") //TA EDIT
+		daily_payments["Cataphract"] = 40 //TA EDIT
+		daily_payments["Azeb Agha"] = 40 //TA EDIT
+		daily_payments["Azeb"] = 20 //TA EDIT
+		daily_payments["Janissary Sergeant"] = 40 //TA EDIT
+		daily_payments["Janissary"] = 30 //TA EDIT
+		daily_payments["Head Slave"] = 40 //TA EDIT
+		daily_payments["Slave Master"] = 30 //TA EDIT
+		daily_payments["Sheikh"] = 40 //TA EDIT
+		daily_payments["Veteran"] = 20 //TA EDIT
+		daily_payments["Squire"] = 10 //TA EDIT
+		daily_payments["Servant"] = 20 //TA EDIT
+		daily_payments["Head Physician"] = 20 //Doctors //TA EDIT
+		daily_payments["Apothecary"] = 10 //TA EDIT
+		daily_payments["Court Magician"] = 40 //University //TA EDIT
+		daily_payments["Archivist"] = 20 //TA EDIT
+		daily_payments["Magicians Associate"] = 10 //TA EDIT
 	else
 		daily_payments["Marshal"] = 60 //Garrison
 		daily_payments["Knight"] = 40
