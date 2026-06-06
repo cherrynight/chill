@@ -142,6 +142,9 @@ GLOBAL_LIST_INIT(crown_authority_roles, list(
 	"Marshal",
 	"Councillor",
 	"Prince",
+	"Sultan", // Desert Town
+	"Vizier", // Desert Town
+	"Sheikh", // Desert Town
 ))
 
 /// TRUE if the user has standing to commission defense writs - either by job, or by sitting as

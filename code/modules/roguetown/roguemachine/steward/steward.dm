@@ -93,7 +93,7 @@
 /obj/structure/roguemachine/steward/proc/has_fiscal_authority(mob/user)
 	if(!user)
 		return FALSE
-	if(user.job in list("Steward", "Clerk", "Grand Duke", "Mayor"))
+	if(user.job in list("Steward", "Clerk", "Grand Duke", "Mayor", "Sultan", "Vizier",)) // TA edit
 		return TRUE
 	if(SSticker.rulermob && user == SSticker.rulermob)
 		return TRUE

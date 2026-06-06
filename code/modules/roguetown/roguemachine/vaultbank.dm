@@ -418,7 +418,7 @@
 /obj/structure/roguemachine/vaultbank/proc/can_issue_loan(mob/user)
 	if(!user)
 		return FALSE
-	if(user.job == "Steward" || user.job == "Clerk" || user.job == "Grand Duke")
+	if(user.job == "Steward" || user.job == "Clerk" || user.job == "Grand Duke" || user.job == "Sultan" || user.job == "Vizier") // TA edit
 		return TRUE
 	if(SSticker.regentmob && user == SSticker.regentmob)
 		return TRUE
