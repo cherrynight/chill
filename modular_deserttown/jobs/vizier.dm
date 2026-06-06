@@ -133,6 +133,7 @@
 		/obj/item/rogueweapon/huntingknife/idagger/dtace = 1,
 		/obj/item/rogueweapon/scabbard/sheath = 1,
 		/obj/item/storage/keyring/lord = 1,
+		/obj/item/roguekey/skeleton = 1,
 	)
 	if(H.age == AGE_OLD)
 		H.adjust_skillrank_up_to(/datum/skill/combat/swords, 5, TRUE)
