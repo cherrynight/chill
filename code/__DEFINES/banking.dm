@@ -71,8 +71,6 @@
 	"Suitor", \
 	"Marshal", \
 	"Knight", \
-	"Vizier", \//Desert Town
-	"Sheikh", \//Desert Town
 )
 
 // Poll Tax categories - flat per-head daily levy by civic class.
