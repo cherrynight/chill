@@ -70,11 +70,11 @@
 		/obj/item/rogueweapon/whip = 1,
 	)
 	if(should_wear_femme_clothes(H))
-		mask = /obj/item/clothing/mask/rogue/exoticsilkmask
+		mask = /obj/item/clothing/mask/rogue/silkmask
 		neck = /obj/item/clothing/neck/roguetown/collar/leather
-		shirt = /obj/item/clothing/suit/roguetown/shirt/exoticsilkbra
+		shirt = /obj/item/clothing/suit/roguetown/shirt/silkbra
 		shoes = /obj/item/clothing/shoes/roguetown/anklets
-		belt = /obj/item/storage/belt/rogue/leather/exoticsilkbelt
+		belt = /obj/item/storage/belt/rogue/leather/silkbelt
 		armor = /obj/item/clothing/suit/roguetown/armor/silkcoat
 	else
 		shirt = /obj/item/clothing/suit/roguetown/shirt/dress/thawb/beige
