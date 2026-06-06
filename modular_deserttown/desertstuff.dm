@@ -677,3 +677,12 @@
 	opacity = FALSE
 	density = TRUE
 	max_integrity = 100
+
+//Noc Window
+/obj/structure/roguewindow/stained/blue
+	icon = 'modular_deserttown/icons/windows.dmi'
+	icon_state = "stained-blue"
+	base_state = "stained-blue"
+	desc = "A stained glass window with the symbols of Nok, the Sister-Bringer of Knowledge, \
+	who is the true ruler of the Pantheon of Ten. This symbol is common in places where the Ecumenical  \
+	Patriarchate of Dvergale holds its power."
