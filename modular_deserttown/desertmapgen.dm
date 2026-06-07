@@ -25,7 +25,7 @@
 							/obj/item/magic/manacrystal = 0.07,
 							/obj/effect/decal/remains/bear = 0.5,
 							/obj/effect/decal/remains/human = 0.3,
-							/obj/structure/desert_spice = 0.1,
+							/obj/structure/desert_spice = 0.2,
 							/obj/effect/landmark/desert_track_spawner = 4) // Added for modular hunting
 	//spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=2,
 	// 					/turf/open/water/swamp=2,)
