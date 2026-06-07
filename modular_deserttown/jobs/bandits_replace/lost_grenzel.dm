@@ -24,7 +24,7 @@
 // ненависть грензелей
 /datum/stressevent/lost_grenzel_hate
 	desc = span_boldred("Я ненавижу всех этих гнид! Убить! Разорвать на куски!")
-	stressadd = 50
+	stressadd = 9
 	timer = INFINITY
 
 /datum/component/lost_grenzel_hate
@@ -40,12 +40,19 @@
 	last_process_time = world.time
 
 /datum/component/lost_grenzel_hate/Destroy()
+	var/mob/living/carbon/human/L = parent
+	if(istype(L) && has_debuff)
+		L.remove_stress(/datum/stressevent/lost_grenzel_hate)
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /datum/component/lost_grenzel_hate/process()
 	var/mob/living/carbon/human/L = parent
 	if(!istype(L) || L.stat == DEAD)
+		if(istype(L) && has_debuff)
+			has_debuff = FALSE
+			L.remove_stress(/datum/stressevent/lost_grenzel_hate)
+			time_near_others = 0
 		return
 		
 	var/current_time = world.time
@@ -54,7 +61,7 @@
 	
 	var/found_visible = FALSE
 	for(var/mob/living/carbon/human/H in oview(10, L))
-		if(H.stat == DEAD)
+		if(H.stat == DEAD || H.alpha == 0 || H.rogue_sneaking)
 			continue
 		var/is_grenzel = FALSE
 		if(H.mind && H.mind.has_antag_datum(/datum/antagonist/bandit/lost_grenzel))
@@ -67,7 +74,7 @@
 			
 	if(found_visible)
 		time_near_others += delta
-		if(time_near_others >= 1 MINUTES)
+		if(time_near_others >= 2 MINUTES)
 			if(!has_debuff)
 				L.add_stress(/datum/stressevent/lost_grenzel_hate)
 				has_debuff = TRUE
@@ -85,7 +92,7 @@
 // страх грензелей у всех остальных
 /datum/stressevent/lost_grenzel_fear
 	desc = span_boldred("Это же безумный дезертир! О нет, нам конец!")
-	stressadd = 50
+	stressadd = 9
 	timer = INFINITY
 
 /datum/component/lost_grenzel_fear
@@ -101,12 +108,16 @@
 	last_process_time = world.time
 
 /datum/component/lost_grenzel_fear/Destroy()
+	var/mob/living/carbon/human/L = parent
+	if(istype(L) && has_debuff)
+		L.remove_stress(/datum/stressevent/lost_grenzel_fear)
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /datum/component/lost_grenzel_fear/process()
 	var/mob/living/carbon/human/L = parent
 	if(!istype(L) || L.stat == DEAD)
+		qdel(src)
 		return
 		
 	var/current_time = world.time
@@ -115,7 +126,7 @@
 	
 	var/found_lg = FALSE
 	for(var/mob/living/carbon/human/H in oview(10, L))
-		if(H.stat == DEAD)
+		if(H.stat == DEAD || H.alpha == 0 || H.rogue_sneaking)
 			continue
 		if(H.mind && H.mind.has_antag_datum(/datum/antagonist/bandit/lost_grenzel))
 			found_lg = TRUE
