@@ -356,6 +356,7 @@ SUBSYSTEM_DEF(ticker)
 	gnollslot_update()
 //	update_scaling_slots(estimated_pop)
 
+	donor_job_boost_round_tick() // TA EDIT
 	can_continue = can_continue && SSjob.DivideOccupations(list()) 				//Distribute jobs
 
 	CHECK_TICK
@@ -504,7 +505,6 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		if(player.ready == PLAYER_READY_TO_PLAY)
 			GLOB.joined_player_list += player.ckey
-			update_bandits_slots()
 			update_wretch_slots()
 			update_mercenary_slots()
 			update_adventurer_slots()
@@ -825,7 +825,7 @@ SUBSYSTEM_DEF(ticker)
 
 	for(var/turf/open/water/W in world)
 		W.water_reagent = /datum/reagent/blood
-		W.water_color = "#C80000"
+		W.water_color = BLOOD_COLOR_RED
 		W.mapped = FALSE
 		W.update_icon()
 		CHECK_TICK

@@ -824,6 +824,24 @@
 	desc = "You are feeling something... Interesting.."
 	icon_state = "acid"
 
+//TA EDIT
+/datum/status_effect/debuff/impure_vitae
+	id = "impurevitae"
+	alert_type = /atom/movable/screen/alert/status_effect/debuff/impure_vitae
+	effectedstats = list(STATKEY_CON = -1, STATKEY_INT = -1)
+	duration = 1 MINUTES
+
+/datum/status_effect/debuff/impure_vitae/on_apply()
+	. = ..()
+	owner.add_stress(/datum/stressevent/high)
+	
+/datum/status_effect/debuff/impure_vitae/on_remove()
+	owner.remove_stress(/datum/stressevent/high)
+
+/atom/movable/screen/alert/status_effect/debuff/impure_vitae
+	name = "Invigorated"
+	desc = "AGH.. My heart is hurt... My head... This sinful soul stirs my thoughts and body in sin.."
+
 /datum/status_effect/debuff/joybringer_druqks
 	id = "joybringer_druqks"
 	effectedstats = list(STATKEY_LCK = -2)
@@ -1070,5 +1088,46 @@
 /atom/movable/screen/alert/status_effect/debuff/weapon_bind_debuff
 	name = "Weapon Binded"
 	desc = "Our weapons binded! That conniving sod knew right where I was aiming! I can't benefit from a weapon bind!"
-	icon = 'icons/mob/combat_debuffs.dmi'
+	icon = 'icons/mob/screen_alert_combat.dmi'
 	icon_state = "weapon_bind_debuff"
+
+/datum/status_effect/debuff/knockout
+	id = "knockout"
+	effectedstats = null
+	alert_type = null
+	duration = 12 SECONDS
+	var/time = 0
+
+/datum/status_effect/debuff/knockout/tick()
+	time += 1
+	switch(time)
+		if(3)
+			if(prob(70)) //You don't always know...
+				var/msg = pick("I feel sleepy...", "I feel relaxed.", "My eyes feel a little heavy.")
+				to_chat(owner, span_warning(msg))
+
+		if(5)
+			if(prob(50))
+				owner.Slowdown(20)
+			else
+				owner.Slowdown(10)
+		if(8)
+			if(iscarbon(owner))
+				var/mob/living/carbon/C = owner
+				var/msg = pick("yawn", "cough", "clearthroat")
+				C.emote(msg, forced = TRUE)
+		if(12)
+			// it's possible that stacking effects delay this.
+			// If we hit 12 regardless we end
+			Destroy()
+
+/datum/status_effect/debuff/knockout/on_remove()
+	if(iscarbon(owner))
+		var/mob/living/carbon/C = owner
+		if(C.IsSleeping()) //No need to add more it's already pretty long.
+			return ..()
+		C.SetSleeping(20 SECONDS)
+	..()
+
+/atom/movable/screen/alert/status_effect/debuff/knockout
+	name = "Drowsy"
