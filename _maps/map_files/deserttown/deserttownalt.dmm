@@ -372,7 +372,7 @@
 /turf/open/floor/rogue/darkpath{
 	color = "#c4abff"
 	},
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "cs" = (
 /obj/effect/decal/cleanable/debris/glassy,
 /turf/open/floor/rogue/citybrick/citybrick2,
@@ -1349,7 +1349,11 @@
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors/vampire_manor)
 "jj" = (
-/turf/open/floor/rogue/dunes,
+/obj/machinery/light/rogue/firebowl{
+	pixel_x = -9;
+	pixel_y = 14
+	},
+/turf/open/floor/rogue/churchbrick,
 /area/rogue/under/cave/inhumen)
 "jk" = (
 /obj/structure/table/vtable/v2,
@@ -1655,10 +1659,8 @@
 /turf/open/floor/rogue/darkpath,
 /area/rogue/under/cave/inhumen)
 "ld" = (
-/obj/effect/decal/duneedge{
-	dir = 8
-	},
-/turf/open/floor/rogue/darkpath,
+/obj/structure/roguewindow/stained/zizo,
+/turf/open/floor/rogue/citybrick,
 /area/rogue/under/cave/inhumen)
 "le" = (
 /obj/item/cushion/desert1{
@@ -1884,11 +1886,11 @@
 /turf/open/floor/rogue/sandbrick,
 /area/rogue/under/cave/inhumen)
 "mR" = (
-/obj/effect/decal/duneedge{
-	dir = 8
+/obj/machinery/light/rogue/firebowl{
+	pixel_x = 9;
+	pixel_y = 14
 	},
-/obj/effect/decal/duneedge,
-/turf/open/floor/rogue/darkpath,
+/turf/open/floor/rogue/churchbrick,
 /area/rogue/under/cave/inhumen)
 "mT" = (
 /obj/structure/stairs/desert,
@@ -1902,7 +1904,7 @@
 	aportalid = "wretchin2"
 	},
 /turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "mY" = (
 /obj/structure/fluff/walldeco/bigpainting/lake{
 	pixel_x = 16;
@@ -2626,7 +2628,7 @@
 	aportalid = "wretchin2"
 	},
 /turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "qY" = (
 /obj/machinery/light/rogue/firebowl,
 /turf/open/floor/rogue/deserttile{
@@ -3451,13 +3453,9 @@
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors/banditcamp/desert)
 "wT" = (
-/obj/effect/decal/duneedge{
-	dir = 1
-	},
-/obj/effect/decal/duneedge{
-	dir = 8
-	},
-/turf/open/floor/rogue/darkpath,
+/obj/structure/roguewindow/stained/zizo,
+/obj/structure/fluff/walldeco/vinez/red,
+/turf/closed/mineral/rogue/bedrock/sandstone,
 /area/rogue/under/cave/inhumen)
 "wV" = (
 /obj/structure/mineral_door/wood/deadbolt{
@@ -3835,7 +3833,7 @@
 	dir = 1
 	},
 /turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "zp" = (
 /turf/closed/wall/mineral/rogue/stonebrick,
 /area/rogue/indoors/vampire_manor)
@@ -4909,11 +4907,10 @@
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors/banditcamp/desert)
 "GN" = (
-/obj/effect/decal/duneedge{
-	dir = 4
+/turf/open/floor/rogue/darkpath{
+	color = "#c4abff"
 	},
-/turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "GP" = (
 /obj/structure/table/wood/poor,
 /obj/item/recipe_book/cooking,
@@ -5317,7 +5314,7 @@
 	},
 /obj/effect/decal/duneedge,
 /turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
+/area/rogue/outdoors/desertdeep/safe)
 "IP" = (
 /obj/structure/bed/rogue/shit,
 /turf/open/floor/rogue/darkpath,
@@ -6675,8 +6672,9 @@
 /turf/closed/mineral/random/rogue/sandstone,
 /area/rogue/indoors/banditcamp/desert)
 "SR" = (
-/obj/effect/decal/duneedge,
-/turf/open/floor/rogue/darkpath,
+/obj/structure/roguewindow/stained/zizo,
+/obj/structure/fluff/walldeco/vinez/red,
+/turf/open/floor/rogue/citybrick,
 /area/rogue/under/cave/inhumen)
 "SS" = (
 /obj/structure/flora/roguegrass,
@@ -7200,10 +7198,8 @@
 /turf/open/floor/rogue/sandbrick,
 /area/rogue/under/cave/inhumen)
 "Wg" = (
-/obj/effect/decal/duneedge{
-	dir = 1
-	},
-/turf/open/floor/rogue/darkpath,
+/obj/structure/roguewindow/stained/zizo,
+/turf/closed/mineral/rogue/bedrock/sandstone,
 /area/rogue/under/cave/inhumen)
 "Wk" = (
 /obj/item/cushion/desert2,
@@ -7484,15 +7480,6 @@
 	},
 /turf/open/floor/carpet/purple,
 /area/rogue/indoors/vampire_manor)
-"XN" = (
-/obj/effect/decal/duneedge{
-	dir = 1
-	},
-/obj/effect/decal/duneedge{
-	dir = 4
-	},
-/turf/open/floor/rogue/darkpath,
-/area/rogue/under/cave/inhumen)
 "XP" = (
 /obj/structure/well,
 /turf/open/floor/rogue/dunes,
@@ -39045,7 +39032,7 @@ LO
 LO
 Pa
 Kq
-VZ
+ld
 De
 nH
 aM
@@ -39376,8 +39363,8 @@ LO
 LO
 LO
 LO
-LO
 Pa
+Wg
 Kq
 Pi
 Tn
@@ -39543,9 +39530,9 @@ LO
 LO
 LO
 LO
-LO
 Pa
-us
+SR
+jj
 st
 Pi
 UE
@@ -39710,9 +39697,9 @@ LO
 LO
 LO
 LO
-LO
 Pa
-us
+SR
+Pi
 CI
 PR
 EB
@@ -39877,9 +39864,9 @@ LO
 LO
 LO
 LO
-LO
 Pa
-us
+ld
+mR
 st
 Pi
 bc
@@ -40044,8 +40031,8 @@ LO
 LO
 LO
 LO
-LO
 Pa
+wT
 Kq
 EC
 Pi
@@ -62980,11 +62967,11 @@ LO
 LO
 LO
 LO
-LO
+Pa
 TM
 In
 UG
-LO
+Pa
 LO
 LO
 LO
@@ -63143,22 +63130,22 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
 TM
 In
 UG
-LO
-LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
+Pa
+Pa
+Pa
 LO
 LO
 LO
@@ -63310,7 +63297,7 @@ LO
 LO
 LO
 LO
-LO
+Pa
 Oh
 Oh
 Gt
@@ -63325,7 +63312,7 @@ Oh
 Oh
 Oh
 Oh
-LO
+Pa
 LO
 LO
 LO
@@ -63475,9 +63462,9 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
 Oh
 TM
 In
@@ -63492,8 +63479,8 @@ XK
 Gt
 Oh
 Oh
-LO
-LO
+Pa
+Pa
 LO
 LO
 LO
@@ -63641,8 +63628,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 Gt
 Gt
 oz
@@ -63660,7 +63647,7 @@ In
 Gt
 Gt
 Gt
-LO
+Pa
 LO
 LO
 LO
@@ -63827,8 +63814,8 @@ In
 In
 In
 In
-LO
-LO
+Pa
+Pa
 LO
 LO
 LO
@@ -63994,9 +63981,9 @@ In
 In
 In
 In
-SR
-LO
-LO
+UG
+Pa
+Pa
 LO
 LO
 LO
@@ -64162,16 +64149,16 @@ In
 In
 In
 UG
-oy
+Oh
+Pa
 LO
 LO
-LO
 Pa
 Pa
 Pa
 Pa
-kp
-kp
+GN
+GN
 cq
 Pa
 ea
@@ -64322,23 +64309,23 @@ am
 Qm
 OC
 us
-jj
+In
 In
 In
 In
 In
 In
 UG
-oy
+Oh
 Pa
 Pa
 Pa
 Pa
 Pa
-kp
-kp
-kp
-kp
+GN
+GN
+GN
+GN
 cq
 Pa
 ea
@@ -64489,23 +64476,23 @@ CS
 Qm
 oo
 Kq
-jj
+In
 In
 In
 In
 In
 In
 UG
-oy
+Oh
 Pa
 Pa
 Pa
-kp
-kp
-kp
-kp
-kp
-kp
+GN
+GN
+GN
+GN
+GN
+GN
 cq
 Pa
 ea
@@ -64656,22 +64643,22 @@ FU
 am
 yQ
 Ih
-jj
+In
 In
 In
 In
 In
 In
 XK
-oy
-oy
-kp
-kp
-kp
-kp
-kp
-kp
-kp
+Oh
+Oh
+GN
+GN
+GN
+GN
+GN
+GN
+GN
 Pa
 Pa
 Pa
@@ -64823,20 +64810,20 @@ BT
 am
 oi
 us
-jj
 In
 In
 In
 In
 In
 In
-SR
-oy
-kp
-kp
-kp
-kp
-kp
+In
+UG
+Oh
+GN
+GN
+GN
+GN
+GN
 Pa
 Pa
 Pa
@@ -64990,18 +64977,18 @@ SW
 am
 am
 Ih
-jj
 In
 In
 In
 In
 In
 In
-SR
-oy
-kp
-kp
-kp
+In
+UG
+Oh
+GN
+GN
+GN
 Pa
 Pa
 Pa
@@ -65157,14 +65144,14 @@ Nk
 am
 Ml
 us
-jj
 In
 In
 In
 In
 In
 In
-SR
+In
+UG
 Pa
 Pa
 Pa
@@ -65324,14 +65311,14 @@ am
 RH
 GQ
 Kq
-jj
 In
 In
 In
 In
 In
 In
-SR
+In
+UG
 Pa
 Pa
 Pa
@@ -65497,9 +65484,9 @@ In
 Ix
 GY
 GY
-GN
-oy
-LO
+GY
+Oh
+Pa
 LO
 LO
 LO
@@ -65662,11 +65649,11 @@ us
 In
 In
 UG
-oy
-oy
-oy
-LO
-LO
+Oh
+Oh
+Oh
+Pa
+Pa
 LO
 LO
 LO
@@ -65829,10 +65816,10 @@ In
 In
 In
 UG
-oy
-oy
-LO
-LO
+Oh
+Oh
+Pa
+Pa
 LO
 LO
 LO
@@ -65978,12 +65965,12 @@ LO
 Pa
 Pa
 Pa
-oy
-wT
+Oh
+oz
 In
 In
-GN
-GN
+GY
+GY
 zo
 In
 In
@@ -65996,9 +65983,9 @@ In
 In
 In
 UG
-oy
-oy
-LO
+Oh
+Oh
+Pa
 LO
 LO
 LO
@@ -66144,28 +66131,28 @@ LO
 LO
 Pa
 Pa
-ld
-wT
+Gt
+oz
 In
 GY
 Pa
 Pa
-oy
-oy
-GN
-GN
-GN
-GN
-XN
-jj
-jj
+Oh
+Oh
+GY
+GY
+GY
+GY
+TT
+In
+In
 IM
-GN
-GN
-oy
-oy
-LO
-LO
+GY
+GY
+Oh
+Oh
+Pa
+Pa
 LO
 LO
 LO
@@ -66310,27 +66297,27 @@ LO
 LO
 Pa
 Pa
-Wg
+TM
 In
 In
-GN
-oy
+GY
+Oh
 Pa
 Pa
-oy
-oy
-oy
-oy
-oy
-oy
-Wg
-jj
-jj
-jj
-SR
-oy
-oy
-oy
+Oh
+Oh
+Oh
+Oh
+Oh
+Oh
+TM
+In
+In
+In
+UG
+Oh
+Oh
+Oh
 Pa
 LO
 LO
@@ -66471,15 +66458,15 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
 Pa
 Pa
 Pa
-Wg
+Pa
+Pa
+Pa
+TM
 In
-GN
+GY
 Pa
 Pa
 Pa
@@ -66491,9 +66478,9 @@ Pa
 Pa
 Pa
 Pa
-Wg
-jj
-jj
+TM
+In
+In
 Pa
 Pa
 Pa
@@ -66638,7 +66625,7 @@ LO
 LO
 LO
 LO
-LO
+Pa
 OQ
 Pv
 OQ
@@ -66646,7 +66633,7 @@ Pa
 GH
 In
 In
-oy
+Oh
 Pa
 Pa
 Pa
@@ -66658,10 +66645,10 @@ Pa
 Pa
 Pa
 Pa
-Wg
-jj
-jj
-SR
+TM
+In
+In
+UG
 Pa
 Pa
 Pa
@@ -66804,8 +66791,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 Ax
 gS
 gS
@@ -66825,10 +66812,10 @@ LO
 LO
 Pa
 Pa
-oy
-Wg
-jj
-SR
+Oh
+TM
+In
+UG
 Pa
 Pa
 Pa
@@ -66971,7 +66958,7 @@ LO
 LO
 LO
 LO
-LO
+Pa
 Oc
 kX
 kX
@@ -66993,11 +66980,11 @@ LO
 LO
 Pa
 Pa
-Wg
-jj
-mR
+TM
+In
+XK
 Pa
-LO
+Pa
 LO
 LO
 LO
@@ -67137,8 +67124,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 kX
 kX
 kX
@@ -67148,6 +67135,7 @@ qH
 gS
 GH
 LO
+Pa
 LO
 LO
 LO
@@ -67158,13 +67146,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-Wg
-jj
-jj
-SR
-LO
+Pa
+TM
+In
+In
+UG
+Pa
 LO
 LO
 LO
@@ -67303,8 +67290,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 TI
 kX
 kX
@@ -67315,6 +67302,7 @@ Oc
 gS
 kX
 gS
+Pa
 LO
 LO
 LO
@@ -67325,13 +67313,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-Wg
-jj
-jj
-SR
-LO
+Pa
+TM
+In
+In
+UG
+Pa
 LO
 LO
 LO
@@ -67469,8 +67456,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 TI
 QO
 Oc
@@ -67482,6 +67469,7 @@ sS
 kX
 QE
 Oc
+Pa
 LO
 LO
 LO
@@ -67492,14 +67480,13 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-Wg
-jj
-mR
-LO
-LO
+Pa
+Pa
+TM
+In
+XK
+Pa
+Pa
 LO
 LO
 LO
@@ -67636,7 +67623,7 @@ LO
 LO
 LO
 LO
-LO
+Pa
 iq
 TI
 xo
@@ -67649,6 +67636,7 @@ kX
 kX
 kX
 qH
+Pa
 LO
 LO
 LO
@@ -67660,13 +67648,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-Wg
-jj
-jj
-SR
-LO
+Pa
+TM
+In
+In
+UG
+Pa
 LO
 LO
 LO
@@ -67803,7 +67790,7 @@ LO
 LO
 LO
 LO
-LO
+Pa
 sS
 SX
 xr
@@ -67815,6 +67802,8 @@ kX
 kX
 kX
 LO
+Pa
+Pa
 LO
 LO
 LO
@@ -67826,14 +67815,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-oy
-Wg
-jj
-SR
-LO
+Pa
+Oh
+TM
+In
+UG
+Pa
 LO
 LO
 LO
@@ -67970,8 +67957,8 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
+Pa
 TI
 LO
 Oc
@@ -67982,6 +67969,7 @@ kX
 kX
 kX
 gS
+Pa
 LO
 LO
 LO
@@ -67994,13 +67982,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-Wg
-jj
-SR
-LO
+Pa
+Pa
+TM
+In
+UG
+Pa
 LO
 LO
 LO
@@ -68138,9 +68125,9 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
 GH
 gS
 gS
@@ -68149,6 +68136,7 @@ kX
 kX
 kX
 gS
+Pa
 LO
 LO
 LO
@@ -68162,12 +68150,11 @@ LO
 LO
 LO
 LO
-LO
-LO
+Pa
 mW
 qW
 mW
-LO
+Pa
 LO
 LO
 LO
@@ -68307,13 +68294,16 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
 Oc
 Oc
 Oc
 GH
+Pa
+Pa
+Pa
 LO
 LO
 LO
@@ -68327,14 +68317,11 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
 LO
 LO
 LO
@@ -68476,12 +68463,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
+Pa
 LO
 LO
 LO
