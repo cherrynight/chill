@@ -181,7 +181,7 @@
 	always_show_on_latechoices = FALSE
 	job_reopens_slots_on_death = FALSE
 	job_traits = list(TRAIT_SELF_SUSTENANCE, TRAIT_STEELHEARTED)
-	vice_restrictions = list(/datum/charflaw/noeyer, /datum/charflaw/noeyel, /datum/charflaw/mute, /datum/charflaw/limbloss/arm_r, /datum/charflaw/limbloss/arm_l)
+	vice_restrictions = list(/datum/charflaw/mute, /datum/charflaw/limbloss/arm_r, /datum/charflaw/limbloss/arm_l)
 	same_job_respawn_delay = 30 MINUTES
 	cmode_music = 'sound/music/combat_lost_grenzel.ogg'
 	job_subclasses = list(
