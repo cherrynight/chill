@@ -74,7 +74,7 @@
 			
 	if(found_visible)
 		time_near_others += delta
-		if(time_near_others >= 2 MINUTES)
+		if(time_near_others >= 3 MINUTES)
 			if(!has_debuff)
 				L.add_stress(/datum/stressevent/lost_grenzel_hate)
 				has_debuff = TRUE
