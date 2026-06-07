@@ -18,3 +18,9 @@
 
 /obj/item/storage/keyring/harem
 	keys = list(/obj/item/roguekey/royal, /obj/item/roguekey/manor, /obj/item/roguekey/heir)
+
+/obj/item/roguekey/roomix
+	name = "room IX key"
+	desc = "The key to the ninth room."
+	icon_state = "brownkey"
+	lockid = "roomix"
