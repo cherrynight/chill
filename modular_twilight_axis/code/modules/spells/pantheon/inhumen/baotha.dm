@@ -455,23 +455,33 @@
 	. = ..()
 	fakename = pick("fancy ring", "ornate ring")
 
+/obj/item/clothing/ring/TAgriefflower/proc/turn_to_ash(mob/living/user)
+	if(!user)
+		return
+	to_chat(user, span_warning("[src] turns to ash in my hands!"))
+	playsound(user.loc, 'sound/items/firesnuff.ogg', 100, FALSE, -1)
+	qdel(src)
+
 /obj/item/clothing/ring/TAgriefflower/pickup(mob/living/user)
-	if(user.patron?.type != /datum/patron/inhumen/baotha)
-		to_chat(user, span_warning("[src] turns to ash in my hands!"))
-		playsound(user.loc, 'sound/items/firesnuff.ogg', 100, FALSE, -1)
-		qdel(src)
+	if(!user)
+		return
+	if(!user.patron || user.patron.type != /datum/patron/inhumen/baotha)
+		turn_to_ash(user)
+		return
 	..()
 
 /obj/item/clothing/ring/TAgriefflower/doStrip(mob/living/stripper, mob/living/owner)
-	if(stripper.patron?.type != /datum/patron/inhumen/baotha)
-		to_chat(stripper, span_warning("[src] turns to ash in my hands!"))
-		playsound(stripper.loc, 'sound/items/firesnuff.ogg', 100, FALSE, -1)
-		qdel(src)
+	if(!stripper)
+		return FALSE
+	if(!stripper.patron || stripper.patron.type != /datum/patron/inhumen/baotha)
+		turn_to_ash(stripper)
 		return FALSE
 	. = ..()
 
 /obj/item/clothing/ring/TAgriefflower/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
+	if(!user)
+		return
 	if(slot == SLOT_RING)
 		name = fakename
 		if(user.patron?.type == /datum/patron/inhumen/baotha)
