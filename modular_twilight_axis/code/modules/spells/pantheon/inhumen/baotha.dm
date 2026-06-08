@@ -449,16 +449,39 @@
 	item_state = "peaceflower"
 	icon = 'icons/roguetown/items/produce.dmi'
 	mob_overlay_icon = 'icons/roguetown/clothing/onmob/head_items.dmi'
+	var/fakename
+
+/obj/item/clothing/ring/TAgriefflower/Initialize(mapload) //TA EDIT Victor ZYB запрос
+	. = ..()
+	fakename = pick("fancy ring", "ornate ring")
+
+/obj/item/clothing/ring/TAgriefflower/pickup(mob/living/user)
+	if(user.patron?.type != /datum/patron/inhumen/baotha)
+		to_chat(user, span_warning("[src] turns to ash in my hands!"))
+		playsound(user.loc, 'sound/items/firesnuff.ogg', 100, FALSE, -1)
+		qdel(src)
+	..()
+
+/obj/item/clothing/ring/TAgriefflower/doStrip(mob/living/stripper, mob/living/owner)
+	if(stripper.patron?.type != /datum/patron/inhumen/baotha)
+		to_chat(stripper, span_warning("[src] turns to ash in my hands!"))
+		playsound(stripper.loc, 'sound/items/firesnuff.ogg', 100, FALSE, -1)
+		qdel(src)
+		return FALSE
+	. = ..()
 
 /obj/item/clothing/ring/TAgriefflower/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if(slot == SLOT_RING)
-		user.apply_status_effect(/datum/status_effect/buff/griefflower)
+		name = fakename
+		if(user.patron?.type == /datum/patron/inhumen/baotha)
+			user.apply_status_effect(/datum/status_effect/buff/griefflower)
 
 /obj/item/clothing/ring/TAgriefflower/dropped(mob/living/carbon/human/user)
 	. = ..()
+	name = initial(name)
 	if(istype(user) && user?.wear_ring == src)
-		user.remove_status_effect(/datum/status_effect/buff/griefflower)
+		user.remove_status_effect(/datum/status_effect/buff/griefflower) //TA EDIT Victor ZYB запрос - конец
 
 // Insufflation - effectively just drugging yourself. Lets you pick, the same as Enrapturing Powder. T1, for now, to make up for the loss of the Baotha Blessing buff.
 
