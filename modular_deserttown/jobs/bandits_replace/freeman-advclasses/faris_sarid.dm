@@ -73,4 +73,11 @@
 		if("Polehammer")
 			r_hand = /obj/item/rogueweapon/eaglebeak
 			backl = /obj/item/rogueweapon/scabbard/gwstrap
-			H.adjust_skillrank_up_to(/datum/skill/combat/polearms, 5, TRUE)
+			H.adjust_skillrank_up_to(/datum/skill/combat/polearms, 5, TRUE)			
+		if("Lance + Scimitar")
+			r_hand = /obj/item/rogueweapon/spear/lance
+			backl = /obj/item/rogueweapon/scabbard/gwstrap				
+			l_hand = /obj/item/rogueweapon/sword/long/kriegmesser/zybantine
+			beltl = /obj/item/rogueweapon/scabbard/sword
+			H.adjust_skillrank_up_to(/datum/skill/combat/polearms, SKILL_LEVEL_MASTER, TRUE)
+

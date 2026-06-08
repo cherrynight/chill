@@ -439,12 +439,15 @@
 			if("Kite Shield & elvish dagger")
 				beltr = /obj/item/rogueweapon/huntingknife/idagger/silver/elvish
 				l_hand = /obj/item/rogueweapon/shield/tower/metal
+				H.adjust_skillrank(/datum/skill/combat/shields, SKILL_LEVEL_MASTER, TRUE)		
 			if("Crossbow & bolts")
 				l_hand = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
 				beltr = /obj/item/quiver/bolt/standard
+				H.adjust_skillrank(/datum/skill/combat/crossbows, SKILL_LEVEL_MASTER, TRUE)
 			if("Recurve Bow & arrows")
 				l_hand = /obj/item/gun/ballistic/revolver/grenadelauncher/bow/recurve
 				beltr = /obj/item/quiver/bodkin
+				H.adjust_skillrank(/datum/skill/combat/bows, SKILL_LEVEL_MASTER, TRUE)
 			if("Lance")
 				l_hand = /obj/item/rogueweapon/spear/lance
 				backl = /obj/item/rogueweapon/scabbard/gwstrap
