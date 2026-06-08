@@ -60,3 +60,5 @@
 	r_hand = /obj/item/rogueweapon/woodstaff/implement/grand
 	if(H.age == AGE_OLD)
 		head = /obj/item/clothing/head/roguetown/turban/fancypurple
+	if(H.mind)
+		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/ballistic_mortar)
