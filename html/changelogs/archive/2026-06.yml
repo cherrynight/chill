@@ -346,6 +346,8 @@
   - bugfix: Fixed uncanny beauty not working correctly for Revenants.
   KatTheFox:
   - rscdel: Removed (bugged) hag grand rite
+  Ketrai:
+  - balance: lowered fossilized clam rate significantly
   Ollanius:
   - code_imp: Atgrevi Kite Shields should now properly be offset when worn on the
       back, instead of visibly floating off the wearer.
@@ -356,6 +358,8 @@
   Ryan180602:
   - balance: replace zpellblade Zizo longsword with arming sword.
   - balance: change profane shard into a high pen, 100% embed instacast.
+  SomeDeviant:
+  - bugfix: fixed missing MentorHelp toggle
   VanessaCoding:
   - qol: autochiseling.
   WeNeedMorePhoron:
@@ -396,6 +400,7 @@
       reflavored it and the description to fit with not following gods, and remove
       anachronistic quotes and kept it as a fallback for no religion'
   borneblood:
+  - balance: Snuff Lights works on Lights, but can't affect relic lights.
   - rscadd: Ley Line unique spell for Hierophant-only.
   - rscadd: Dissonance and Acceleration unique spells for Vizier-only.
   - rscadd: 'Naledi Refugee merc-adjacent subclasses: Dropout/Ascetic/Wanderer.'
@@ -403,6 +408,16 @@
   - balance: Slightly buffed Restoration, it now works on Constructs too.
   - refactor: Removed a lot of spaghetti code repetitions and standardized Poke Spell
       granting to a single centralized /proc.
+  radarseas:
+  - bugfix: you can no longer heal unintended vampire noises.
+  - balance: Nosferato is no longer the default vampire clan fallback, because why
+      was the hardest clan to play the default sire?
+  - balance: Torpor no longer is only useful for infinite vitae exploits, you no longer
+      gain vitae from but instead heal wounds/damage at an insanely fast rate.
+  - balance: journey -> expert unarmed for vamp arsonist
+  - balance: 1spd -> 2 spd for vamp physician
+  - code_imp: adjusted vampire stat codenotes to be truer. they're points not weighted
+      balance-wise. oops.
   saltprjak:
   - balance: Church Templars that receive patron daggers now have Journeyman skills
       to use them.
