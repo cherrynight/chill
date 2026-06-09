@@ -859,8 +859,8 @@
 /obj/item/rogueweapon/spear/matthios_standard/Initialize()
 	. = ..()
 	for(var/mob/living/carbon/human/H as anything in SSspatial_grid.orthogonal_range_search(src, SPATIAL_GRID_CONTENTS_TYPE_CLIENTS, 7))
-			if(get_dist(src, H) > 7)
-				continue
+		if(get_dist(src, H) > 7)
+			continue
 		if(istype(H.patron, /datum/patron/inhumen/matthios))
 			H.apply_status_effect(/datum/status_effect/buff/twilight_peoplesbanner)
 
