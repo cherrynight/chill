@@ -9,9 +9,9 @@
 	outfit = /datum/outfit/job/roguetown/janissary/sihrbaz
 	category_tags = list(CTAG_JANISSARY)
 	subclass_stats = list(
-		STATKEY_SPD = 2,
-		STATKEY_PER = 3,
-		STATKEY_INT = 4,
+		STATKEY_SPD = 1,
+		STATKEY_PER = 2,
+		STATKEY_INT = 3,
 	)
 	traits_applied = list(TRAIT_DODGEEXPERT, TRAIT_ARCYNE, TRAIT_MAGEARMOR)
 	subclass_mage_aspects = list("mastery" = TRUE, "major" = 1, "minor" = 3, "utilities" = 6, "ward" = TRUE)

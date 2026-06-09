@@ -9,7 +9,7 @@
 	allowed_sexes = list(MALE, FEMALE)
 	forbidden_races = list(RACES_DESPISED)
 	allowed_ages = list(AGE_ADULT, AGE_MIDDLEAGED)
-	job_traits = list(TRAIT_GUARDSMAN, TRAIT_STEELHEARTED, TRAIT_MEDIUMARMOR)
+	job_traits = list(TRAIT_GUARDSMAN, TRAIT_STEELHEARTED)
 	tutorial = "Ты — член свиты Султана. Обеспечивай безопасность Султана и его подданных, защищай власть предержащих от ужасов внешнего мира и делай всё возможное, чтобы Султанат продолжал жить."
 	display_order = JDO_ROYALGUARD
 	whitelist_req = TRUE
