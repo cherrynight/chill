@@ -235,7 +235,7 @@
 /datum/migrant_wave/lost_grenzel
 	name = "Lost Grenzels"
 	can_roll = FALSE
-	roles = list(
+	required_roles = list(
 		/datum/migrant_role/lost_grenzel = 4,
 	)
 	min_pop = 80

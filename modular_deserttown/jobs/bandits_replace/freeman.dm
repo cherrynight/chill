@@ -115,7 +115,7 @@
 /datum/migrant_wave/freeman
 	name = "Freemen"
 	can_roll = FALSE
-	roles = list(
+	required_roles = list(
 		/datum/migrant_role/freeman = 6,
 	)
 	min_pop = 80
