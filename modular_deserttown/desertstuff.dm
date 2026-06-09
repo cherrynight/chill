@@ -747,3 +747,9 @@
 	S.start()
 	qdel(src)
 
+//Throne
+/obj/structure/roguethrone/desert
+	name = "zybantine throne"
+	icon_state = "zybantinethrone"
+	icon = 'modular_deserttown/icons/throne.dmi'
+	pixel_x = -16
