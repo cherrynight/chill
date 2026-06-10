@@ -57,7 +57,7 @@
 		H.set_blindness(0)
 		switch(weapon_choice)
 			if("Scimitar & Shield")
-				r_hand = /obj/item/rogueweapon/sword/sabre/shamshir
+				r_hand = /obj/item/rogueweapon/sword/long/kriegmesser/zybantine
 				beltr = /obj/item/rogueweapon/scabbard/sword
 				backl = /obj/item/rogueweapon/shield/iron/zybantine
 			if("Warhammer & Shield")
