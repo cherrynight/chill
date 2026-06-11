@@ -486,3 +486,21 @@
   - rscadd: sahir can now pick between two shamshir or a single staff
   borneblood:
   - balance: Adjusted adven Vizier values and limited choices.
+2026-06-11:
+  FreeStylaLT:
+  - balance: Wave Animation is now longer
+  Ryan180602:
+  - balance: poleaxe stab has 2-tile sweetspot and is delayed. but has 1x damfactor
+      instead of 0.9x.
+  TankTheBirb:
+  - bugfix: Made sure all witches get the scholars bag for ingredient gathering.
+  - bugfix: made Mystagogue and Old Magick witches properly spawn with their spellbooks.
+  - rscdel: removed chalk from godsblood witches because it was a choking hazard.
+  borneblood:
+  - bugfix: Fixes accel's deaccel having the wrong value
+  - bugfix: Restores a lost functionality from another PR
+  - bugfix: Raze no longer dusts alive mobs
+  changelingonberry:
+  - admin: flavor text button in player panel
+  kiwedespars:
+  - bugfix: miracles properly have cd against someone with an embed
