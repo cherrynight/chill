@@ -366,8 +366,8 @@
 /area/rogue/indoors/vampire_manor)
 "cq" = (
 /obj/structure/fluff/traveltile/wretch{
-	aportalgoesto = "wretchout1";
-	aportalid = "wretchin1"
+	aportalgoesto = "wretchout2";
+	aportalid = "wretchin2"
 	},
 /turf/open/floor/rogue/darkpath{
 	color = "#c4abff"
@@ -1900,8 +1900,8 @@
 /area/rogue/under/cave/inhumen)
 "mW" = (
 /obj/structure/fluff/traveltile/wretch{
-	aportalgoesto = "wretchout2";
-	aportalid = "wretchin2"
+	aportalgoesto = "wretchout1";
+	aportalid = "wretchin1"
 	},
 /turf/open/floor/rogue/darkpath,
 /area/rogue/outdoors/desertdeep/safe)
@@ -2337,6 +2337,13 @@
 "ps" = (
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors)
+"pt" = (
+/obj/structure/fluff/traveltile/wretch{
+	aportalgoesto = "wretchout4";
+	aportalid = "wretchin4"
+	},
+/turf/open/floor/rogue/darkpath,
+/area/rogue/outdoors/desertdeep/safe)
 "pu" = (
 /obj/machinery/light/rogue/firebowl,
 /turf/open/floor/rogue/citybrick/citybrick1,
@@ -2624,8 +2631,8 @@
 	dir = 4
 	},
 /obj/structure/fluff/traveltile/wretch{
-	aportalgoesto = "wretchout2";
-	aportalid = "wretchin2"
+	aportalgoesto = "wretchout1";
+	aportalid = "wretchin1"
 	},
 /turf/open/floor/rogue/darkpath,
 /area/rogue/outdoors/desertdeep/safe)
@@ -2750,6 +2757,15 @@
 /obj/item/roguecoin/gold/pile,
 /turf/closed/wall/mineral/rogue/sandbrick,
 /area/rogue/indoors/banditcamp/desert)
+"rR" = (
+/obj/structure/fluff/traveltile/wretch{
+	aportalgoesto = "wretchout3";
+	aportalid = "wretchin3"
+	},
+/turf/open/floor/rogue/darkpath{
+	color = "#c4abff"
+	},
+/area/rogue/outdoors/desertdeep/safe)
 "rT" = (
 /obj/structure/bed/rogue/shit,
 /obj/effect/decal/cleanable/blood/splatter,
@@ -4463,6 +4479,10 @@
 /obj/effect/decal/duneedge,
 /turf/open/water/pond,
 /area/rogue/outdoors/desert)
+"Ds" = (
+/obj/effect/decal/duneedge,
+/turf/open/floor/rogue/dunes,
+/area/rogue/outdoors/desertdeep/safe)
 "Dv" = (
 /obj/structure/table/wood/poor,
 /obj/item/book/rogue/yeoldecookingmanual{
@@ -5264,7 +5284,7 @@
 	dir = 4
 	},
 /obj/effect/decal/duneedge,
-/turf/open/floor/rogue/darkpath,
+/turf/open/floor/rogue/dunes,
 /area/rogue/outdoors/desertdeep/safe)
 "Iy" = (
 /obj/machinery/gear_painter,
@@ -5319,6 +5339,15 @@
 /obj/structure/bed/rogue/shit,
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors/banditcamp/desert)
+"IQ" = (
+/obj/structure/fluff/traveltile/wretch{
+	aportalgoesto = "wretchout4";
+	aportalid = "wretchin4"
+	},
+/turf/open/floor/rogue/darkpath{
+	color = "#c4abff"
+	},
+/area/rogue/outdoors/desertdeep/safe)
 "IS" = (
 /obj/structure/table/wood{
 	dir = 9;
@@ -5420,6 +5449,12 @@
 /obj/machinery/light/rogue/candle,
 /turf/open/floor/rogue/darkpath,
 /area/rogue/indoors/banditcamp/desert)
+"JH" = (
+/obj/effect/decal/duneedge{
+	dir = 8
+	},
+/turf/open/floor/rogue/dunes,
+/area/rogue/outdoors/desertdeep/safe)
 "JK" = (
 /obj/structure/fluff/railing/border{
 	dir = 1
@@ -5624,6 +5659,12 @@
 /obj/item/reagent_containers/glass/cup/skull,
 /turf/open/floor/carpet/inn,
 /area/rogue/indoors/vampire_manor)
+"KL" = (
+/obj/effect/decal/duneedge{
+	dir = 4
+	},
+/turf/open/floor/rogue/dunes,
+/area/rogue/outdoors/desertdeep/safe)
 "KM" = (
 /obj/item/natural/stone,
 /turf/open/floor/rogue/darkpath,
@@ -62311,12 +62352,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
+Pa
 LO
 LO
 LO
@@ -62478,12 +62519,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+rR
+rR
+rR
+Pa
 LO
 LO
 LO
@@ -62645,12 +62686,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+GN
+GN
+GN
+Pa
 LO
 LO
 LO
@@ -62812,12 +62853,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+GN
+GN
+GN
+GN
+Pa
 LO
 LO
 LO
@@ -62979,12 +63020,12 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+GN
+GN
+GN
+GN
+Pa
 LO
 LO
 LO
@@ -63146,12 +63187,12 @@ Pa
 Pa
 Pa
 Pa
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+GN
+GN
+GN
+GN
+Pa
 LO
 LO
 LO
@@ -63312,13 +63353,13 @@ Oh
 Oh
 Oh
 Oh
+Oh
+Oh
+GN
+GN
+GN
 Pa
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
 LO
 LO
 LO
@@ -63479,12 +63520,12 @@ XK
 Gt
 Oh
 Oh
+Oh
+GN
+GN
+GN
 Pa
 Pa
-LO
-LO
-LO
-LO
 LO
 LO
 LO
@@ -63646,11 +63687,11 @@ In
 In
 Gt
 Gt
-Gt
+JH
+Oh
 Pa
-LO
-LO
-LO
+Pa
+Pa
 LO
 LO
 LO
@@ -64493,7 +64534,7 @@ GN
 GN
 GN
 GN
-cq
+IQ
 Pa
 ea
 ea
@@ -64818,7 +64859,7 @@ In
 In
 In
 UG
-Oh
+GN
 GN
 GN
 GN
@@ -64986,7 +65027,7 @@ In
 In
 UG
 Oh
-GN
+Oh
 GN
 GN
 Pa
@@ -65482,8 +65523,8 @@ us
 In
 In
 Ix
-GY
-GY
+KL
+KL
 GY
 Oh
 Pa
@@ -65648,9 +65689,9 @@ us
 us
 In
 In
-UG
-Oh
-Oh
+Ds
+In
+In
 Oh
 Pa
 Pa
@@ -65815,12 +65856,12 @@ In
 In
 In
 In
-UG
-Oh
+Ds
+In
+In
 Oh
 Pa
 Pa
-LO
 LO
 LO
 LO
@@ -65985,10 +66026,10 @@ In
 UG
 Oh
 Oh
+Oh
+Oh
 Pa
-LO
-LO
-LO
+Pa
 LO
 LO
 LO
@@ -66151,13 +66192,13 @@ GY
 GY
 Oh
 Oh
+Oh
+Oh
+Oh
+Oh
 Pa
 Pa
-LO
-LO
-LO
-LO
-LO
+Pa
 LO
 LO
 LO
@@ -66319,13 +66360,13 @@ Oh
 Oh
 Oh
 Pa
-LO
-LO
-LO
-LO
-LO
-LO
-LO
+Oh
+Oh
+Oh
+Oh
+Oh
+Pa
+Pa
 LO
 LO
 LO
@@ -66486,13 +66527,13 @@ Pa
 Pa
 Pa
 Pa
-LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Oh
+Oh
+Oh
+Oh
+pt
+Pa
 LO
 LO
 LO
@@ -66653,13 +66694,13 @@ Pa
 Pa
 Pa
 Pa
-LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Oh
+Oh
+Oh
+pt
+Pa
 LO
 LO
 LO
@@ -66821,12 +66862,12 @@ Pa
 Pa
 LO
 LO
-LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Oh
+Oh
+pt
+Pa
 LO
 LO
 LO
@@ -66989,11 +67030,11 @@ LO
 LO
 LO
 LO
-LO
-LO
-LO
-LO
-LO
+Pa
+Pa
+Pa
+Pa
+Pa
 LO
 LO
 LO
