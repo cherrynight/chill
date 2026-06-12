@@ -35,7 +35,8 @@
 	backr = /obj/item/storage/backpack/rogue/satchel/short
 	shoes = /obj/item/clothing/shoes/roguetown/shalal
 	belt = /obj/item/storage/belt/rogue/leather/steel
-	id = /obj/item/scomstone/garrison
+	wrists = /obj/item/clothing/wrists/roguetown/bracers/hand
+	id = /obj/item/scomstone/garrison/hand
 
 /datum/job/roguetown/vizier/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	. = ..()
@@ -196,6 +197,7 @@
 		/obj/item/storage/keyring/lord = 1,
 		/obj/item/lockpickring/mundane = 1,
 		/obj/item/reagent_containers/glass/bottle/rogue/poison = 1,
+		/obj/item/roguekey/skeleton = 1,
 	)
 	if(H.dna.species.type in NON_DWARVEN_RACE_TYPES)
 		shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/shadowrobe
@@ -257,9 +259,10 @@
 //Advisor start.
 /datum/outfit/job/roguetown/vizier/advisor/pre_equip(mob/living/carbon/human/H)
 	r_hand = /obj/item/rogueweapon/sword/rapier/dec
-	beltr = /obj/item/rogueweapon/scabbard/sword
+	beltr = /obj/item/rogueweapon/sword/rapier/hand
+	beltl = /obj/item/rogueweapon/scabbard/sheath/courtphysician/hand
 	head = /obj/item/clothing/head/roguetown/turban/fancypurple
-	armor = /obj/item/clothing/suit/roguetown/armor/leather/vest/hand
+	armor = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/hand/advisor
 	pants = /obj/item/clothing/under/roguetown/tights/black
 	if(should_wear_femme_clothes(H))
 		shirt = /obj/item/clothing/suit/roguetown/shirt/dress/royal/hand_f
@@ -271,6 +274,7 @@
 		/obj/item/storage/keyring/lord = 1,
 		/obj/item/lockpickring/mundane = 1,
 		/obj/item/reagent_containers/glass/bottle/rogue/poison = 1,
+		/obj/item/roguekey/skeleton = 1,
 	)
 	if(H.age == AGE_OLD)
 		H.change_stat(STATKEY_SPD, -1)
