@@ -456,6 +456,19 @@
         held_items[Q]["PRICE"] = 100
 
     update_icon()
+
+/obj/structure/roguemachine/vendor/desert_church_bedroomset
+	keycontrol = "priest"
+	will_hawk = FALSE
+
+/obj/structure/roguemachine/vendor/desert_church_bedroomset/Initialize()
+	. = ..()
+
+	for (var/X in list(/obj/item/roguekey/church/roomi, /obj/item/roguekey/church/roomii, /obj/item/roguekey/church/roomiii, /obj/item/roguekey/church/roomiv, /obj/item/roguekey/church/roomv))
+		var/obj/P = new X(src)
+		held_items[P] = list()
+		held_items[P]["NAME"] = P.name
+		held_items[P]["PRICE"] = 0
 //weapons
 
 /obj/structure/fluff/walldeco/customflag/deserttown
