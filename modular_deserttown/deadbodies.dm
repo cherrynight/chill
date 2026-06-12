@@ -153,7 +153,7 @@
 		/obj/item/storage/belt/rogue/pouch/coins/rich                     = 30,
 		/obj/item/rogueweapon/sword/long                                  = 20,
 		/obj/item/rogueweapon/mace/steel                                  = 15,
-		/obj/item/clothing/cloak/tabard/stabard/surcoat/guard                    = 20,
+		/obj/item/clothing/cloak/tabard/stabard/surcoat/guard             = 20,
 		/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk         = 20,
 		/obj/item/clothing/head/roguetown/helmet/sallet                   = 20,
 		/obj/item/reagent_containers/glass/bottle/rogue/healthpot         = 15,
@@ -161,7 +161,7 @@
 
 /obj/structure/deadbody/warden
 	name = "dead warden"
-	desc = "Died doing what they swore to do - holding the line between Rockhill and the terrorbog."
+	desc = "Died doing what they swore to do - holding the line."
 	pose_states = list(
 		"warden", "wa10", "wa20", "wa30", "wa40",
 		"warden_skele", "wsk10", "wsk20", "wsk30", "wsk40",
