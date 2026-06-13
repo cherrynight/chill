@@ -11,10 +11,10 @@
 
 
 /datum/mapGeneratorModule/desertsand_flora
-	clusterCheckFlags = CLUSTER_CHECK_NONE
+	clusterCheckFlags = CLUSTER_CHECK_DIFFERENT_ATOMS
 	allowed_turfs = list(/turf/open/floor/rogue/dunes)
 	allowed_areas = list(/area/rogue/outdoors/desert, /area/rogue/outdoors/desertdeep)
-	spawnableAtoms = list(/obj/structure/flora/roguegrass/desertgrass = 4,
+	spawnableAtoms = list(/obj/structure/flora/roguegrass/desertgrass = 3,
 							/obj/structure/flora/junglebush/desertbush2 = 1.2)
 
 
