@@ -14,11 +14,10 @@ export const StatBrowserTarget = new Juke.Target({
   name: "Twilight Axis StatPanel",
   inputs: [
     "ta_statpanel/**/*.+(js|jsx|ts|tsx)",
-    "ta_statpanel/ta_statpanel/*.html",
     "ta_statpanel/ta_statpanel/*.css",
     "ta_statpanel/package.json",
   ],
-  outputs: ["html/ta_statbrowser.html"],
+  outputs: ["ta_statpanel/dist/ta-statbrowser-bundle.html"],
   executes: () => bun_statpanel("run", "build"),
 });
  
