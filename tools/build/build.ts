@@ -433,7 +433,7 @@ export const CleanAllTarget = new Juke.Target({
 });
 
 export const TgsTarget = new Juke.Target({
-  dependsOn: [TguiTarget],
+  dependsOn: [TguiTarget, StatBrowserTarget], //TA EDIT StatBrowserTarget],
   executes: async () => {
     Juke.logger.info("Prepending TGS define");
     prependDefines("TGS");
