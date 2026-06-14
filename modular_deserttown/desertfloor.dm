@@ -62,15 +62,6 @@
 /turf/open/floor/rogue/sandbrick/cardinal_smooth(adjacencies)
 	roguesmooth(adjacencies)
 
-/datum/crafting_recipe/roguetown/turfs/desert/sandbrickfloor
-	name = "sandbrick floor"
-	result = /turf/open/floor/rogue/sandbrick
-	reqs = list(/obj/item/natural/stone = 1)
-	skillcraft = /datum/skill/craft/masonry
-	verbage_simple = "construct"
-	verbage = "constructs"
-	craftdiff = 1
-
 /turf/open/floor/rogue/sandbrick/Initialize(mapload)
 	dir = pick(GLOB.cardinals)
 	. = ..()
@@ -178,15 +169,6 @@
 	dir = pick(GLOB.cardinals)
 	. = ..()
 	icon_state = "dark-path[rand(1,8)]"
-
-/datum/crafting_recipe/roguetown/turfs/desert/darksandbrickfloor
-	name = "dark sandbrick floor"
-	result = /turf/open/floor/rogue/darkpath
-	reqs = list(/obj/item/natural/stone = 1)
-	skillcraft = /datum/skill/craft/masonry
-	verbage_simple = "construct"
-	verbage = "constructs"
-	craftdiff = 1
 
 /obj/effect/decal/desertgrassedge
 	name = ""
