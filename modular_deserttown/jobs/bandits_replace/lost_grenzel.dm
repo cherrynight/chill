@@ -336,6 +336,8 @@
 	var/datum/job/lost_grenzel_job = SSjob.GetJob("Lost Grenzel")
 	if(!lost_grenzel_job)
 		return
+	if(SSmapping.config.map_name != "Desert Town")
+		return
 
 	lost_grenzel_job.always_show_on_latechoices = FALSE
 	lost_grenzel_job.total_positions = 0
@@ -344,11 +346,9 @@
 	if(!SSgamemode)
 		return
 
-	if(!deserttown_antag_wave_is_desert_town())
+	if(length(GLOB.clients) < 80)
 		return
-	if(!deserttown_antag_wave_has_required_pop())
-		return
-
+	
 	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
 	if(storyteller_type != /datum/storyteller/astrata)
 		return

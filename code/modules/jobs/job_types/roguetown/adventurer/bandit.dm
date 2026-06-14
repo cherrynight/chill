@@ -129,27 +129,35 @@
 	if(!bandit_job)
 		return
 
-// TA EDIT - DESERT TOWN
-	if(SSmapping.config.map_name == "Desert Town")
+	var/is_desert_town = SSmapping?.config?.map_name == "Desert Town"
+	var/datum/job/slot_job = bandit_job
+
+	if(is_desert_town)
 		bandit_job.always_show_on_latechoices = FALSE
 		bandit_job.total_positions = 0
 		bandit_job.spawn_positions = 0
-		return
-// TA EDIT - DESERT TOWN
+
+		slot_job = SSjob.GetJob("Freeman")
+		if(!slot_job)
+			return
+		
+		slot_job.always_show_on_latechoices = FALSE
+		slot_job.total_positions = 0
+		slot_job.spawn_positions = 0
 
 	var/slots = 0
 
 	if(!SSgamemode)
-		bandit_job.total_positions = 0
-		bandit_job.spawn_positions = 0
+		slot_job.total_positions = 0
+		slot_job.spawn_positions = 0
 		return
 
 	var/player_count = SSgamemode.get_correct_popcount()
 
-	bandit_job.always_show_on_latechoices = TRUE
+	slot_job.always_show_on_latechoices = TRUE
 	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit, player_count))
-		bandit_job.total_positions = 0
-		bandit_job.spawn_positions = 0
+		slot_job.total_positions = 0
+		slot_job.spawn_positions = 0
 		return
 
 	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
@@ -161,8 +169,8 @@
 		else if(player_count >= min_players)
 			slots = 2
 		slots = SSgamemode.story_antag_slots(slots, /datum/antagonist/bandit, player_count)
-		bandit_job.total_positions = slots
-		bandit_job.spawn_positions = slots
+		slot_job.total_positions = slots
+		slot_job.spawn_positions = slots
 		return
 
 	var/unlocks_bandits = SSgamemode.storyteller_unlocks_scaled_antag_slots(/datum/antagonist/bandit)
@@ -171,8 +179,8 @@
 		unlocks_bandits = TRUE
 
 	if(!unlocks_bandits)
-		bandit_job.total_positions = 0
-		bandit_job.spawn_positions = 0
+		slot_job.total_positions = 0
+		slot_job.spawn_positions = 0
 		return
 
 	var/max_slots = SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit, TRUE, storyteller_type)
@@ -188,5 +196,5 @@
 
 	slots = SSgamemode.story_antag_slots(slots, /datum/antagonist/bandit, player_count)
 
-	bandit_job.total_positions = slots
-	bandit_job.spawn_positions = slots
+	slot_job.total_positions = slots
+	slot_job.spawn_positions = slots
