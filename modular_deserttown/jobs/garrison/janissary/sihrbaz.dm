@@ -13,7 +13,7 @@
 		STATKEY_PER = 2,
 		STATKEY_INT = 3,
 	)
-	traits_applied = list(TRAIT_DODGEEXPERT, TRAIT_ARCYNE, TRAIT_MAGEARMOR)
+	traits_applied = list(TRAIT_DODGEEXPERT, TRAIT_ARCYNE)
 	subclass_mage_aspects = list("mastery" = TRUE, "major" = 1, "minor" = 3, "utilities" = 6, "ward" = TRUE)
 	subclass_skills = list(
 		/datum/skill/magic/arcane = SKILL_LEVEL_EXPERT,
