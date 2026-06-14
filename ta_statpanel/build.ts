@@ -1,5 +1,6 @@
 import { build } from "bun";
 import { mkdirSync, writeFileSync } from "fs";
+import { transform } from "lightningcss";
 
 const result = await build({
   entrypoints: ["ta_statpanel/index.jsx"],
@@ -14,9 +15,15 @@ const result = await build({
 const js = await result.outputs[0].text();
 const css = await Bun.file("ta_statpanel/main.css").text();
 
+const minifiedCss = transform({
+    filename: "style.css",
+    code: Buffer.from(css),
+    minify: true,
+}).code.toString();
+
 const html = `
   <style>
-${css}
+${minifiedCss}
   </style>
   <div id="app"></div>
   <script>

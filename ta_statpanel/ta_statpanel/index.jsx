@@ -16,8 +16,6 @@ const state = {
   tickets: [],
   sdql2: [],
   permanentTabs: [],
-  turfContents: [],
-  turfName: '',
   splitAdminTabs: false,
 };
 
@@ -66,6 +64,19 @@ function BrailleSpinner() {
   return (
     <div style={{ textAlign: 'center', padding: '1em' }}>
       {frames[frame]} Awaiting round data...
+	  <div>
+	  <br/>
+		<img src="https://twilight-fortress-axis.ru/tgc_medieval_07.gif"
+			width="96"
+			height="96"
+			style="image-rendering: pixelated;"
+		></img>
+		<img src="https://twilight-fortress-axis.ru/tgc_medieval_09.gif"
+			width="96"
+			height="96"
+			style="image-rendering: pixelated;"
+		></img>	
+	  </div>
     </div>
   );
 }
@@ -353,67 +364,6 @@ function SDQL2Panel() {
   );
 }
 
-function ListedTurfPanel() {
-  const s = useStatState();
-  const storedImages = useRef({});
-
-  const handleClick = useCallback((part) => (e) => {
-    var href = 'byond://?src=' + part[1] + ';statpanel_item_click=';
-    switch (e.button) {
-      case 1: href += 'middle'; break;
-      case 2: href += 'right'; break;
-      default: href += 'left';
-    }
-    if (e.shiftKey) href += ';statpanel_item_shiftclick=1';
-    if (e.ctrlKey) href += ';statpanel_item_ctrlclick=1';
-    if (e.altKey) href += ';statpanel_item_altclick=1';
-    if (e.preventDefault) e.preventDefault();
-    window.location.href = href;
-    return false;
-  }, []);
-
-  const suppress = useCallback((e) => {
-    if (e && e.preventDefault) e.preventDefault();
-    return false;
-  }, []);
-
-  const handleImgError = useCallback((part) => (e) => {
-    if (s.currentTab !== s.turfName) return;
-    setTimeout(() => {
-      var node = e.target;
-      var attempts = Number(node.getAttribute('data-attempts')) || 0;
-      if (attempts > imageRetryLimit) return;
-      var src = node.src;
-      node.src = null;
-      node.src = src + '#' + attempts;
-      node.setAttribute('data-attempts', attempts + 1);
-    }, imageRetryDelay);
-  }, [s.currentTab, s.turfName]);
-
-  return (
-    <div className="turf-grid">
-      {s.turfContents.map((part, i) => {
-        const iconsrc = part[2] || storedImages.current[part[1]];
-        if (iconsrc && storedImages.current[part[1]] == null) {
-          storedImages.current[part[1]] = part[2];
-        }
-        return (
-          <div
-            key={i}
-            className="turf-entry"
-            data-fullname={part[0]}
-            onMouseDown={handleClick(part)}
-            onContextMenu={suppress}
-          >
-            {iconsrc && <img src={iconsrc} id={part[1]} className="turf-icon" onError={handleImgError(part)} />}
-            <span className="link turf-name">{part[0]}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 function VerbsPanel({ cat }) {
   const s = useStatState();
   const [search, setSearch] = useState(s.verbSearch);
@@ -630,8 +580,6 @@ function StatContent() {
     body = <TicketsPanel />;
   } else if (s.currentTab === 'SDQL2') {
     body = <SDQL2Panel />;
-  } else if (s.currentTab === s.turfName && s.turfName) {
-    body = <ListedTurfPanel />;
   } else if (s.verbTabs.includes(s.currentTab)) {
     body = <VerbsPanel cat={s.currentTab} />;
   } else {
@@ -759,16 +707,6 @@ Byond.subscribeTo('create_debug', () => {
   }
 });
 
-Byond.subscribeTo('create_listedturf', (TN) => {
-  if (state.turfName) {
-    removePermanentTab(state.turfName);
-    if (state.currentTab === state.turfName) tabChange(defaultTab);
-  }
-  setState({ turfName: TN });
-  addPermanentTab(TN);
-  tabChange(TN);
-});
-
 Byond.subscribeTo('remove_admin_tabs', () => {
   setState({ hrefToken: null });
   removePermanentTab('MC');
@@ -780,8 +718,6 @@ Byond.subscribeTo('remove_admin_tabs', () => {
   setState({ sdql2: [] });
   if (state.currentTab === 'SDQL2') tabChange(defaultTab);
 });
-
-Byond.subscribeTo('update_listedturf', (TC) => setState({ turfContents: TC }));
 
 Byond.subscribeTo('update_split_admin_tabs', (status) => {
   status = status === true;
@@ -824,14 +760,6 @@ Byond.subscribeTo('update_tickets', (T) => {
     if (!permanentTabs.includes('Tickets')) permanentTabs = [...permanentTabs, 'Tickets'];
   }
   setState({ tickets: T, verbTabs, permanentTabs });
-});
-
-Byond.subscribeTo('remove_listedturf', () => {
-  if (state.turfName) {
-    removePermanentTab(state.turfName);
-    if (state.currentTab === state.turfName) tabChange(defaultTab);
-    setState({ turfName: '' });
-  }
 });
 
 Byond.subscribeTo('remove_sdql2', () => {
