@@ -3,7 +3,7 @@ GLOBAL_LIST_EMPTY(ghost_images_simple) //this is a list of all ghost images as t
 
 GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 GLOBAL_VAR_CONST(observer_move_delay_multiplier, 0.5)
-#define ROGUE_GHOST_MAX_BODY_RANGE 30
+#define ROGUE_GHOST_MAX_BODY_RANGE 20
 /mob/dead/observer
 	name = "ghost"
 	desc = "" //jinkies!
