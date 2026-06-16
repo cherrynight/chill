@@ -7,7 +7,7 @@
 	spawn_positions = 1
 	allowed_sexes = list(MALE, FEMALE)
 	forbidden_races = list(RACES_CONSTRUCT RACES_DESPISED RACES_OOZE)
-	job_traits = list(TRAIT_STEELHEARTED, TRAIT_DUNGEONMASTER, TRAIT_GUARDSMAN, TRAIT_MEDIUMARMOR, TRAIT_XENOPHOBIC, TRAIT_NOBLE)
+	job_traits = list(TRAIT_STEELHEARTED, TRAIT_GUARDSMAN, TRAIT_MEDIUMARMOR, TRAIT_XENOPHOBIC, TRAIT_NOBLE)
 	advclass_cat_rolls = list(CTAG_SLAVEMASTER = 2)
 
 	tutorial = "Твоя рука карает кнутом, дабы держать чернь в узде, и лишь твоя воля заставляет ленивых рабов трудиться на благо Султана. \
