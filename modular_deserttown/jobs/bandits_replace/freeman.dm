@@ -11,6 +11,15 @@
 		"СМЕРТЬ СУЛТАНУ!! ДА ЗДРАВСТВУЕТ АЛЬ-МАТТИОС!!",
 		"НАШ ДЖИХАД ЗАКОНЧИТСЯ ВАШЕЙ СМЕРТЬЮ!!",
 	)
+	storyteller_antag_flags = STORYTELLER_ANTAG_VILLAIN | STORYTELLER_ANTAG_ROUNDSTART
+	override_candidatereq = TRUE
+	storyteller_min_players = CHARACTER_INJECTION_MIN_POP
+	storyteller_slot_scaling = 2
+	storyteller_slot_default_cap = 2
+	storyteller_maxcaps = list(
+		/datum/storyteller/gamemode/guaranteed_antag = 4,
+		/datum/storyteller/gamemode/guaranteed_antag/low_wretch = 6,
+	)
 
 /datum/antagonist/bandit/freeman/on_gain()
 	. = ..()
@@ -92,7 +101,7 @@
 		var/datum/antagonist/new_antag = new /datum/antagonist/bandit/freeman()
 		H.mind.add_antag_datum(new_antag)
 		H.grant_language(/datum/language/thievescant)
-		addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/human, choose_name_popup), "BANDIT"), 5 SECONDS)
+		addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/human, choose_name_popup), "FREEMAN"), 5 SECONDS)
 		var/wanted = list("I am a notorious criminal", "I am a nobody")
 		var/wanted_choice = input("Are you a known criminal?") as anything in wanted
 		switch(wanted_choice)
@@ -150,12 +159,27 @@
 		TAG_VILLIAN,
 	)
 
+
+/proc/deserttown_freeman_storyteller_slots_allowed(player_count = null)
+	if(!deserttown_antag_wave_is_desert_town())
+		return FALSE
+	if(!SSgamemode)
+		return FALSE
+	if(isnull(player_count))
+		player_count = SSgamemode.get_correct_popcount()
+	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit/freeman, player_count))
+		return FALSE
+	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
+	return SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit/freeman, TRUE, storyteller_type) > 0
+
 /datum/round_event_control/antagonist/migrant_wave/freeman/canSpawnEvent(players_amt, gamemode, fake_check)
 	if(!deserttown_antag_waves_enabled())
 		return FALSE
 	if(!deserttown_antag_wave_is_desert_town())
 		return FALSE
 	if(!deserttown_antag_wave_has_required_pop())
+		return FALSE
+	if(!deserttown_freeman_storyteller_slots_allowed(players_amt))
 		return FALSE
 
 	var/datum/job/freeman_job = SSjob.GetJob("Freeman")
@@ -185,6 +209,8 @@
 	if(!deserttown_antag_wave_has_required_pop())
 		message_admins("Freeman Migration skipped: requires 80 active players, has [deserttown_antag_wave_player_count()].")
 		return EVENT_INTERRUPTED
+	if(!deserttown_freeman_storyteller_slots_allowed())
+		return EVENT_CANT_RUN
 
 	var/datum/job/freeman_job = SSjob.GetJob("Freeman")
 	if(!freeman_job)
@@ -201,6 +227,8 @@
 		return
 	if(!deserttown_antag_wave_has_required_pop())
 		log_game("Freeman Migration aborted: requires 80 active players, has [deserttown_antag_wave_player_count()].")
+		return
+	if(!deserttown_freeman_storyteller_slots_allowed())
 		return
 
 	var/datum/job/freeman_job = SSjob.GetJob("Freeman")

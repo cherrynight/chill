@@ -131,6 +131,8 @@
 
 	var/is_desert_town = SSmapping?.config?.map_name == "Desert Town"
 	var/datum/job/slot_job = bandit_job
+	var/antag_path = /datum/antagonist/bandit
+	var/admin_slot_key = "Bandit"
 
 	if(is_desert_town)
 		bandit_job.always_show_on_latechoices = FALSE
@@ -141,6 +143,8 @@
 		if(!slot_job)
 			return
 
+		antag_path = /datum/antagonist/bandit/freeman
+		admin_slot_key = "Freeman"
 		slot_job.always_show_on_latechoices = FALSE
 		slot_job.total_positions = 0
 		slot_job.spawn_positions = 0
@@ -156,25 +160,25 @@
 	var/player_count = SSgamemode.get_correct_popcount()
 
 	slot_job.always_show_on_latechoices = TRUE
-	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit, player_count))
+	if(!SSgamemode.story_antag_open_slots(antag_path, player_count))
 		slot_job.total_positions = 0
 		slot_job.spawn_positions = 0
 		return
 
 	var/slots = 0
-	var/admin_slot = !SSgamemode.allow_vote ? SSgamemode.admin_slots["Bandit"] : null
+	var/admin_slot = !SSgamemode.allow_vote ? SSgamemode.admin_slots[admin_slot_key] : null
 	if(!isnull(admin_slot))
 		slots = max(0, admin_slot)
 	else
 		var/storyteller_type = SSgamemode.story_policy_type(TRUE)
-		var/max_slots = SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit, TRUE, storyteller_type)
+		var/max_slots = SSgamemode.story_antag_slot_cap(antag_path, TRUE, storyteller_type)
 		if(max_slots <= 0)
 			slot_job.total_positions = 0
 			slot_job.spawn_positions = 0
 			return
 
-		var/min_players = SSgamemode.story_antag_min_players(/datum/antagonist/bandit)
-		var/slot_scaling = SSgamemode.story_antag_scaling_step(/datum/antagonist/bandit)
+		var/min_players = SSgamemode.story_antag_min_players(antag_path)
+		var/slot_scaling = SSgamemode.story_antag_scaling_step(antag_path)
 		slots = SSgamemode.storyteller_scale_slots(
 			max_slots,
 			player_count,
@@ -184,7 +188,7 @@
 			SSgamemode.hard_antag_mult(),
 		)
 
-	slots = SSgamemode.story_antag_slots(slots, /datum/antagonist/bandit, player_count)
+	slots = SSgamemode.story_antag_slots(slots, antag_path, player_count)
 
 	slot_job.total_positions = max(slot_job.current_positions, slots)
 	slot_job.spawn_positions = max(slot_job.current_positions, slots)

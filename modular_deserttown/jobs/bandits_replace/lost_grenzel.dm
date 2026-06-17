@@ -4,6 +4,15 @@
 	roundend_category = "lost grenzels"
 	show_name_in_check_antagonists = TRUE
 	job_rank = ROLE_LOSTGRENZEL
+	storyteller_antag_flags = STORYTELLER_ANTAG_VILLAIN | STORYTELLER_ANTAG_ROUNDSTART
+	override_candidatereq = TRUE
+	storyteller_min_players = 80
+	storyteller_slot_scaling = 1
+	storyteller_slot_default_cap = 0
+	storyteller_maxcaps = list(
+		/datum/storyteller/gamemode/guaranteed_antag = 5,
+		/datum/storyteller/gamemode/guaranteed_antag/low_wretch = 5,
+	)
 
 /datum/antagonist/bandit/lost_grenzel/on_gain()
 	. = ..()
@@ -209,7 +218,7 @@
 		var/datum/antagonist/new_antag = new /datum/antagonist/bandit/lost_grenzel()
 		H.mind.add_antag_datum(new_antag)
 		H.grant_language(/datum/language/thievescant)
-		addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/human, choose_name_popup), "BANDIT"), 5 SECONDS)
+		addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/human, choose_name_popup), "LOST GRENZEL"), 5 SECONDS)
 		var/wanted = list("I am a notorious criminal", "I am a nobody")
 		var/wanted_choice = input("Are you a known criminal?") as anything in wanted
 		switch(wanted_choice)
@@ -267,12 +276,27 @@
 		TAG_VILLIAN,
 	)
 
+
+/proc/deserttown_lost_grenzel_storyteller_slots_allowed(player_count = null)
+	if(!deserttown_antag_wave_is_desert_town())
+		return FALSE
+	if(!SSgamemode)
+		return FALSE
+	if(isnull(player_count))
+		player_count = SSgamemode.get_correct_popcount()
+	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit/lost_grenzel, player_count))
+		return FALSE
+	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
+	return SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit/lost_grenzel, TRUE, storyteller_type) > 0
+
 /datum/round_event_control/antagonist/migrant_wave/lost_grenzel/canSpawnEvent(players_amt, gamemode, fake_check)
 	if(!deserttown_antag_waves_enabled())
 		return FALSE
 	if(!deserttown_antag_wave_is_desert_town())
 		return FALSE
 	if(!deserttown_antag_wave_has_required_pop())
+		return FALSE
+	if(!deserttown_lost_grenzel_storyteller_slots_allowed(players_amt))
 		return FALSE
 
 	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
@@ -286,13 +310,15 @@
 /datum/round_event_control/antagonist/migrant_wave/lost_grenzel/preRunEvent()
 	if(!deserttown_antag_waves_enabled())
 		return FALSE
-	if(is_storyteller_soft_antag_blocked())
+	if(!deserttown_lost_grenzel_storyteller_slots_allowed())
 		return EVENT_CANT_RUN
 	if(!deserttown_antag_wave_is_desert_town())
 		return EVENT_CANT_RUN
 	if(!deserttown_antag_wave_has_required_pop())
 		message_admins("Lost Grenzel Migration skipped: requires 80 active players, has [deserttown_antag_wave_player_count()].")
 		return EVENT_INTERRUPTED
+	if(!deserttown_lost_grenzel_storyteller_slots_allowed())
+		return EVENT_CANT_RUN
 
 	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
 	if(!lg_job)
@@ -309,6 +335,8 @@
 		return
 	if(!deserttown_antag_wave_has_required_pop())
 		log_game("Lost Grenzel Migration aborted: requires 80 active players, has [deserttown_antag_wave_player_count()].")
+		return
+	if(!deserttown_lost_grenzel_storyteller_slots_allowed())
 		return
 
 	var/datum/job/lg_job = SSjob.GetJob("Lost Grenzel")
@@ -328,7 +356,7 @@
 		for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 			if(!player.client)
 				continue
-			to_chat(player, span_danger("Потерянные грензельхофтцы выходят из залитых кровью песков. Четыре слота для потерянных грензельхофтцев были открыты."))
+			to_chat(player, span_danger("Потерянные грензельхофтцы выходят из залитых кровью песков. Пять слотов для потерянных грензельхофтцев были открыты."))
 
 	..()
 
@@ -336,23 +364,48 @@
 	var/datum/job/lost_grenzel_job = SSjob.GetJob("Lost Grenzel")
 	if(!lost_grenzel_job)
 		return
-	if(SSmapping.config.map_name != "Desert Town")
-		return
 
 	lost_grenzel_job.always_show_on_latechoices = FALSE
 	lost_grenzel_job.total_positions = 0
 	lost_grenzel_job.spawn_positions = 0
 
+	if(!deserttown_antag_wave_is_desert_town())
+		return
+	if(lost_grenzel_job.admin_slot_override)
+		return
 	if(!SSgamemode)
 		return
 
-	if(length(GLOB.clients) < 80)
+	var/player_count = SSgamemode.get_correct_popcount()
+	if(!SSgamemode.story_antag_open_slots(/datum/antagonist/bandit/lost_grenzel, player_count))
 		return
-	
-	var/storyteller_type = SSgamemode.story_policy_type(TRUE)
-	if(storyteller_type != /datum/storyteller/astrata)
+
+	var/slots = 0
+	var/admin_slot = !SSgamemode.allow_vote ? SSgamemode.admin_slots["Lost Grenzel"] : null
+	if(!isnull(admin_slot))
+		slots = max(0, admin_slot)
+	else
+		var/storyteller_type = SSgamemode.story_policy_type(TRUE)
+		var/max_slots = SSgamemode.story_antag_slot_cap(/datum/antagonist/bandit/lost_grenzel, TRUE, storyteller_type)
+		if(max_slots <= 0)
+			return
+
+		var/min_players = SSgamemode.story_antag_min_players(/datum/antagonist/bandit/lost_grenzel)
+		var/slot_scaling = SSgamemode.story_antag_scaling_step(/datum/antagonist/bandit/lost_grenzel)
+		slots = SSgamemode.storyteller_scale_slots(
+			max_slots,
+			player_count,
+			FALSE,
+			slot_scaling,
+			min_players,
+			SSgamemode.hard_antag_mult(),
+		)
+
+	slots = SSgamemode.story_antag_slots(slots, /datum/antagonist/bandit/lost_grenzel, player_count)
+	if(slots <= 0)
 		return
 
 	lost_grenzel_job.always_show_on_latechoices = TRUE
-	lost_grenzel_job.total_positions = 5
-	lost_grenzel_job.spawn_positions = 5
+	lost_grenzel_job.total_positions = max(lost_grenzel_job.current_positions, slots)
+	lost_grenzel_job.spawn_positions = max(lost_grenzel_job.current_positions, slots)
+
