@@ -1227,58 +1227,6 @@
 //		if(!obscure_name || (obscure_name && client?.prefs.masked_examine) || observer_privilege)
 //			. += "<a href='?src=[REF(src)];task=view_rumours_gossip;'>Recall Rumours & Gossip</a>" TA EDIT END
 
-	if(lip_style)
-		switch(lip_color)
-			if("red")
-				. += "<span class='info' style='color: #a81324'>[m1] wearing red lipstick.</span>"
-			if("purple")
-				. += "<span class='info' style='color: #800080'>[m1] wearing purple lipstick.</span>"
-			if("lime")
-				. += "<span class='info' style='color: #00FF00'>[m1] wearing lime lipstick.</span>"
-			if("black")
-				. += "<span class='info' style='color: #313131ff'>[m1] wearing black lipstick.</span>"
-
-
-	if(show_descriptors)
-		var/list/lines
-		if((get_face_name() != real_name) && !observer_privilege)
-			lines = build_cool_description_unknown(get_mob_descriptors_unknown(obscure_name, user), src)
-		else
-			lines = build_cool_description(get_mob_descriptors(obscure_name, user), src)
-
-		var/app_str
-		if(!(user.client?.prefs?.full_examine))
-			app_str = "<details><summary>[span_info("Details")]</summary>"
-
-		for(var/line in lines)
-			app_str += span_info(line)
-			app_str += "<br>"
-		if(!(user.client?.prefs?.full_examine))
-			if(length(lines))
-				app_str += "</details>"
-
-		. += app_str
-
-	// Characters with the hunted flaw will freak out if they can't see someone's face.
-	if(!appears_dead)
-		if(skipface && user.has_flaw(/datum/charflaw/hunted) && user != src)
-			user.add_stress(/datum/stressevent/hunted)
-
-	if(dna?.species?.type == /datum/species/gnoll)
-		if(istype(user, /mob/living/carbon/human)) //Submitting this one upstream because not our shitcode for once
-			var/mob/living/carbon/human/H = user
-			if(H.dna?.species?.type == /datum/species/gnoll)
-				if(user.advjob)
-					. += span_notice("<i>They are a [advjob] of the pack.</i>")
-
-	var/trait_exam = common_trait_examine()
-	if(!isnull(trait_exam))
-		. += trait_exam
-
-	if(pose_text)
-		. += fieldset_block("Pose", pose_text, "pose_block")
-
-	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 /mob/living/proc/status_effect_examines(pronoun_replacement) //You can include this in any mob's examine() to show the examine texts of status effects!
 	var/list/dat = list()
 	if(!pronoun_replacement)
