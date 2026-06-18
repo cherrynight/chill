@@ -47,6 +47,8 @@
 	return TRUE
 
 /datum/card_table_session/proc/poker_score(list/hand)
+	if(!hand)
+		return 0
 	var/list/counts = list()
 	var/list/ranks = list()
 	for(var/list/card in hand)

@@ -36,6 +36,9 @@
 
 /datum/card_table_session/Destroy()
 	owner = null
+	if(players)
+		for(var/datum/card_table_player/P in players)
+			qdel(P)
 	players = null
 	observers = null
 	deck = null
@@ -190,4 +193,3 @@
 	if(!user || !user.ckey)
 		return FALSE
 	return (user.ckey in observers)
-

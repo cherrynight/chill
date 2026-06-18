@@ -160,7 +160,8 @@
 		return
 	for(var/datum/card_table_player/player in players.Copy())
 		var/mob/M = card_table_find_mob_by_ckey(player.ckey)
-		if(!M || get_dist(M, owner) > CARD_TABLE_LEAVE_RANGE)
+		var/dist = M ? get_dist(M, owner) : null
+		if(!M || isnull(dist) || dist > CARD_TABLE_LEAVE_RANGE)
 			release_ckey(player.ckey, "too far")
 
 /datum/card_table_session/proc/clamp_turns()

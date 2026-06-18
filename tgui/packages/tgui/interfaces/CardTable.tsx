@@ -251,11 +251,11 @@ const solitaireColumnStyle: CSSProperties = {
   paddingTop: '8px',
 };
 
-const getRankSuit = (label: string, card?: Card) => {
+const getRankSuit = (label?: string | null, card?: Card) => {
   if (card?.rank && card?.suit) {
     return { rank: card.rank, suit: card.suit };
   }
-  const match = label.match(/^([A-Z0-9]+)([HDCS])$/);
+  const match = label?.match(/^([A-Z0-9]+)([HDCS])$/);
   return {
     rank: match?.[1] || '?',
     suit: match?.[2] || '?',

@@ -28,6 +28,8 @@
 	)
 
 /datum/card_table_session/proc/player_public_data_for(datum/card_table_player/player, datum/card_table_player/viewer, mob/user)
+	if(!player)
+		return list()
 	var/show_hand = (stage == CARD_TABLE_STAGE_FINISHED || player == viewer)
 	var/list/seen = (!show_hand && user?.ckey && player?.ckey) ? xylix_seen_for(user.ckey, player.ckey) : list()
 	var/list/hand_data = list()

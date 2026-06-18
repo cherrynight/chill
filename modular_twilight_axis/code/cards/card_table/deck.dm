@@ -4,6 +4,9 @@
 	var/card_table_range_timer
 
 /obj/item/toy/cards/deck/Destroy()
+	if(card_table_range_timer)
+		deltimer(card_table_range_timer)
+		card_table_range_timer = null
 	QDEL_NULL(card_table)
 	return ..()
 
@@ -44,6 +47,9 @@
 		to_chat(user, span_warning("The card table can only be packed when everyone has left."))
 		return FALSE
 	card_table_mode = FALSE
+	if(card_table_range_timer)
+		deltimer(card_table_range_timer)
+		card_table_range_timer = null
 	QDEL_NULL(card_table)
 	SStgui.close_uis(src)
 	if(user)
