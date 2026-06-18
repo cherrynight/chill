@@ -125,6 +125,29 @@
 		if(user.mind?.has_antag_datum(/datum/antagonist/vampire) || user.mind?.has_antag_datum(/datum/antagonist/vampire))
 			. += span_userdanger("<a href='?src=[REF(src)];task=bloodpoolinfo;'>Vitae: [(mind && !clan) ? (bloodpool * CLIENT_VITAE_MULTIPLIER) : bloodpool]; Blood: [blood_volume]</a>")
 
+	if((HAS_TRAIT(src, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_OUTLANDER)) || (HAS_TRAIT(user, TRAIT_BLACKOAK) && !(src.dna.species.name == "Elf" || src.dna.species.name == "Dark Elf" || src.dna.species.name == "Half Elf"))) //TA EDIT
+		. += span_phobia("A foreigner...") //TA EDIT
+
+	if(SSmapping.config.map_name == "Desert Town")
+		var/species_origin = src.dna?.species?.origin
+		var/mob/living/carbon/human/H_user = ishuman(user) ? user : null
+		var/user_origin = H_user?.dna?.species?.origin
+		if(species_origin == "Grenzelhoft" && !HAS_TRAIT(user, TRAIT_OUTLANDER) && user_origin != "Grenzelhoft")
+			. += span_userdanger("ИМПЕРСКИЙ КАФИР!")
+		if(H_user)
+			if(user_origin == "Grenzelhoft" && (species_origin == "Raneshan" || species_origin == "Naledi" || species_origin == "Zybantu"))
+				. += span_userdanger("ЗИБАНТИЙСКИЙ ШВАЙНЕХУНД!")
+
+			var/user_is_lg = H_user.mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
+			var/target_is_lg = mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
+
+			if(user_is_lg && species_origin == "Grenzelhoft" && !target_is_lg)
+				. += span_userdanger("<b>ПОДЛЫЙ ПРЕДАТЕЛЬ!</b>")
+			if(target_is_lg && user_origin == "Grenzelhoft" && !user_is_lg)
+				. += span_userdanger("<b>ОБЕЗУМЕВШИЙ В ПЕСКАХ!</b>")
+		if(mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel) && !HAS_TRAIT(user, TRAIT_OUTLANDER))
+			. += span_userdanger("<b>НАЛЁТНИЧЕСКАЯ МРАЗЬ, ДЕТОУБИЙЦА!</b>")
+
 	if(wear_shirt && !(SLOT_SHIRT in obscured))
 		var/str = "[m3] [wear_shirt.generate_tooltip(wear_shirt.get_examine_string(user))]. "
 		str += "[wear_shirt.integrity_check(is_smart, guarded)]"
@@ -212,28 +235,6 @@
 		str += backl.integrity_check(is_smart, guarded)
 		. += str
 
-	if((HAS_TRAIT(src, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_OUTLANDER)) || (HAS_TRAIT(user, TRAIT_BLACKOAK) && !(src.dna.species.name == "Elf" || src.dna.species.name == "Dark Elf" || src.dna.species.name == "Half Elf"))) //TA EDIT
-		. += span_phobia("A foreigner...") //TA EDIT
-
-	if(SSmapping.config.map_name == "Desert Town")
-		var/species_origin = src.dna?.species?.origin
-		var/mob/living/carbon/human/H_user = ishuman(user) ? user : null
-		var/user_origin = H_user?.dna?.species?.origin
-		if(species_origin == "Grenzelhoft" && !HAS_TRAIT(user, TRAIT_OUTLANDER) && user_origin != "Grenzelhoft")
-			. += span_userdanger("ИМПЕРСКИЙ КАФИР!")
-		if(H_user)
-			if(user_origin == "Grenzelhoft" && (species_origin == "Raneshan" || species_origin == "Naledi" || species_origin == "Zybantu"))
-				. += span_userdanger("ЗИБАНТИЙСКИЙ ШВАЙНЕХУНД!")
-
-			var/user_is_lg = H_user.mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
-			var/target_is_lg = mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
-
-			if(user_is_lg && species_origin == "Grenzelhoft" && !target_is_lg)
-				. += span_userdanger("<b>ПОДЛЫЙ ПРЕДАТЕЛЬ!</b>")
-			if(target_is_lg && user_origin == "Grenzelhoft" && !user_is_lg)
-				. += span_userdanger("<b>ОБЕЗУМЕВШИЙ В ПЕСКАХ!</b>")
-		if(mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel) && !HAS_TRAIT(user, TRAIT_OUTLANDER))
-			. += span_userdanger("<b>НАЛЁТНИЧЕСКАЯ МРАЗЬ, ДЕТОУБИЙЦА!</b>")
 
 	// Knotted effect message
 	if(has_status_effect(/datum/status_effect/knot_tied))
