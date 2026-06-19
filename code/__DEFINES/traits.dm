@@ -350,6 +350,7 @@
 #define TRAIT_NOC_LIGHT_BLESSING "Noc Blessing"
 #define TRAIT_OUTLANDER "Outlander"
 #define TRAIT_VOLF "Volf"
+#define TRAIT_SHAKY_SPEECH "Shaky Speech"
 // If you want description to show up you gotta have the trait name defined BEFORE this lol
 
 GLOBAL_LIST_INIT(roguetraits, list(
