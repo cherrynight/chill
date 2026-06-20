@@ -192,12 +192,12 @@
 		target.chat_color_darkened = "#2681a5"
 
 	// We dim italicized text to make it more distinguishable from regular text
-//	var/tgt_color = extra_classes.Find("italics") ? target.chat_color_darkened : target.chat_color
+	src.tgt_color = extra_classes.Find("italics") ? target.chat_color_darkened : target.chat_color //TA EDIT START
 
-//	var/font_size = 8
-//	if(extra_classes.Find("emote"))
-//		font_size = 7
-//		tgt_color = "#adadad"
+	src.font_size = 8
+	if(extra_classes.Find("emote"))
+		font_size = 7
+		src.tgt_color = "#adadad" //TA EDIT END
 
 	if(extra_classes.Find("mindlink"))
 		font_size = 5
@@ -259,7 +259,16 @@
 
 	// Prepare for destruction
 	scheduled_destruction = world.time + (lifespan - CHAT_MESSAGE_EOL_FADE)
-	INVOKE_ASYNC(src, PROC_REF(spelling_loop)) //TA EDIT START
+	var/skip_anim = FALSE //TA EDIT START
+	if(HAS_TRAIT(message_loc, TRAIT_NO_RUNECHAT_ANIMATION))
+		skip_anim = TRUE
+	if(owned_by && owned_by.prefs && owned_by.prefs.no_typing_runechat)
+		skip_anim = TRUE
+	if(skip_anim)
+		message.maptext = complete_text
+		addtimer(CALLBACK(src, PROC_REF(end_of_life)), lifespan - CHAT_MESSAGE_EOL_FADE, TIMER_UNIQUE|TIMER_OVERRIDE)
+	else
+		INVOKE_ASYNC(src, PROC_REF(spelling_loop))
 
 /datum/chatmessage/proc/turn_to_styled(string)
 	return {"<span style='font-size:[font_size]pt;font-family:\"Mookmania\";color:[tgt_color];text-shadow:0 0 5px #000,0 0 5px #000,0 0 5px #000,0 0 5px #000;' class='center maptext [_extra_classes != null ? _extra_classes.Join(" ") : ""]' style='color: [tgt_color]'>[string]</span>"} //AAAAAAAAAAAAAAA

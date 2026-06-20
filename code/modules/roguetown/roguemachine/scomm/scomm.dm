@@ -269,6 +269,7 @@
 /obj/structure/roguemachine/scomm/Initialize()
 	. = ..()
 	START_PROCESSING(SSroguemachine, src)
+	ADD_TRAIT(src, TRAIT_NO_RUNECHAT_ANIMATION, TRAIT_GENERIC) //TA EDIT
 	become_hearing_sensitive()
 	update_icon()
 	SSroguemachine.scomm_machines += src
