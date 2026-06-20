@@ -24,6 +24,7 @@ type Player = {
   ready: boolean;
   draws_used: number;
   result?: string | null;
+  left?: boolean;
 };
 
 type FoolPair = {
@@ -115,6 +116,7 @@ const resultText: Record<string, string> = {
   Lost: 'проиграл',
   Out: 'выиграл',
   Fool: 'дурак',
+  Left: 'покинул стол',
   Дилер: 'дилер',
 };
 
@@ -340,6 +342,9 @@ const statusText = (player?: Player) => {
   if (player.ready) {
     parts.push('готов');
   }
+  if (player.left) {
+    parts.push('покинул');
+  }
   if (player.result) {
     parts.push(resultText[player.result] || player.result);
   }
@@ -520,11 +525,11 @@ const Seat = (props: {
   } = props;
   const label = player ? player.name : `Место ${index + 1}`;
   const activeRole =
-    player && player.name === attacker
+    player && !player.left && player.name === attacker
       ? 'Активный ход'
-      : player && player.name === defender
+      : player && !player.left && player.name === defender
         ? 'Защищается'
-        : player && player.name === dealer
+        : player && !player.left && player.name === dealer
           ? 'Дилер'
           : null;
   const hasVisibleHand = !!player?.hand?.some((card) => !card.hidden);
@@ -537,6 +542,7 @@ const Seat = (props: {
         ...seatBaseStyle,
         ...seatPositions[index],
         outline: isMe ? '2px solid rgba(244, 207, 92, 0.9)' : 'none',
+        opacity: player?.left ? 0.72 : 1,
       }}
     >
       <div style={{ fontWeight: 700, marginBottom: '4px' }}>
@@ -552,6 +558,10 @@ const Seat = (props: {
             ...rowStyle,
             marginTop: '6px',
             justifyContent: isMe ? 'center' : 'flex-start',
+            maxHeight: isMe ? '112px' : undefined,
+            overflowY: isMe ? 'auto' : undefined,
+            alignContent: 'flex-start',
+            paddingRight: isMe ? '4px' : undefined,
           }}
         >
           {player.hand.length && isMe && onCardClick ? (
@@ -891,20 +901,16 @@ export const CardTable = () => {
   const canTransfer =
     game_type === 'fool' &&
     (fool_variant === 'transfer' || fool_variant === 'throw_transfer');
-  const playerWinnerText = players
-    .filter((player) => {
-      return (
-        player.result === 'Winner' ||
-        player.result === 'Win' ||
-        player.result === 'Out' ||
-        player.result === 'Fool'
-      );
-    })
-    .map((player) => `${player.name} - ${resultText[player.result || '']}`)
+  const playerResultText = players
+    .filter((player) => !!player.result)
+    .map(
+      (player) =>
+        `${player.name} - ${resultText[player.result || ''] || player.result}`,
+    )
     .join(', ');
-  const winnerText =
-    isFinished && playerWinnerText
-      ? playerWinnerText
+  const finalText =
+    isFinished && playerResultText
+      ? playerResultText
       : isFinished && game_type === 'blackjack'
         ? `${dealer_name || 'Дилер'} - дилер`
         : '';
@@ -1302,9 +1308,9 @@ export const CardTable = () => {
                       {message}
                     </div>
                   )}
-                  {!!winnerText && (
+                  {!!finalText && (
                     <div style={{ color: '#f4cf5c', fontWeight: 700 }}>
-                      Победитель: {winnerText}
+                      Итог: {finalText}
                     </div>
                   )}
 

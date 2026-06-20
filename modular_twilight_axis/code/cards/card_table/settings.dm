@@ -86,7 +86,8 @@
 /datum/card_table_session/proc/dealer_player() as /datum/card_table_player
 	if(dealer_index < 1 || dealer_index > players.len)
 		return null
-	return players[dealer_index]
+	var/datum/card_table_player/player = players[dealer_index]
+	return player_is_active(player) ? player : null
 
 /datum/card_table_session/proc/join_player(mob/user)
 	if(!user || !user.ckey || stage != CARD_TABLE_STAGE_LOBBY)
@@ -94,7 +95,7 @@
 	if(player_for_user(user))
 		return FALSE
 	if(players.len >= max_players())
-		to_chat(user, span_warning("There are no free player seats."))
+		to_chat(user, span_warning("Нет свободных мест игрока."))
 		return FALSE
 	observers -= user.ckey
 	var/datum/card_table_player/player = new()
@@ -122,21 +123,27 @@
 	for(var/i = players.len, i >= 1, i--)
 		var/datum/card_table_player/player = players[i]
 		if(player.ckey == user.ckey)
-			if(i == dealer_index)
-				dealer_index = 0
-			else if(i < dealer_index)
-				dealer_index--
-			players.Cut(i, i + 1)
+			if(stage == CARD_TABLE_STAGE_LOBBY)
+				if(i == dealer_index)
+					dealer_index = 0
+				else if(i < dealer_index)
+					dealer_index--
+				players.Cut(i, i + 1)
+			else
+				player.left = TRUE
+				player.result = "Left"
 			changed = TRUE
 	if(user.ckey in observers)
 		observers -= user.ckey
 		changed = TRUE
 	if(changed)
 		if(!silent)
-			message = "[card_table_display_name(user)] leaves the table."
-		if(stage != CARD_TABLE_STAGE_LOBBY && players.len < min_players())
+			message = "[card_table_display_name(user)] покидает стол."
+		if(stage == CARD_TABLE_STAGE_PLAYING && game_type == CARD_TABLE_GAME_FOOL)
+			fool_normalize_turn_after_leave()
+		if(stage != CARD_TABLE_STAGE_LOBBY && active_players_count() < min_players())
 			stage = CARD_TABLE_STAGE_FINISHED
-			message = "The game ends because there are not enough players."
+			message = "Игра завершается: не хватает активных игроков."
 		clamp_turns()
 	return changed
 
@@ -149,21 +156,27 @@
 		var/datum/card_table_player/player = players[i]
 		if(player.ckey == ckey)
 			name = player.name
-			if(i == dealer_index)
-				dealer_index = 0
-			else if(i < dealer_index)
-				dealer_index--
-			players.Cut(i, i + 1)
+			if(stage == CARD_TABLE_STAGE_LOBBY)
+				if(i == dealer_index)
+					dealer_index = 0
+				else if(i < dealer_index)
+					dealer_index--
+				players.Cut(i, i + 1)
+			else
+				player.left = TRUE
+				player.result = "Left"
 			changed = TRUE
 	if(ckey in observers)
 		observers -= ckey
 		changed = TRUE
 	if(changed)
 		var/reason_text = reason ? " ([reason])" : ""
-		message = "[name] leaves the table[reason_text]."
-		if(stage != CARD_TABLE_STAGE_LOBBY && players.len < min_players())
+		message = "[name] покидает стол[reason_text]."
+		if(stage == CARD_TABLE_STAGE_PLAYING && game_type == CARD_TABLE_GAME_FOOL)
+			fool_normalize_turn_after_leave()
+		if(stage != CARD_TABLE_STAGE_LOBBY && active_players_count() < min_players())
 			stage = CARD_TABLE_STAGE_FINISHED
-			message = "The game ends because there are not enough players."
+			message = "Игра завершается: не хватает активных игроков."
 		clamp_turns()
 	return changed
 
@@ -171,6 +184,8 @@
 	if(!owner)
 		return
 	for(var/datum/card_table_player/player in players.Copy())
+		if(player.left)
+			continue
 		var/mob/M = card_table_find_mob_by_ckey(player.ckey)
 		var/dist = M ? get_dist(M, owner) : null
 		if(!M || isnull(dist) || dist > CARD_TABLE_LEAVE_RANGE)
@@ -197,12 +212,18 @@
 	if(!players.len)
 		dealer_index = 0
 		return
-	if(dealer_index < 1 || dealer_index > players.len)
-		dealer_index = 1
-		return
-	dealer_index++
-	if(dealer_index > players.len)
-		dealer_index = 1
+	var/start_index = dealer_index + 1
+	if(start_index < 1 || start_index > players.len)
+		start_index = 1
+	for(var/offset = 0, offset < players.len, offset++)
+		var/check_index = start_index + offset
+		while(check_index > players.len)
+			check_index -= players.len
+		var/datum/card_table_player/player = players[check_index]
+		if(player_is_active(player))
+			dealer_index = check_index
+			return
+	dealer_index = 0
 
 /datum/card_table_session/proc/draw_one()
 	if(!deck.len)

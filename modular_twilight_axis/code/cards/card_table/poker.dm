@@ -21,6 +21,8 @@
 	player.ready = TRUE
 	message = "[player.name] готов."
 	for(var/datum/card_table_player/P in players)
+		if(P.left)
+			continue
 		if(!P.ready)
 			return TRUE
 	poker_finish()
@@ -41,6 +43,8 @@
 	player.ready = TRUE
 	message = "[player.name] завершает ход."
 	for(var/datum/card_table_player/P in players)
+		if(P.left)
+			continue
 		if(!P.ready)
 			return TRUE
 	poker_finish()
@@ -95,12 +99,18 @@
 	var/best_score = -1
 	var/datum/card_table_player/winner = null
 	for(var/datum/card_table_player/player in players)
+		if(player.left)
+			continue
 		var/score = poker_score_for_player(player)
 		if(score > best_score)
 			best_score = score
 			winner = player
 	for(var/datum/card_table_player/P in players)
-		P.result = (P == winner) ? "Winner" : "Lost"
+		if(P.left)
+			if(!P.result)
+				P.result = "Left"
+		else
+			P.result = (P == winner) ? "Winner" : "Lost"
 	stage = CARD_TABLE_STAGE_FINISHED
 	var/winner_name = winner ? winner.name : "Никто"
 	message = "[winner_name] выигрывает раздачу."

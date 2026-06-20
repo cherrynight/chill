@@ -1,12 +1,49 @@
 /datum/card_table_session/proc/fool_current_attacker() as /datum/card_table_player
 	if(!players.len || current_index < 1 || current_index > players.len)
 		return null
-	return players[current_index]
+	var/datum/card_table_player/player = players[current_index]
+	return player_is_active(player) ? player : null
 
 /datum/card_table_session/proc/fool_current_defender() as /datum/card_table_player
 	if(!players.len || defender_index < 1 || defender_index > players.len)
 		return null
-	return players[defender_index]
+	var/datum/card_table_player/player = players[defender_index]
+	return player_is_active(player) ? player : null
+
+/datum/card_table_session/proc/fool_next_active_index(start_index, skip_index = 0)
+	if(!players.len)
+		return 0
+	if(start_index < 1)
+		start_index = 1
+	if(start_index > players.len)
+		start_index = 1
+	for(var/offset = 0, offset < players.len, offset++)
+		var/check_index = start_index + offset
+		while(check_index > players.len)
+			check_index -= players.len
+		if(check_index == skip_index)
+			continue
+		var/datum/card_table_player/player = players[check_index]
+		if(player_is_active(player))
+			return check_index
+	return 0
+
+/datum/card_table_session/proc/fool_normalize_turn_after_leave()
+	if(stage != CARD_TABLE_STAGE_PLAYING || game_type != CARD_TABLE_GAME_FOOL)
+		return
+	if(active_players_count() < 2)
+		stage = CARD_TABLE_STAGE_FINISHED
+		for(var/datum/card_table_player/player in players)
+			if(player_is_active(player))
+				player.result = "Out"
+		message = "Игра в дурня завершена: не хватает активных игроков."
+		return
+	if(!fool_current_attacker())
+		current_index = fool_next_active_index(current_index + 1)
+	if(!fool_current_defender() || defender_index == current_index)
+		defender_index = fool_next_active_index(current_index + 1, current_index)
+	var/datum/card_table_player/new_defender = fool_current_defender()
+	fool_defender_start_hand = new_defender ? new_defender.hand.len : 0
 
 /datum/card_table_session/proc/fool_can_beat(list/attack_card, list/defense_card)
 	if(!attack_card || !defense_card)
@@ -97,7 +134,7 @@
 		if(check_index == defender_index)
 			continue
 		var/datum/card_table_player/player = players[check_index]
-		if(fool_player_can_throw(player))
+		if(player_is_active(player) && fool_player_can_throw(player))
 			current_index = check_index
 			return TRUE
 	return FALSE
@@ -112,6 +149,8 @@
 
 /datum/card_table_session/proc/fool_refill()
 	for(var/datum/card_table_player/player in players)
+		if(!player_is_active(player))
+			continue
 		while(player.hand.len < 6 && deck.len)
 			deal_to(player, 1)
 
@@ -136,36 +175,35 @@
 	xylix_cheat_used = list()
 	fool_defender_start_hand = 0
 	fool_refill()
-	if(players.len < 2)
+	if(active_players_count() < 2)
 		stage = CARD_TABLE_STAGE_FINISHED
 		return
 	if(!defender_takes)
-		current_index = defender_index
+		current_index = fool_next_active_index(defender_index)
 	else
-		current_index = defender_index + 1
-		if(current_index > players.len)
-			current_index = 1
-	defender_index = current_index + 1
-	if(defender_index > players.len)
-		defender_index = 1
+		current_index = fool_next_active_index(defender_index + 1)
+	defender_index = fool_next_active_index(current_index + 1, current_index)
 	fool_first_bout = FALSE
 	var/datum/card_table_player/new_defender = fool_current_defender()
 	fool_defender_start_hand = new_defender ? new_defender.hand.len : 0
 	xylix_try_reveal_for_turn_holder(fool_current_attacker())
-	for(var/i = players.len, i >= 1, i--)
-		var/datum/card_table_player/player = players[i]
-		if(!player.hand.len && !deck.len)
+	for(var/datum/card_table_player/player in players)
+		if(player_is_active(player) && !player.hand.len && !deck.len)
 			player.result = "Out"
-			players.Cut(i, i + 1)
-	if(players.len <= 1)
+	var/active_count = active_players_count()
+	if(active_count <= 1)
 		stage = CARD_TABLE_STAGE_FINISHED
-		if(players.len == 1)
-			var/datum/card_table_player/last = players[1]
-			last.result = "Fool"
-			message = "[last.name] - дурак."
-		else
-			message = "Игра в дурака завершена."
+		for(var/datum/card_table_player/last in players)
+			if(player_is_active(last))
+				last.result = "Fool"
+				message = "[last.name] - дурак."
+				return
+		message = "Игра в дурака завершена."
 		return
+	if(!fool_current_attacker())
+		current_index = fool_next_active_index(current_index + 1)
+	if(!fool_current_defender() || defender_index == current_index)
+		defender_index = fool_next_active_index(current_index + 1, current_index)
 	clamp_turns()
 
 /datum/card_table_session/proc/fool_attack(mob/user, card_index)
@@ -181,7 +219,7 @@
 		player.hand += list(card)
 		return FALSE
 	fool_add_pair(card)
-	message = "[player.name] attacks with [card_table_card_label(table_attack)]."
+	message = "[player.name] ходит [card_table_card_label(table_attack)]."
 	return TRUE
 
 /datum/card_table_session/proc/fool_defend(mob/user, card_index)
@@ -195,9 +233,7 @@
 	if(!fool_can_beat(table_attack, card))
 		return FALSE
 	fool_set_current_defense(remove_hand_card(player, defense_index))
-	message = "[player.name] defends with [card_table_card_label(table_defense)]."
-	if(!fool_next_thrower())
-		fool_next_turn(FALSE)
+	message = "[player.name] отбивается [card_table_card_label(table_defense)]."
 	return TRUE
 
 /datum/card_table_session/proc/fool_transfer(mob/user, card_index)
@@ -213,15 +249,9 @@
 	if(card["rank"] != table_attack["rank"])
 		return FALSE
 	var/list/transfer_card = remove_hand_card(player, transfer_index)
-	if(table_pairs.len)
-		var/list/pair = table_pairs[table_pairs.len]
-		pair["attack"] = transfer_card
-	table_attack = transfer_card
-	table_defense = null
+	fool_add_pair(transfer_card)
 	current_index = defender_index
-	defender_index = current_index + 1
-	if(defender_index > players.len)
-		defender_index = 1
+	defender_index = fool_next_active_index(current_index + 1, current_index)
 	var/datum/card_table_player/new_defender = fool_current_defender()
 	fool_defender_start_hand = new_defender ? new_defender.hand.len : 0
 	message = "[player.name] переводит ход картой [card_table_card_label(table_attack)]."
@@ -231,7 +261,7 @@
 	var/datum/card_table_player/player = player_for_user(user)
 	if(stage != CARD_TABLE_STAGE_PLAYING || game_type != CARD_TABLE_GAME_FOOL || player != fool_current_defender() || !table_attack)
 		return FALSE
-	message = "[player.name] takes the table."
+	message = "[player.name] забирает карты со стола."
 	fool_next_turn(TRUE)
 	return TRUE
 
@@ -239,6 +269,6 @@
 	var/datum/card_table_player/player = player_for_user(user)
 	if(stage != CARD_TABLE_STAGE_PLAYING || game_type != CARD_TABLE_GAME_FOOL || player != fool_current_attacker() || !table_attack || !table_defense)
 		return FALSE
-	message = "[player.name] ends the attack."
+	message = "[player.name] отправляет карты в биту."
 	fool_next_turn(FALSE)
 	return TRUE

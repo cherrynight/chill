@@ -67,6 +67,8 @@
 
 /datum/card_table_session/proc/blackjack_all_done()
 	for(var/datum/card_table_player/player in players)
+		if(player.left)
+			continue
 		if(!player.standing && !player.busted)
 			return FALSE
 	return TRUE
@@ -77,6 +79,10 @@
 	if(table_dealer)
 		dealer_value = hand_value(table_dealer.hand)
 	for(var/datum/card_table_player/player in players)
+		if(player.left)
+			if(!player.result)
+				player.result = "Left"
+			continue
 		var/value = hand_value(player.hand)
 		if(player == table_dealer)
 			player.result = (value > 21) ? "Bust" : "Дилер"

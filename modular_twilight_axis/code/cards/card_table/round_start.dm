@@ -32,6 +32,7 @@
 		player.ready = FALSE
 		player.draws_used = 0
 		player.result = null
+		player.left = FALSE
 	stage = CARD_TABLE_STAGE_PLAYING
 	current_index = 1
 	defender_index = min(2, players.len)

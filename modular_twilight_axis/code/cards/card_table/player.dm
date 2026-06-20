@@ -7,6 +7,7 @@
 	var/ready = FALSE
 	var/draws_used = 0
 	var/result = null
+	var/left = FALSE
 
 /datum/card_table_player/proc/to_public_data(show_hand = FALSE)
 	var/list/hand_data = list()
@@ -25,6 +26,7 @@
 		"ready" = ready,
 		"draws_used" = draws_used,
 		"result" = result,
+		"left" = left,
 	)
 
 /datum/card_table_session/proc/player_public_data_for(datum/card_table_player/player, datum/card_table_player/viewer, mob/user)
@@ -53,4 +55,5 @@
 		"ready" = player.ready,
 		"draws_used" = player.draws_used,
 		"result" = player.result,
+		"left" = player.left,
 	)

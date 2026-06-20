@@ -60,6 +60,11 @@
 
 /datum/card_table_session/proc/reset_to_lobby()
 	stage = CARD_TABLE_STAGE_LOBBY
+	for(var/i = players.len, i >= 1, i--)
+		var/datum/card_table_player/leaver = players[i]
+		if(leaver.left)
+			players.Cut(i, i + 1)
+			qdel(leaver)
 	deck = list()
 	discard = list()
 	dealer_hand = list()
@@ -86,6 +91,7 @@
 		player.ready = FALSE
 		player.draws_used = 0
 		player.result = null
+		player.left = FALSE
 	if(dealer_index > players.len)
 		dealer_index = players.len ? 1 : 0
 	message = "Раунд сброшен. Игроки остаются за столом."
@@ -182,11 +188,21 @@
 /datum/card_table_session/proc/can_pack()
 	return !players.len && !observers.len
 
+/datum/card_table_session/proc/player_is_active(datum/card_table_player/player)
+	return player && !player.left && player.result != "Out" && player.result != "Fool"
+
+/datum/card_table_session/proc/active_players_count()
+	var/count = 0
+	for(var/datum/card_table_player/player in players)
+		if(player_is_active(player))
+			count++
+	return count
+
 /datum/card_table_session/proc/player_for_user(mob/user)
 	if(!user || !user.ckey)
 		return null
 	for(var/datum/card_table_player/player in players)
-		if(player.ckey == user.ckey)
+		if(!player.left && player.ckey == user.ckey)
 			return player
 	return null
 

@@ -52,7 +52,7 @@
 	return seen
 
 /datum/card_table_session/proc/xylix_try_reveal_opponent_card(mob/user, datum/card_table_player/target)
-	if(!user || !user.ckey || !target || target.ckey == user.ckey)
+	if(!user || !user.ckey || !target || target.left || target.ckey == user.ckey)
 		return
 	var/chance = xylix_opponent_chance(user)
 	if(!chance || !prob(chance))
@@ -71,7 +71,7 @@
 	if(!turn_holder)
 		return
 	for(var/datum/card_table_player/player in players)
-		if(player == turn_holder)
+		if(player.left || player == turn_holder)
 			continue
 		var/mob/M = card_table_find_mob_by_ckey(player.ckey)
 		xylix_try_reveal_opponent_card(M, turn_holder)
@@ -81,6 +81,8 @@
 		return FALSE
 	var/msg = "[card_table_display_name(user)] слишком внимательно следит за колодой."
 	for(var/datum/card_table_player/player in players)
+		if(player.left)
+			continue
 		var/mob/M = card_table_find_mob_by_ckey(player.ckey)
 		if(M && M != user)
 			to_chat(M, span_warning(msg))
