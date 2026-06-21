@@ -1208,7 +1208,7 @@
 	if(user.mind.assigned_role == "Bishop")
 		. += span_info("As the Bishop, you can marry two people by having them both bite an apple, then offering it to the cross.")
 		. += span_info("The second person to bite the apple will take the last name of whoever bit it first.")
-	else if(istype(living_user) && HAS_TRAIT(living_user, TRAIT_MARRIAGE_CAPABLE) && (living_user.patron.type == /datum/patron/divine/eora))
+	else if(istype(living_user) && HAS_TRAIT(living_user, TRAIT_MARRIAGE_CAPABLE))
 		. += span_info("As an Eoran, you can marry two people by having them both bite an apple, then offering it to the cross.")
 		. += span_info("The second person to bite the apple will take the last name of whoever bit it first.")
 
@@ -1372,7 +1372,7 @@
 	if(user.mind)
 		var/mob/living/living_user = user
 		// if there's no bishop inround, you can still get married... as long as there's an eoran. heretics can do it too!
-		if((user.mind.assigned_role == "Bishop") || (istype(living_user) && HAS_TRAIT(living_user, TRAIT_MARRIAGE_CAPABLE) && (living_user.patron.type == /datum/patron/divine/eora)))
+		if(HAS_TRAIT(living_user, TRAIT_MARRIAGE_CAPABLE))
 			if(istype(W, /obj/item/reagent_containers/food/snacks/grown/apple))
 				var/obj/item/reagent_containers/food/snacks/grown/apple/A = W
 				//The MARRIAGE TEST BEGINS
