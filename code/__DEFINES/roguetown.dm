@@ -157,6 +157,7 @@ Balloon Alert / Floating Text defines
 	/datum/species/goblinp,\
 	/datum/species/dullahan,\
 	/datum/species/dwarf/gnome,\
+	/datum/species/construct/metal,\
 	/datum/species/ooze,\
 	/datum/species/construct/metal,\
 
@@ -182,6 +183,7 @@ Balloon Alert / Floating Text defines
 	/datum/species/goblinp,\
 	/datum/species/dullahan,\
 	/datum/species/dwarf/gnome,\
+	/datum/species/construct/metal,\
 	/datum/species/ooze,\
 	/datum/species/construct/metal,\
 
@@ -209,6 +211,8 @@ Balloon Alert / Floating Text defines
 	/datum/species/kobold,\
 	/datum/species/goblinp,\
 	/datum/species/dullahan,\
+	/datum/species/dwarf/gnome,\
+	/datum/species/construct/metal,\
 	/datum/species/ooze,\
 	/datum/species/construct/metal,\
 

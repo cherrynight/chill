@@ -1,0 +1,5 @@
+author: "eirenxiv"
+delete-after: True
+changes:
+  - bugfix: "excluded constructs from: Black Oaks, Grudgebearer an Anthraxi"
+  - bugfix: "excluded gnomes from Grudgebearers"
