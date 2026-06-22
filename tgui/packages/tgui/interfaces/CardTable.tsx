@@ -1507,7 +1507,7 @@ export const CardTable = () => {
                         act('set_fool_variant', { variant: 'classic' })
                       }
                     >
-                      Хаммерхольдьский
+                      Хаммерхолдский
                     </Button>
                     <Button
                       selected={fool_variant === 'throw_in'}
@@ -1516,7 +1516,7 @@ export const CardTable = () => {
                         act('set_fool_variant', { variant: 'throw_in' })
                       }
                     >
-                      Эструсский
+                      Этруский
                     </Button>
                     <Button
                       selected={fool_variant === 'transfer'}
@@ -1632,7 +1632,7 @@ export const CardTable = () => {
                         act('set_poker_variant', { variant: 'texas' })
                       }
                     >
-                      Ранешский
+                      Ранешенский
                     </Button>
                     <Button
                       selected={poker_variant === 'omaha'}

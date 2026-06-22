@@ -111,17 +111,17 @@
 /datum/card_table_session/proc/fool_variant_label()
 	switch(fool_variant)
 		if(CARD_TABLE_FOOL_THROW_IN)
-			return "Эструсский"
+			return "Этруский"
 		if(CARD_TABLE_FOOL_TRANSFER)
 			return "Отаванский"
 		if(CARD_TABLE_FOOL_THROW_TRANSFER)
 			return "Грензельхофтский"
-	return "Хаммерхольдьский"
+	return "Хаммерхолдский"
 
 /datum/card_table_session/proc/poker_variant_label()
 	switch(poker_variant)
 		if(CARD_TABLE_POKER_TEXAS)
-			return "Ранешский"
+			return "Ранешенский"
 		if(CARD_TABLE_POKER_OMAHA)
 			return "Валорийский"
 		if(CARD_TABLE_POKER_STUD)
