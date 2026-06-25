@@ -99,7 +99,7 @@
 	armor_class = ARMOR_CLASS_MEDIUM
 	smeltresult = /obj/item/ingot/component/zizo
 	unenchantable = TRUE
-	alternate_worn_layer = ARMOR_LAYER
+	alternate_worn_layer = SUIT_LAYER
 
 /obj/item/clothing/under/roguetown/platelegs/zizo/heavy
 	name = "avantyne garments"
