@@ -7,7 +7,7 @@
 	class_select_category = CLASS_CAT_CLERIC
 	category_tags = list(CTAG_WRETCH)
 	traits_applied = list(TRAIT_RITUALIST, TRAIT_HEAVYARMOR)
-	maximum_possible_slots = 4 //Ppl dont like heavy armor antags.
+	maximum_possible_slots = 2 //Ppl dont like heavy armor antags.
 	subclass_stats = list(
 		STATKEY_STR = 2,
 		STATKEY_CON = 2,
@@ -282,7 +282,7 @@
 	name = "Heretic Spy"
 	tutorial = "Nimble of dagger and foot both, you are the shadowy herald of the cabal. They will not see you coming."
 	outfit = /datum/outfit/job/roguetown/wretch/hereticspy
-	maximum_possible_slots = 4 //Ppl dont like rogue antags.
+	maximum_possible_slots = 2 //Ppl dont like rogue antags.
 	traits_applied = list(TRAIT_RITUALIST, TRAIT_DODGEEXPERT)
 	subclass_stats = list(
 		STATKEY_PER = 2,

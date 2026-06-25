@@ -6,7 +6,7 @@
 	allowed_sexes = list(MALE, FEMALE)
 	
 	outfit = /datum/outfit/job/roguetown/wretch/heretic_spellfist
-	maximum_possible_slots = 4
+	maximum_possible_slots = 2
 	class_select_category = CLASS_CAT_BATTLEMAGE
 	category_tags = list(CTAG_WRETCH)
 	traits_applied = list(TRAIT_CIVILIZEDBARBARIAN, TRAIT_ARCYNE, TRAIT_BLOOD_RESISTANCE)

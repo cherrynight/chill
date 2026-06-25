@@ -7,7 +7,7 @@
 	class_select_category = CLASS_CAT_WARRIOR
 	category_tags = list(CTAG_WRETCH)
 	traits_applied = list(TRAIT_TRAINED_SMITH, TRAIT_SMITHING_EXPERT, TRAIT_RITUALIST)
-	maximum_possible_slots = 2 // do we need TWO antag weapon factories?
+	maximum_possible_slots = 1 // do we need TWO antag weapon factories?
 	subclass_stats = list(
 		STATKEY_STR = 2,
 		STATKEY_CON = 2,
