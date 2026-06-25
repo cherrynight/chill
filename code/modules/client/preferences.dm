@@ -167,6 +167,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/no_redflash = FALSE
 	var/no_storyteller_events = FALSE
 	var/top_examine = FALSE
+	var/no_runechat_animation = FALSE //TA EDIT
 
 	var/lastclass
 
