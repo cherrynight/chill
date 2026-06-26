@@ -1583,9 +1583,9 @@
 
 	if(density)
 		icon_state = "decoybookcase1"
-		set_density(FALSE)
-		set_opacity(FALSE)
+		density = FALSE
+		opacity = FALSE
 	else
 		icon_state = "decoybookcase0"
-		set_density(TRUE)
-		set_opacity(TRUE)
+		density = TRUE
+		opacity = TRUE
