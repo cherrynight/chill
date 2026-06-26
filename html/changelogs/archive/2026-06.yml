@@ -1308,6 +1308,9 @@
   - balance: Burghers no longer have Tempo. This includes Mage Associates.
   - balance: Bishop no longer have Tempo.
   - balance: Acolytes no longer have Tempo.
+  SomeDeviant:
+  - rscdel: Removed .transform check in wrestling spells to prevent sprite scale corruption
+  - bugfix: fixed runtime on interrupted timers in wrestling spells
   Quinalion:
   - rscadd: Animated Runechat.
   SmthAwfl:
@@ -1336,6 +1339,8 @@
       it is useless. It is now logged in game log for future dev investigation. And
       in addition, it give you a rough location of where the death occured. If this
       becomes a problem I will revert to the generic fallback instead.
+  changelingonberry:
+  - bugfix: gulp, faceplam and crack knuckles go into the correct categories now
   msw7007:
   - rscadd: "\u041F\u041A\u041C \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442\
       \ \u043F\u0435\u0440\u0435\u043A\u043B\u044E\u0447\u0430\u0442\u044C \u0441\u0442\
