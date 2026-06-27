@@ -129,9 +129,9 @@
 		. += span_phobia("A foreigner...") //TA EDIT
 
 	if(SSmapping.config.map_name == "Desert Town")
-		var/species_origin = src.dna?.species?.origin
+	//	var/species_origin = src.dna?.species?.origin
 		var/mob/living/carbon/human/H_user = ishuman(user) ? user : null
-		var/user_origin = H_user?.dna?.species?.origin
+	//	var/user_origin = H_user?.dna?.species?.origin
 		/*	var/user_is_lg = H_user.mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel) // Lost Grenzel comment
 			var/target_is_lg = mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
 
