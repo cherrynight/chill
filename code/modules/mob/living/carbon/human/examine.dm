@@ -128,26 +128,6 @@
 	if((HAS_TRAIT(src, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_OUTLANDER)) || (HAS_TRAIT(user, TRAIT_BLACKOAK) && !(src.dna.species.name == "Elf" || src.dna.species.name == "Dark Elf" || src.dna.species.name == "Half Elf"))) //TA EDIT
 		. += span_phobia("A foreigner...") //TA EDIT
 
-	if(SSmapping.config.map_name == "Desert Town")
-		var/species_origin = src.dna?.species?.origin
-		var/mob/living/carbon/human/H_user = ishuman(user) ? user : null
-		var/user_origin = H_user?.dna?.species?.origin
-		if(species_origin == "Grenzelhoft" && !HAS_TRAIT(user, TRAIT_OUTLANDER) && user_origin != "Grenzelhoft")
-			. += span_userdanger("ИМПЕРСКИЙ КАФИР!")
-		if(H_user)
-			if(user_origin == "Grenzelhoft" && (species_origin == "Raneshan" || species_origin == "Naledi" || species_origin == "Zybantu"))
-				. += span_userdanger("ЗИБАНТИЙСКИЙ ШВАЙНЕХУНД!")
-
-		/*	var/user_is_lg = H_user.mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel) // Lost Grenzel comment
-			var/target_is_lg = mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel)
-
-			if(user_is_lg && species_origin == "Grenzelhoft" && !target_is_lg)
-				. += span_userdanger("<b>ПОДЛЫЙ ПРЕДАТЕЛЬ!</b>")
-			if(target_is_lg && user_origin == "Grenzelhoft" && !user_is_lg)
-				. += span_userdanger("<b>ОБЕЗУМЕВШИЙ В ПЕСКАХ!</b>")
-		if(mind?.has_antag_datum(/datum/antagonist/bandit/lost_grenzel) && !HAS_TRAIT(user, TRAIT_OUTLANDER))
-			. += span_userdanger("<b>НАЛЁТНИЧЕСКАЯ МРАЗЬ, ДЕТОУБИЙЦА!</b>")*/ // Lost Grenzel comment
-
 
 	if(HAS_TRAIT(src, TRAIT_NPC_EXAMINE) && !mind && src.stat == CONSCIOUS) //NPCs always show up if they're mindless.
 		. += span_warning("[src]'s hollow expression is filled with mindless anger!")
@@ -447,9 +427,7 @@
 	else
 		displayed_headshot = src.headshot_link
 
-	var/can_show_masked_identity = !obscure_name || client?.prefs?.masked_examine || observer_privilege
-
-	if(can_show_masked_identity && (valid_headshot_link(src, displayed_headshot, TRUE)) && (user.client?.prefs.chatheadshot))
+	if((valid_headshot_link(src, displayed_headshot, TRUE)) && (user.client?.prefs.chatheadshot))
 		. += span_info("[chat_headshot(displayed_headshot)]")
 
 	var/medical_text = ""
@@ -479,7 +457,7 @@
 	if(length(medical_text))
 		. += medical_text
 
-	if(can_show_masked_identity)
+	if(!obscure_name || client?.prefs.masked_examine)
 		var/list/examine_links = list()
 		if(showassess)
 			examine_links += "<a href='?src=[REF(src)];task=assess;'>Assess</a>"
@@ -811,6 +789,18 @@
 		else
 			. += phys_msg
 
+		if(HAS_TRAIT(src, TRAIT_SLAVE)) // TA EDIT
+			var/slave_descriptor
+			switch(pronouns)
+				if(HE_HIM)
+					slave_descriptor = "Он всего лишь жалкий раб."
+				if(SHE_HER)
+					slave_descriptor = "Она всего лишь жалкая рабыня."
+				else
+					slave_descriptor = "Это всего лишь жалкий раб."
+			if(slave_descriptor)
+				. += span_warning("<span style='font-size: inherit !important; font-weight: inherit !important;'>[slave_descriptor]</span>")
+
 	if((HAS_TRAIT(user,TRAIT_INTELLECTUAL)))
 		var/mob/living/L = user
 		var/final_int = STAINT
@@ -924,7 +914,6 @@
 		. += span_info("ø ------------ ø\nThis is an unknown <EM>[name]</EM>.")
 	else
 		on_examine_face(user)
-		var/can_identify_face = !obscure_name || observer_privilege
 		var/used_name = name
 		var/used_title = get_role_title()
 		if(SSticker.regentmob == src)
@@ -975,7 +964,16 @@
 				if(issunelf(src) || patron?.type == /datum/patron/divine/astrata)
 					astratan_symbol = icon2html('icons/misc/language.dmi', world, "celestial")
 					astratan_tooltip = SPAN_TOOLTIP("One of Astrata's [issunelf(src) ? "chosen" : "followers"]", astratan_symbol)
-		. += span_info("[pronoun] [wording] [origin]. [astratan_tooltip]")	//"He hails from [X / Nowhere]" || "His [word] originates from [X]" || "His [word] is implacable..."
+		var/origin_suffix = ""
+		if(SSmapping.config.map_name == "Desert Town")
+			var/mob/living/carbon/human/H_user = ishuman(user) ? user : null
+			var/user_origin = H_user?.dna?.species?.origin
+			if(dna.species.origin == "Grenzelhoft" && !HAS_TRAIT(user, TRAIT_OUTLANDER) && user_origin != "Grenzelhoft")
+				origin_suffix = " <span class='warning' style='font-size: inherit !important; font-weight: inherit !important;'>Имперский кафир!</span>"
+			else if(user_origin == "Grenzelhoft" && (dna.species.origin == "Raneshan" || dna.species.origin == "Naledi" || dna.species.origin == "Zybantu"))
+				origin_suffix = " <span class='warning' style='font-size: inherit !important; font-weight: inherit !important;'>Зибантийский швайнехунд!</span>"
+		var/origin_line = span_info("[pronoun] [wording] [origin].[origin_suffix] [astratan_tooltip]")
+		. += origin_line
 
 		if(HAS_TRAIT(src, TRAIT_WITCH))
 			if(HAS_TRAIT(user, TRAIT_NOBLE) || HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_WITCH))
@@ -1071,8 +1069,6 @@
 		if(HAS_TRAIT(src, TRAIT_EXCOMMUNICATED))
 			. += span_userdanger("EXCOMMUNICATED! SHAME!")//Temporary, probably going to get rid of the trait since it doesn't fit for us.
 
-		if(HAS_TRAIT(src, TRAIT_SLAVE)) // TA EDIT
-			. += span_userdanger("ЖАЛКИЙ РАБ.") // TA EDIT
 /*
 		if(name in GLOB.excommunicated_players)
 			var/mob/living/carbon/human/H = src
@@ -1084,15 +1080,14 @@
 				if (istype(H.patron, /datum/patron/old_god))
 					. += span_userdanger("HEATHEN! SHAME!")
 */
-		if(can_identify_face)
-			if(name in GLOB.outlawed_players)
-				. += span_userdanger("OUTLAW!")
+		if(name in GLOB.outlawed_players)
+			. += span_userdanger("OUTLAW!")
 
-			if(HAS_TRAIT(user, TRAIT_JUSTICARSIGHT) && !HAS_TRAIT(src, TRAIT_DECEIVING_MEEKNESS))
-				for(var/datum/bounty/b in GLOB.head_bounties) //I hate this.
-					if(b.target == real_name)
-						. += span_syndradio("[m3] a bounty on [m2] head of [b.amount] mammon for [b.reason], issued by [b.employer].")
-						break
+		if(HAS_TRAIT(user, TRAIT_JUSTICARSIGHT) && !HAS_TRAIT(src, TRAIT_DECEIVING_MEEKNESS))
+			for(var/datum/bounty/b in GLOB.head_bounties) //I hate this.
+				if(b.target == real_name)
+					. += span_syndradio("[m3] a bounty on [m2] head of [b.amount] mammon for [b.reason], issued by [b.employer].")
+					break
 
 		if(name in GLOB.court_agents)
 			var/datum/job/J = SSjob.GetJob(user.mind?.assigned_role)
@@ -1152,7 +1147,7 @@
 			if(HAS_TRAIT(user, TRAIT_EMPATH) && HAS_TRAIT(src, TRAIT_PERMAMUTE))
 				. += span_notice("[m1] lacks a voice. [m1] is a mute!")
 
-		var/villain_text = get_villain_text(user, can_identify_face)
+		var/villain_text = get_villain_text(user)
 		if(villain_text)
 			. += villain_text
 		var/heretic_text = get_heretic_text(user)
@@ -1333,13 +1328,13 @@
 	return clergy_text
 
 /// Returns antagonist-related examine text for the mob, if any. Can return null.
-/mob/living/proc/get_villain_text(mob/examiner, can_identify_face = TRUE)
+/mob/living/proc/get_villain_text(mob/examiner)
 	var/villain_text
 	if(mind)
 		if(mind.special_role == "Bandit")
 			if(HAS_TRAIT(examiner, TRAIT_FREEMAN))
 				villain_text = span_notice("Free man!")
-			if(can_identify_face && HAS_TRAIT(src,TRAIT_KNOWNCRIMINAL))
+			if(HAS_TRAIT(src,TRAIT_KNOWNCRIMINAL))
 				villain_text = span_userdanger("BANDIT!")
 		if(mind.special_role == "Deadite")
 			villain_text = span_userdanger("DEADITE!")
