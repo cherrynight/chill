@@ -1068,7 +1068,6 @@
 
 		if(HAS_TRAIT(src, TRAIT_EXCOMMUNICATED))
 			. += span_userdanger("EXCOMMUNICATED! SHAME!")//Temporary, probably going to get rid of the trait since it doesn't fit for us.
-
 /*
 		if(name in GLOB.excommunicated_players)
 			var/mob/living/carbon/human/H = src
@@ -1080,14 +1079,15 @@
 				if (istype(H.patron, /datum/patron/old_god))
 					. += span_userdanger("HEATHEN! SHAME!")
 */
-		if(name in GLOB.outlawed_players)
-			. += span_userdanger("OUTLAW!")
+		if(can_identify_face)
+			if(name in GLOB.outlawed_players)
+				. += span_userdanger("OUTLAW!")
 
-		if(HAS_TRAIT(user, TRAIT_JUSTICARSIGHT) && !HAS_TRAIT(src, TRAIT_DECEIVING_MEEKNESS))
-			for(var/datum/bounty/b in GLOB.head_bounties) //I hate this.
-				if(b.target == real_name)
-					. += span_syndradio("[m3] a bounty on [m2] head of [b.amount] mammon for [b.reason], issued by [b.employer].")
-					break
+			if(HAS_TRAIT(user, TRAIT_JUSTICARSIGHT) && !HAS_TRAIT(src, TRAIT_DECEIVING_MEEKNESS))
+				for(var/datum/bounty/b in GLOB.head_bounties) //I hate this.
+					if(b.target == real_name)
+						. += span_syndradio("[m3] a bounty on [m2] head of [b.amount] mammon for [b.reason], issued by [b.employer].")
+						break
 
 		if(name in GLOB.court_agents)
 			var/datum/job/J = SSjob.GetJob(user.mind?.assigned_role)
@@ -1147,7 +1147,7 @@
 			if(HAS_TRAIT(user, TRAIT_EMPATH) && HAS_TRAIT(src, TRAIT_PERMAMUTE))
 				. += span_notice("[m1] lacks a voice. [m1] is a mute!")
 
-		var/villain_text = get_villain_text(user)
+		var/villain_text = get_villain_text(user, can_identify_face)
 		if(villain_text)
 			. += villain_text
 		var/heretic_text = get_heretic_text(user)
@@ -1328,13 +1328,13 @@
 	return clergy_text
 
 /// Returns antagonist-related examine text for the mob, if any. Can return null.
-/mob/living/proc/get_villain_text(mob/examiner)
+/mob/living/proc/get_villain_text(mob/examiner, can_identify_face = TRUE)
 	var/villain_text
 	if(mind)
 		if(mind.special_role == "Bandit")
 			if(HAS_TRAIT(examiner, TRAIT_FREEMAN))
 				villain_text = span_notice("Free man!")
-			if(HAS_TRAIT(src,TRAIT_KNOWNCRIMINAL))
+			if(can_identify_face && HAS_TRAIT(src,TRAIT_KNOWNCRIMINAL))
 				villain_text = span_userdanger("BANDIT!")
 		if(mind.special_role == "Deadite")
 			villain_text = span_userdanger("DEADITE!")
