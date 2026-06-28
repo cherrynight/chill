@@ -1,0 +1,4 @@
+author: "WeNeedMorePhoron"
+delete-after: True
+changes:
+  - rscadd: "Jumping / flying / floating over fire / campfires no longer set you on fire"
