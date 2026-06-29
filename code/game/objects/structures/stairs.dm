@@ -73,23 +73,21 @@
 		return
 
 	var/atom/movable/pulling
-	var/was_pulled = FALSE
 	if(isliving(AM))
 		var/mob/living/L = AM
 		pulling = L.pulling
-		if(L.pulledby && L.pulledby != L)
-			was_pulled = TRUE
 
 	movable_travel_z_level(AM, newtarg)
 
-	if(was_pulled || QDELETED(AM) || !ishuman(AM))
+	if(!ishuman(AM) || QDELETED(AM))
 		return
 
 	var/mob/living/carbon/human/H = AM
-	var/stamina_cost = STAIR_STAMINA_COST
-	if(pulling && !QDELETED(pulling) && isliving(pulling))
-		stamina_cost *= STAIR_STAMINA_PULLING_MULTIPLIER
-	H.stamina_add(stamina_cost, null, FALSE) // TA EDIT END
+	if(H.mind)
+		var/stamina_cost = STAIR_STAMINA_COST
+		if(pulling && !QDELETED(pulling) && isliving(pulling))
+			stamina_cost *= STAIR_STAMINA_PULLING_MULTIPLIER
+		H.stamina_add(stamina_cost, null, FALSE) // TA EDIT END
 
 /obj/structure/stairs/stone
 	name = "stone stairs"
